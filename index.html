@@ -1,0 +1,2451 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PE AI Mastery — Curso de IA para Private Equity</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+  :root {
+    --bg: #0e0e0e;
+    --bg2: #161616;
+    --bg3: #1e1e1e;
+    --bg4: #262626;
+    --border: #2e2e2e;
+    --border2: #3a3a3a;
+    --text: #e8e4dc;
+    --text2: #9a9690;
+    --text3: #5a5855;
+    --gold: #c9a84c;
+    --gold2: #e8c97a;
+    --gold-dim: rgba(201,168,76,0.12);
+    --green: #4a9e6e;
+    --green-dim: rgba(74,158,110,0.12);
+    --red: #c25a5a;
+    --blue: #4a7fb5;
+    --blue-dim: rgba(74,127,181,0.12);
+    --radius: 8px;
+    --radius-lg: 14px;
+    --font-display: 'Playfair Display', Georgia, serif;
+    --font-body: 'DM Sans', sans-serif;
+    --font-mono: 'DM Mono', monospace;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-body);
+    font-size: 15px;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* ── AUTH SCREEN ── */
+  #auth-screen {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    background: var(--bg);
+    position: relative;
+    overflow: hidden;
+  }
+  #auth-screen::before {
+    content: '';
+    position: absolute;
+    top: -200px; left: 50%;
+    transform: translateX(-50%);
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(201,168,76,0.06) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .auth-card {
+    width: 100%; max-width: 420px;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 40px;
+    position: relative;
+  }
+  .auth-logo {
+    font-family: var(--font-display);
+    font-size: 13px;
+    letter-spacing: .2em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 32px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .auth-logo::before {
+    content: '';
+    display: block;
+    width: 24px; height: 1px;
+    background: var(--gold);
+    opacity: .5;
+  }
+  .auth-card h1 {
+    font-family: var(--font-display);
+    font-size: 28px;
+    font-weight: 600;
+    line-height: 1.2;
+    margin-bottom: 8px;
+    color: var(--text);
+  }
+  .auth-card p {
+    color: var(--text2);
+    font-size: 14px;
+    margin-bottom: 32px;
+  }
+  .field { margin-bottom: 16px; }
+  .field label {
+    display: block;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    color: var(--text3);
+    margin-bottom: 6px;
+  }
+  .field input {
+    width: 100%;
+    background: var(--bg3);
+    border: 1px solid var(--border2);
+    border-radius: var(--radius);
+    padding: 11px 14px;
+    color: var(--text);
+    font-family: var(--font-body);
+    font-size: 14px;
+    transition: border-color .15s;
+    outline: none;
+  }
+  .field input:focus { border-color: var(--gold); }
+  .field input::placeholder { color: var(--text3); }
+  .btn-primary {
+    width: 100%;
+    background: var(--gold);
+    color: #0e0e0e;
+    border: none;
+    border-radius: var(--radius);
+    padding: 12px;
+    font-family: var(--font-body);
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background .15s, transform .1s;
+    margin-top: 8px;
+  }
+  .btn-primary:hover { background: var(--gold2); }
+  .btn-primary:active { transform: scale(.99); }
+  .btn-primary:disabled { opacity: .5; cursor: not-allowed; }
+  .auth-toggle {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 13px;
+    color: var(--text2);
+  }
+  .auth-toggle a { color: var(--gold); cursor: pointer; text-decoration: none; }
+  .auth-toggle a:hover { text-decoration: underline; }
+  .auth-error {
+    background: rgba(194,90,90,0.1);
+    border: 1px solid rgba(194,90,90,0.3);
+    border-radius: var(--radius);
+    padding: 10px 14px;
+    font-size: 13px;
+    color: #e08080;
+    margin-bottom: 16px;
+    display: none;
+  }
+
+  /* ── SETUP SCREEN ── */
+  #setup-screen {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+  }
+  .setup-card {
+    width: 100%; max-width: 500px;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 40px;
+  }
+  .setup-card h2 {
+    font-family: var(--font-display);
+    font-size: 22px;
+    margin-bottom: 8px;
+  }
+  .setup-card p { color: var(--text2); font-size: 14px; margin-bottom: 24px; }
+  .setup-step {
+    display: flex;
+    gap: 14px;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .setup-step:last-of-type { border-bottom: none; }
+  .step-num {
+    width: 24px; height: 24px;
+    border-radius: 50%;
+    background: var(--gold-dim);
+    border: 1px solid var(--gold);
+    color: var(--gold);
+    font-size: 11px;
+    font-weight: 500;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .step-content { flex: 1; }
+  .step-title { font-size: 14px; font-weight: 500; margin-bottom: 4px; }
+  .step-desc { font-size: 12px; color: var(--text2); line-height: 1.5; }
+  .step-desc code {
+    font-family: var(--font-mono);
+    background: var(--bg4);
+    padding: 1px 6px;
+    border-radius: 4px;
+    font-size: 11px;
+    color: var(--gold);
+  }
+  .copy-snippet {
+    display: flex; align-items: center; justify-content: space-between;
+    background: var(--bg4);
+    border: 1px solid var(--border2);
+    border-radius: var(--radius);
+    padding: 10px 12px;
+    margin-top: 8px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text2);
+  }
+  .copy-btn-small {
+    background: none; border: 1px solid var(--border2);
+    border-radius: 4px; padding: 3px 8px;
+    color: var(--text2); font-family: var(--font-body);
+    font-size: 11px; cursor: pointer; transition: all .15s; flex-shrink: 0;
+  }
+  .copy-btn-small:hover { border-color: var(--gold); color: var(--gold); }
+  .setup-fields { margin-top: 24px; }
+
+  /* ── APP SHELL ── */
+  #app { display: none; min-height: 100vh; }
+
+  /* Sidebar */
+  .sidebar {
+    position: fixed; top: 0; left: 0;
+    width: 260px; height: 100vh;
+    background: var(--bg2);
+    border-right: 1px solid var(--border);
+    display: flex; flex-direction: column;
+    overflow-y: auto;
+    z-index: 100;
+  }
+  .sidebar-header {
+    padding: 24px 20px 20px;
+    border-bottom: 1px solid var(--border);
+  }
+  .sidebar-logo {
+    font-family: var(--font-display);
+    font-size: 11px;
+    letter-spacing: .2em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+  .user-pill {
+    display: flex; align-items: center; gap: 8px;
+    background: var(--bg3);
+    border-radius: 20px;
+    padding: 6px 10px;
+    font-size: 12px;
+    color: var(--text2);
+  }
+  .user-avatar {
+    width: 20px; height: 20px;
+    border-radius: 50%;
+    background: var(--gold-dim);
+    border: 1px solid var(--gold);
+    color: var(--gold);
+    font-size: 9px;
+    font-weight: 600;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .user-name { flex: 1; font-size: 12px; color: var(--text); }
+  .logout-btn {
+    background: none; border: none; cursor: pointer;
+    color: var(--text3); font-size: 12px; padding: 2px 4px;
+    transition: color .15s;
+  }
+  .logout-btn:hover { color: var(--red); }
+
+  /* Overall progress in sidebar */
+  .sidebar-progress {
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--border);
+  }
+  .prog-label {
+    display: flex; justify-content: space-between;
+    font-size: 11px; color: var(--text3);
+    margin-bottom: 6px;
+    text-transform: uppercase; letter-spacing: .05em;
+  }
+  .prog-bar {
+    height: 3px;
+    background: var(--bg4);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .prog-fill {
+    height: 100%;
+    background: var(--gold);
+    border-radius: 2px;
+    transition: width .4s ease;
+  }
+
+  /* Phase nav */
+  .phase-nav { padding: 12px 0; flex: 1; }
+  .phase-nav-item {
+    padding: 8px 20px;
+    cursor: pointer;
+    transition: background .1s;
+    border-left: 2px solid transparent;
+  }
+  .phase-nav-item:hover { background: var(--bg3); }
+  .phase-nav-item.active {
+    background: var(--gold-dim);
+    border-left-color: var(--gold);
+  }
+  .phase-nav-label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    color: var(--text3);
+    margin-bottom: 2px;
+  }
+  .phase-nav-title { font-size: 13px; color: var(--text); }
+  .phase-nav-count {
+    font-size: 11px; color: var(--text3);
+    margin-top: 2px;
+  }
+  .phase-nav-count span { color: var(--green); }
+
+  /* Main content */
+  .main {
+    margin-left: 260px;
+    min-height: 100vh;
+    padding: 40px 48px;
+    max-width: 960px;
+  }
+
+  /* Phase header */
+  .phase-header-bar {
+    margin-bottom: 32px;
+  }
+  .phase-tag {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border-radius: 20px;
+    margin-bottom: 12px;
+  }
+  .phase-header-bar h1 {
+    font-family: var(--font-display);
+    font-size: 32px;
+    font-weight: 600;
+    line-height: 1.2;
+    margin-bottom: 8px;
+  }
+  .phase-header-bar p {
+    color: var(--text2);
+    font-size: 15px;
+    max-width: 560px;
+  }
+  .phase-stats {
+    display: flex; gap: 16px;
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+    flex-wrap: wrap;
+  }
+  .phase-stat { font-size: 13px; color: var(--text2); }
+  .phase-stat strong { color: var(--text); font-weight: 500; }
+
+  /* Skill cards */
+  .skill-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    margin-bottom: 12px;
+    overflow: hidden;
+    transition: border-color .15s;
+  }
+  .skill-card:hover { border-color: var(--border2); }
+  .skill-card.completed { border-color: rgba(74,158,110,0.3); }
+  .skill-card.expanded { border-color: var(--gold); }
+
+  .skill-header {
+    display: flex; align-items: flex-start; gap: 14px;
+    padding: 18px 20px;
+    cursor: pointer;
+    user-select: none;
+  }
+  .skill-checkbox {
+    width: 20px; height: 20px;
+    border-radius: 5px;
+    border: 1.5px solid var(--border2);
+    flex-shrink: 0;
+    margin-top: 2px;
+    display: flex; align-items: center; justify-content: center;
+    transition: all .15s;
+    cursor: pointer;
+  }
+  .skill-card.completed .skill-checkbox {
+    background: var(--green);
+    border-color: var(--green);
+  }
+  .skill-checkbox svg { opacity: 0; transition: opacity .15s; }
+  .skill-card.completed .skill-checkbox svg { opacity: 1; }
+
+  .skill-title-wrap { flex: 1; min-width: 0; }
+  .skill-title {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--text);
+    line-height: 1.4;
+    margin-bottom: 5px;
+  }
+  .skill-card.completed .skill-title {
+    text-decoration: line-through;
+    color: var(--text3);
+  }
+  .skill-badges { display: flex; gap: 6px; flex-wrap: wrap; }
+  .badge {
+    font-size: 10px;
+    font-weight: 500;
+    padding: 2px 8px;
+    border-radius: 10px;
+    letter-spacing: .04em;
+  }
+  .badge-l1 { background: rgba(74,158,110,0.15); color: #6dba91; }
+  .badge-l2 { background: rgba(147,131,220,0.15); color: #a99ce0; }
+  .badge-l3 { background: rgba(201,168,76,0.15); color: var(--gold); }
+  .badge-l4 { background: rgba(194,90,90,0.15); color: #d88080; }
+  .badge-time { background: var(--bg4); color: var(--text3); }
+  .badge-must { background: rgba(74,127,181,0.15); color: #7aadd4; }
+
+  .skill-chevron {
+    color: var(--text3);
+    transition: transform .2s;
+    flex-shrink: 0;
+    margin-top: 4px;
+  }
+  .skill-card.expanded .skill-chevron { transform: rotate(180deg); }
+
+  /* Skill body (expanded) */
+  .skill-body {
+    display: none;
+    padding: 0 20px 20px;
+    border-top: 1px solid var(--border);
+  }
+  .skill-card.expanded .skill-body { display: block; }
+
+  .skill-section { margin-top: 20px; }
+  .skill-section-title {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: .1em;
+    color: var(--text3);
+    margin-bottom: 12px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .skill-section-title::after {
+    content: '';
+    flex: 1; height: 1px;
+    background: var(--border);
+  }
+
+  /* Description */
+  .skill-desc {
+    font-size: 14px;
+    color: var(--text2);
+    line-height: 1.7;
+  }
+
+  /* Subtasks */
+  .subtask {
+    display: flex; align-items: flex-start; gap: 12px;
+    padding: 10px 12px;
+    border-radius: var(--radius);
+    margin-bottom: 6px;
+    cursor: pointer;
+    transition: background .1s;
+    background: var(--bg3);
+  }
+  .subtask:hover { background: var(--bg4); }
+  .subtask.done { opacity: .55; }
+  .subtask-check {
+    width: 16px; height: 16px;
+    border-radius: 3px;
+    border: 1.5px solid var(--border2);
+    flex-shrink: 0;
+    margin-top: 2px;
+    display: flex; align-items: center; justify-content: center;
+    transition: all .15s;
+  }
+  .subtask.done .subtask-check {
+    background: var(--green);
+    border-color: var(--green);
+  }
+  .subtask.done .subtask-check-icon { opacity: 1 !important; }
+  .subtask-check-icon { opacity: 0; }
+  .subtask-text {
+    font-size: 13px;
+    color: var(--text);
+    line-height: 1.5;
+  }
+  .subtask.done .subtask-text {
+    text-decoration: line-through;
+    color: var(--text3);
+  }
+
+  /* Exercise */
+  .exercise-box {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--gold);
+    border-radius: var(--radius);
+    padding: 16px;
+  }
+  .exercise-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: .1em;
+    color: var(--gold);
+    font-weight: 500;
+    margin-bottom: 8px;
+  }
+  .exercise-text {
+    font-size: 14px;
+    color: var(--text);
+    line-height: 1.6;
+    margin-bottom: 12px;
+  }
+  .exercise-prompt {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    background: var(--bg4);
+    border: 1px solid var(--border2);
+    border-radius: var(--radius);
+    padding: 12px;
+    color: var(--text2);
+    white-space: pre-wrap;
+    word-break: break-word;
+    margin-bottom: 12px;
+    line-height: 1.6;
+  }
+  .exercise-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+  .btn-outline {
+    background: none;
+    border: 1px solid var(--border2);
+    border-radius: var(--radius);
+    padding: 8px 16px;
+    color: var(--text2);
+    font-family: var(--font-body);
+    font-size: 13px;
+    cursor: pointer;
+    transition: all .15s;
+  }
+  .btn-outline:hover { border-color: var(--gold); color: var(--gold); }
+  .btn-gold {
+    background: var(--gold-dim);
+    border: 1px solid var(--gold);
+    border-radius: var(--radius);
+    padding: 8px 16px;
+    color: var(--gold);
+    font-family: var(--font-body);
+    font-size: 13px;
+    cursor: pointer;
+    transition: all .15s;
+    text-decoration: none;
+  }
+  .btn-gold:hover { background: rgba(201,168,76,0.2); }
+
+  /* Mark complete button */
+  .mark-complete-btn {
+    margin-top: 20px;
+    width: 100%;
+    background: var(--green-dim);
+    border: 1px solid var(--green);
+    border-radius: var(--radius);
+    padding: 10px;
+    color: var(--green);
+    font-family: var(--font-body);
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all .15s;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+  }
+  .mark-complete-btn:hover { background: rgba(74,158,110,0.2); }
+  .skill-card.completed .mark-complete-btn {
+    background: var(--bg3);
+    border-color: var(--border2);
+    color: var(--text3);
+  }
+
+  /* Toast */
+  .toast {
+    position: fixed; bottom: 24px; right: 24px;
+    background: var(--bg2);
+    border: 1px solid var(--border2);
+    border-radius: var(--radius);
+    padding: 12px 16px;
+    font-size: 13px;
+    color: var(--text);
+    z-index: 9999;
+    transform: translateY(80px);
+    opacity: 0;
+    transition: all .3s ease;
+    pointer-events: none;
+  }
+  .toast.show { transform: translateY(0); opacity: 1; }
+  .toast.success { border-color: var(--green); color: var(--green); }
+  .toast.error { border-color: var(--red); color: #e08080; }
+
+  /* Loading */
+  .loading-screen {
+    position: fixed; inset: 0;
+    background: var(--bg);
+    display: flex; align-items: center; justify-content: center;
+    z-index: 9999;
+    transition: opacity .3s;
+  }
+  .loading-logo {
+    font-family: var(--font-display);
+    font-size: 18px;
+    color: var(--gold);
+    letter-spacing: .1em;
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .sidebar { width: 100%; height: auto; position: static; border-right: none; border-bottom: 1px solid var(--border); }
+    .main { margin-left: 0; padding: 24px 20px; }
+    .phase-header-bar h1 { font-size: 24px; }
+  }
+
+  /* Leaderboard */
+  .team-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 20px;
+    margin-bottom: 12px;
+  }
+  .team-member {
+    display: flex; align-items: center; gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .team-member:last-child { border-bottom: none; }
+  .rank {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--text3);
+    width: 20px;
+    text-align: center;
+  }
+  .rank.gold { color: var(--gold); }
+  .member-info { flex: 1; }
+  .member-name { font-size: 14px; font-weight: 500; }
+  .member-prog { font-size: 12px; color: var(--text2); }
+  .member-bar { width: 80px; }
+  .member-bar-fill { height: 4px; background: var(--gold); border-radius: 2px; }
+  .member-count { font-size: 13px; color: var(--text2); min-width: 50px; text-align: right; }
+
+  /* Utils */
+  .hidden { display: none !important; }
+  .text-gold { color: var(--gold); }
+  .text-green { color: var(--green); }
+</style>
+</head>
+<body>
+
+<div class="loading-screen" id="loading">
+  <div class="loading-logo">PE · AI · MASTERY</div>
+</div>
+
+<!-- AUTH -->
+<div id="auth-screen" class="hidden">
+  <div class="auth-card">
+    <div class="auth-logo">PE AI Mastery</div>
+    <h1 id="auth-title">Accede al curso</h1>
+    <p id="auth-subtitle">Domina la IA en Private Equity con tu equipo.</p>
+    <div class="auth-error" id="auth-error"></div>
+    <div class="field">
+      <label>Email</label>
+      <input type="email" id="auth-email" placeholder="tu@fondo.com" />
+    </div>
+    <div class="field">
+      <label>Contraseña</label>
+      <input type="password" id="auth-password" placeholder="••••••••" />
+    </div>
+    <div class="field hidden" id="name-field">
+      <label>Tu nombre</label>
+      <input type="text" id="auth-name" placeholder="Ana García" />
+    </div>
+    <button class="btn-primary" id="auth-btn" onclick="handleAuth()">Entrar</button>
+    <div class="auth-toggle">
+      <span id="auth-toggle-text">¿Primera vez?</span>
+      <a onclick="toggleAuthMode()" id="auth-toggle-link">Crear cuenta</a>
+    </div>
+  </div>
+</div>
+
+<!-- SETUP (shown after first login, needs Supabase config) -->
+<div id="setup-screen" class="hidden">
+  <div class="setup-card">
+    <h2>Configura tu base de datos</h2>
+    <p>Necesitas crear una cuenta gratuita en Supabase para guardar el progreso del equipo. Son 10 minutos y es gratis para siempre con equipos pequeños.</p>
+
+    <div class="setup-step">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <div class="step-title">Crea cuenta en Supabase</div>
+        <div class="step-desc">Ve a <code>supabase.com</code> → New project → elige un nombre (ej: <code>pe-ai-course</code>) y una contraseña de base de datos.</div>
+      </div>
+    </div>
+
+    <div class="setup-step">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <div class="step-title">Ejecuta el SQL de setup</div>
+        <div class="step-desc">En tu proyecto de Supabase, ve a <code>SQL Editor</code> y pega este código:</div>
+        <div class="copy-snippet">
+          <span style="word-break:break-all; font-size:10px;">create table progress (id uuid default gen_random uuid() primary key, user_id uuid references auth.users, skill_id text, subtask_id text, completed boolean, updated_at timestamp default now(), unique(user_id, skill_id, subtask_id));</span>
+          <button class="copy-btn-small" onclick="copySQL()">Copiar SQL</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="setup-step">
+      <div class="step-num">3</div>
+      <div class="step-content">
+        <div class="step-title">Copia tus credenciales</div>
+        <div class="step-desc">En Supabase: <code>Settings → API</code>. Copia la <code>Project URL</code> y la <code>anon public key</code>.</div>
+      </div>
+    </div>
+
+    <div class="setup-fields">
+      <div class="field">
+        <label>Supabase Project URL</label>
+        <input type="text" id="sb-url" placeholder="https://xxxx.supabase.co" />
+      </div>
+      <div class="field">
+        <label>Supabase Anon Key</label>
+        <input type="text" id="sb-key" placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..." />
+      </div>
+      <button class="btn-primary" onclick="saveConfig()">Guardar y continuar</button>
+    </div>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app">
+  <nav class="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo">PE · AI · Mastery</div>
+      <div class="user-pill">
+        <div class="user-avatar" id="user-avatar">—</div>
+        <span class="user-name" id="user-display-name">—</span>
+        <button class="logout-btn" onclick="logout()" title="Cerrar sesión">✕</button>
+      </div>
+    </div>
+    <div class="sidebar-progress">
+      <div class="prog-label">
+        <span>Progreso total</span>
+        <span id="prog-label-text">0 / 34</span>
+      </div>
+      <div class="prog-bar">
+        <div class="prog-fill" id="prog-fill" style="width:0%"></div>
+      </div>
+    </div>
+    <nav class="phase-nav" id="phase-nav"></nav>
+  </nav>
+
+  <main class="main" id="main-content"></main>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ═══════════════════════════════════════════════
+// COURSE DATA — 34 skills, 5 phases
+// ═══════════════════════════════════════════════
+const PHASES = [
+  {
+    id: 'p1',
+    label: 'Fase 1 · Semanas 1–2',
+    title: 'Analyst / Associate',
+    subtitle: 'Los fundamentos del prompting profesional. Todo lo que necesitas para ser productivo desde el primer día.',
+    color: '#4a9e6e',
+    colorDim: 'rgba(74,158,110,0.12)',
+    skills: [
+      {
+        id: 's1',
+        title: 'Prompt with deliverable + decision context + format',
+        level: 'L1', time: 'Semana 1', priority: 'Master',
+        desc: 'La habilidad más fundamental. Cada prompt que escribas debe tener tres partes: (1) qué output exacto quieres, (2) por qué importa esa decisión ahora mismo, y (3) el formato exacto en que lo necesitas. Sin estas tres partes, Claude te da respuestas genéricas que no puedes llevar al IC.',
+        subtasks: [
+          'Escribe un prompt básico sin instrucciones y observa el output genérico que recibes',
+          'Añade el deliverable (qué quieres exactamente: "resumen ejecutivo en 5 bullets")',
+          'Añade el decision context (para qué sirve: "para decidir si hacer follow-on en Luda")',
+          'Añade el format (IC bullets, tabla de KPIs, etc.) y compara los cuatro outputs',
+        ],
+        exercise: {
+          text: 'Coge la presentación del último comité de dirección de una participada tuya. Escribe un prompt con las tres partes: deliverable + decision context + format. El output debe ser directamente presentable en IC.',
+          prompt: `Eres un analista senior de PE. Analiza el informe adjunto de [PARTICIPADA].
+
+DELIVERABLE: Análisis IC-ready para comité de seguimiento
+DECISION CONTEXT: En 30 días decidimos si hacer follow-on o activar plan de contingencia
+FORMAT:
+— Resumen ejecutivo (5 bullets, solo hechos y cifras)
+— KPIs: tabla con valor actual / vs mes anterior / vs budget / tendencia
+— Top 3 señales positivas con implicación para la inversión
+— Top 3 alertas ordenadas por urgencia (CRÍTICO / ALTO / MEDIO)
+— 5 preguntas para el comité
+— Recomendación: FOLLOW-ON / CONTINGENCY / HOLD (con 2 líneas de justificación)`,
+          claudeUrl: 'https://claude.ai/new'
+        }
+      },
+      {
+        id: 's2',
+        title: 'System → Role → Task → Format para outputs IC-ready',
+        level: 'L2', time: 'Semana 1', priority: 'Master',
+        desc: 'El System Prompt es la identidad permanente de tu analista de IA. Sin él, cada conversación empieza desde cero y Claude no sabe que trabaja en PE. Con él, tienes un analista configurado que mantiene el estilo, el criterio y el nivel de exigencia de tu fondo en cada análisis.',
+        subtasks: [
+          'Escribe el bloque SYSTEM con la identidad del analista de tu fondo (nombre, estilo, audiencia)',
+          'Practica cambiar el ROLE según el tipo de análisis: screening vs portfolio monitoring vs IC prep',
+          'Construye tres variaciones de TASK para los análisis que haces más frecuentemente',
+          'Define tu FORMAT estándar para IC bullets y guárdalo como plantilla reutilizable',
+        ],
+        exercise: {
+          text: 'Construye el system prompt completo para tu fondo. Personaliza el nombre, el estilo de análisis que usa vuestro IC, y el nivel de detalle que espera el socio. Luego úsalo con el comité de Luda y compara el output con el del ejercicio anterior.',
+          prompt: `SYSTEM
+Eres un analista senior de private equity integrado en [NOMBRE FONDO]. Produces análisis IC-ready: precisos, cuantitativos, accionables. Nunca inventas datos — si un dato no está en el documento, escribes "No reportado". Si detectas un riesgo crítico, lo señalas al inicio. Tu audiencia son socios con 20+ años de experiencia.
+
+ROL: Analista de portfolio monitoring. Evalúas ejecución con el criterio de alguien que decide si ampliar posición.
+
+TAREA: Analiza el comité adjunto de [PARTICIPADA].
+Contexto: [DESCRIBE LA DECISIÓN DE LAS PRÓXIMAS SEMANAS]
+Restricción: solo datos del documento. Marca supuestos con [SUPUESTO].
+
+FORMATO: [TU FORMATO ESTÁNDAR IC]`,
+          claudeUrl: 'https://claude.ai/new'
+        }
+      },
+      {
+        id: 's3',
+        title: 'Few-shot from a "gold memo" page',
+        level: 'L2', time: 'Semana 2', priority: 'Master',
+        desc: 'El few-shot prompting consiste en darle a Claude uno o dos ejemplos de outputs de alta calidad antes de pedirle que genere el tuyo. Si tienes un memo anterior que tu socio consideró excelente, Claude puede replicar ese estilo, profundidad y tono en todos los análisis futuros. Es la diferencia entre outputs genéricos y outputs que ya suenan a tu fondo.',
+        subtasks: [
+          'Identifica el mejor memo de inversión o análisis de participada que hayas producido',
+          'Extrae las características clave: estructura, tono, nivel de detalle, terminología específica',
+          'Construye el prompt few-shot: "Aquí hay un ejemplo de cómo quiero el output. Replica este estilo."',
+          'Prueba con tres documentos distintos y verifica que el estilo se mantiene consistente',
+        ],
+        exercise: {
+          text: 'Coge tu mejor análisis anterior — el que más le gustó al socio. Pégalo como ejemplo en el prompt y pide a Claude que analice un documento nuevo replicando exactamente ese estilo. Compara los dos outputs.',
+          prompt: `EJEMPLO DE OUTPUT QUE QUIERO REPLICAR:
+[Pega aquí tu mejor memo o análisis anterior — mínimo 3 párrafos]
+
+---
+Ahora analiza el documento adjunto replicando EXACTAMENTE:
+— El mismo nivel de profundidad analítica
+— El mismo tono y terminología
+— La misma estructura de secciones
+— El mismo umbral de lo que merece ser mencionado
+
+No te limites a resumir. Analiza con el mismo criterio que muestra el ejemplo.`,
+          claudeUrl: 'https://claude.ai/new'
+        }
+      },
+      {
+        id: 's4',
+        title: 'Force schemas: business model, KPIs, bridges, risks',
+        level: 'L2', time: 'Semana 2', priority: 'Master',
+        desc: 'Un force schema es una estructura obligatoria que le impones al output de Claude. En lugar de dejar que organice la información como quiera, tú defines exactamente qué secciones necesitas, en qué orden, con qué nivel de detalle. Para PE, los schemas más útiles son: business model canvas, bridge analysis (de EBITDA reportado a EBITDA ajustado), risk matrix y diligence plan.',
+        subtasks: [
+          'Construye el schema de business model para participadas: modelo de ingresos, unit economics, palancas de crecimiento',
+          'Diseña el schema de KPI bridge: de cifras reportadas a cifras ajustadas con add-backs explícitos',
+          'Crea el schema de risk matrix: riesgo, probabilidad, impacto, mitigación',
+          'Arma el schema de diligence plan: workstream, preguntas clave, responsable, deadline',
+        ],
+        exercise: {
+          text: 'Aplica el force schema de business model al comité de Luda. El output debe cubrir exactamente las cuatro dimensiones: modelo de ingresos, unit economics, palancas de crecimiento y riesgos estructurales. Ninguna puede estar vacía — si el documento no tiene el dato, debe aparecer "No reportado".',
+          prompt: `Analiza el documento adjunto y rellena OBLIGATORIAMENTE este schema. Si un campo no tiene datos en el documento, escribe "No reportado" — nunca lo omitas.
+
+SCHEMA — BUSINESS MODEL CANVAS PE:
+
+1. MODELO DE INGRESOS
+   — Fuentes de ingreso (lista exhaustiva)
+   — Mezcla de ingresos recurrentes vs transaccionales (%)
+   — Pricing power: evidencia de capacidad de subir precios
+
+2. UNIT ECONOMICS
+   — CAC (si reportado)
+   — LTV o proxy de LTV
+   — Payback period
+   — Churn / retention rate
+
+3. PALANCAS DE CRECIMIENTO
+   — Palanca 1 con evidencia cuantitativa
+   — Palanca 2 con evidencia cuantitativa
+   — Riesgos de ejecución de cada palanca
+
+4. RIESGOS ESTRUCTURALES
+   — Riesgo 1: descripción + probabilidad + impacto
+   — Riesgo 2: descripción + probabilidad + impacto
+   — Riesgo 3: descripción + probabilidad + impacto`,
+          claudeUrl: 'https://claude.ai/new'
+        }
+      },
+      {
+        id: 's5',
+        title: 'Multi-pass prompting: draft → skeptic → revise',
+        level: 'L2', time: 'Semana 2', priority: 'Master',
+        desc: 'El multi-pass es la técnica que separa el análisis superficial del análisis IC-ready. En lugar de aceptar el primer output, usas tres prompts en secuencia: el primero genera el análisis, el segundo lo destruye desde la posición más escéptica, el tercero incorpora las críticas y endurece la tesis. Es el proceso que usan los mejores analistas de KKR y Apollo.',
+        subtasks: [
+          'Genera el análisis inicial (Pass 1: Draft) con tu prompt estándar',
+          'Usa el prompt de skeptic (Pass 2): "Actúa como el socio más crítico del IC y destruye este análisis"',
+          'Identifica las 3 críticas más fuertes del pass 2 que no puedes refutar fácilmente',
+          'Genera el análisis revisado (Pass 3: Revise) incorporando las críticas válidas',
+        ],
+        exercise: {
+          text: 'Aplica los tres passes al análisis de Luda que generaste en el ejercicio 1. En el Pass 2, pide a Claude que encuentre los 3 argumentos más fuertes contra la recomendación de "Contingency Plan". En el Pass 3, decide cuáles incorporar y cuáles refutar con evidencia del documento.',
+          prompt: `PASS 2 — SKEPTIC (usar después del análisis inicial):
+
+Tienes delante el siguiente análisis de inversión:
+[PEGA EL OUTPUT DEL PASS 1]
+
+Ahora actúa como el socio más escéptico e inteligente del Investment Committee. Tu objetivo es destruir este análisis. Dame:
+
+1. Los 3 argumentos más fuertes CONTRA la recomendación principal
+2. Los 2 datos que el analista ha interpretado de forma demasiado optimista
+3. Las 2 preguntas que este análisis NO puede responder y que son críticas para la decisión
+4. Tu veredicto: ¿este análisis está listo para IC o necesita más trabajo?
+
+Sé implacable. No des crédito por el esfuerzo, solo por el rigor.`,
+          claudeUrl: 'https://claude.ai/new'
+        }
+      },
+      {
+        id: 's6',
+        title: 'Evidence discipline: quotes y page refs',
+        level: 'L2', time: 'Semana 2', priority: 'Master',
+        desc: 'La disciplina de evidencia significa que cada afirmación cuantitativa en tu análisis tiene su referencia exacta al documento fuente. Slide 7, página 23, sección de QofE. Esto tiene dos beneficios: elimina las alucinaciones de Claude (si no puede citar, no puede afirmar) y hace que tu análisis sea auditable por el socio en segundos.',
+        subtasks: [
+          'Añade la regla de evidencia a tu system prompt: "cada cifra va seguida de (slide X) o (p. X)"',
+          'Prueba con un documento real y verifica que todas las citas son correctas',
+          'Identifica casos donde Claude cita incorrectamente — entiende por qué ocurre',
+          'Añade la instrucción: "si no puedes citar la fuente exacta, no incluyas el dato"',
+        ],
+        exercise: {
+          text: 'Usa el comité de Luda y pide el análisis con evidence discipline activada. Luego verifica manualmente 5 citas al azar. ¿Cuántas son correctas? ¿Cuántas son incorrectas o imprecisas? Ese % de error es tu línea base para mejorar.',
+          prompt: `Analiza el documento adjunto con EVIDENCE DISCIPLINE obligatoria:
+
+REGLA: Cada afirmación cuantitativa debe ir seguida de su fuente entre paréntesis: (slide N) o (p. N) o (sección: nombre).
+
+Si no puedes citar la fuente exacta en el documento, NO incluyas el dato — en su lugar escribe "[dato no localizado]".
+
+Si el dato aparece en el documento pero sin cifra precisa, escríbelo como "[cualitativo — slide N]".
+
+Esta regla es absoluta. Un análisis sin citas no es IC-ready.
+
+[TU FORMATO ESTÁNDAR DE ANÁLISIS]`,
+          claudeUrl: 'https://claude.ai/new'
+        }
+      },
+    ]
+  },
+  {
+    id: 'p2',
+    label: 'Fase 2 · Semanas 3–5',
+    title: 'Associate Avanzado',
+    subtitle: 'De los prompts individuales a flujos completos de análisis. El CIM to screen y el primer agente real.',
+    color: '#9380d4',
+    colorDim: 'rgba(147,128,212,0.12)',
+    skills: [
+      {
+        id: 's7',
+        title: '"CIM to screen" loop: summary → red flags → key questions → workplan',
+        level: 'L3', time: 'Semana 3', priority: 'Master',
+        desc: 'El CIM to screen loop es el flujo de cuatro pasos que te permite decidir si una oportunidad merece diligencia en menos de una hora. Claude procesa el CIM completo, genera el resumen ejecutivo, identifica los red flags que podrían matar el deal, formula las preguntas clave para la primera reunión con el management, y propone el workplan de due diligence si decides avanzar.',
+        subtasks: [
+          'Paso 1 — Summary: prompt para resumen ejecutivo del CIM en formato IC (tesis, mercado, modelo, finanzas)',
+          'Paso 2 — Red flags: prompt para identificar los 5 problemas más graves del documento',
+          'Paso 3 — Key questions: prompt para las 10 preguntas más importantes para la primera reunión',
+          'Paso 4 — Workplan: prompt para el plan de due diligence de 4 semanas si se decide avanzar',
+        ],
+        exercise: {
+          text: 'Coge el CIM o teaser más reciente que hayas recibido. Aplica los cuatro pasos en secuencia. Al final compara: ¿habrías llegado a las mismas conclusiones por tu cuenta? ¿Cuánto tiempo te habría llevado sin IA?',
+          prompt: `PASO 2 — RED FLAGS (aplicar después del summary):
+
+Has leído el CIM de [EMPRESA]. Ahora actúa como un analista de PE experimentado buscando razones para NO hacer la inversión.
+
+Identifica los 5 red flags más graves del documento, ordenados por severidad:
+
+Para cada flag:
+— DESCRIPCIÓN: qué es exactamente el problema
+— EVIDENCIA: cita textual o referencia específica del CIM (slide/página)
+— IMPACTO: cómo afectaría a la valoración o a la tesis de inversión
+— VERIFICABILIDAD: ¿puede refutarse en due diligence o es estructural?
+— SEVERIDAD: DEAL KILLER / SIGNIFICATIVO / MANEJABLE
+
+Al final: veredicto — ¿merece diligencia formal o es pass?`,
+          claudeUrl: 'https://claude.ai/new'
+        }
+      },
+      {
+        id: 's8',
+        title: 'Generate v1 LBO models with AI',
+        level: 'L2', time: 'Semana 3', priority: 'Master',
+        desc: 'Claude no construye el Excel por ti, pero sí puede generar la estructura completa del modelo, los supuestos de partida para cada línea, la lógica de la deuda y los retornos en distintos escenarios, todo en texto que luego traduces a Excel. Esto te ahorra el 60% del tiempo en la primera versión y te obliga a pensar en los supuestos antes de abrir Excel.',
+        subtasks: [
+          'Pide a Claude la estructura completa del LBO con las fuentes y usos de financiación',
+          'Genera los supuestos operativos base: crecimiento de ingresos, expansión de márgenes, capex, working capital',
+          'Define tres escenarios (base, upside, downside) con la lógica detrás de cada supuesto',
+          'Construye el checklist de verificación manual para cuando pases el modelo a Excel',
+        ],
+        exercise: {
+          text: 'Usa los datos financieros de Luda (ventas netas +81% YoY, Margen Bruto 251k, EBITDA -321k, caja 323k, runway 1.5 meses) y pide a Claude un LBO simplificado asumiendo una ronda de equity de 1M€. ¿Qué supuestos necesita hacer? ¿Cuáles te parecen razonables?',
+          prompt: `Basándote en estos datos financieros de [EMPRESA]:
+[PEGA LOS KPIs CLAVE]
+
+Genera la estructura de un LBO simplificado con:
+
+1. FUENTES Y USOS
+   — Precio de compra y EV asumido
+   — Estructura de deuda propuesta (senior, mezzanine, equity)
+   — Usos del capital (compra, transaccionales, working capital)
+
+2. SUPUESTOS OPERATIVOS (base / upside / downside)
+   — Crecimiento de ingresos años 1-5
+   — Evolución de márgenes EBITDA
+   — Capex como % de ingresos
+   — Necesidades de working capital
+
+3. MÉTRICAS DE RETORNO
+   — IRR en cada escenario
+   — MOIC en cada escenario
+   — Sensibilidad precio de entrada vs precio de salida
+
+4. SUPUESTOS CRÍTICOS A VERIFICAR
+   — Lista de los 5 supuestos que más impactan el retorno
+   — Rango razonable para cada uno
+
+Marca cada supuesto que hayas inferido con [SUPUESTO — base: justificación].`,
+          claudeUrl: 'https://claude.ai/new'
+        }
+      },
+      {
+        id: 's9',
+        title: 'Build competitor set and market grid',
+        level: 'L2', time: 'Semana 4', priority: 'Sometimes',
+        desc: 'Para cualquier nueva oportunidad necesitas entender rápidamente el paisaje competitivo: quiénes compiten, cómo se posicionan, qué múltiplos se están pagando en el sector. Claude puede generar este contexto en minutos combinando su conocimiento de mercado con la información del CIM, y estructurarlo en el formato de grid que uses en vuestro IC.',
+        subtasks: [
+          'Define los 5 ejes de posicionamiento relevantes para el sector de la oportunidad',
+          'Pide a Claude el competitor set completo con sus características clave',
+          'Genera el market grid con posicionamiento relativo en los ejes definidos',
+          'Añade múltiplos de transacciones comparables si están disponibles',
+        ],
+        exercise: {
+          text: 'Construye el competitor set y market grid para Luda Partners. Los ejes de posicionamiento deben ser relevantes para el mercado de software farmacéutico / marketplace de medicamentos en España.',
+          prompt: `Construye el competitor set y market grid para [EMPRESA] que opera en [SECTOR].
+
+COMPETITOR SET (mínimo 6 competidores):
+Para cada uno: nombre, modelo de negocio, geografía, tamaño estimado, última ronda / valoración si conocida, diferenciación clave
+
+MARKET GRID:
+Posiciona a [EMPRESA] y sus competidores en estos ejes:
+— Eje X: [DEFINIR según sector — ej: cobertura geográfica]
+— Eje Y: [DEFINIR según sector — ej: profundidad del producto]
+
+MÚLTIPLOS DE SECTOR:
+— Rango de EV/Revenue para empresas similares
+— Rango de EV/EBITDA si aplica
+— Transacciones recientes comparables (últimos 24 meses)
+
+POSICIONAMIENTO COMPETITIVO DE [EMPRESA]:
+— Ventajas defensibles
+— Vulnerabilidades frente a competidores específicos
+— White space que podría aprovechar`,
+          claudeUrl: 'https://claude.ai/new'
+        }
+      },
+      {
+        id: 's10',
+        title: 'QC prompts: units, dates, bridge logic, KPI consistency',
+        level: 'L3', time: 'Semana 4', priority: 'Master',
+        desc: 'Antes de llevar cualquier análisis al IC, necesitas verificar que no hay errores internos: unidades inconsistentes (€ vs k€ mezclados), fechas que no cuadran, puentes de EBITDA con gaps, KPIs que se contradicen entre slides. Claude puede hacer este QC sistemáticamente en segundos.',
+        subtasks: [
+          'Construye el prompt de QC de unidades: detecta mezclas de €, k€, M€ en el mismo análisis',
+          'Crea el QC de fechas: identifica referencias temporales que se contradicen',
+          'Diseña el QC de bridge logic: verifica que EBITDA reportado → ajustado → normalizado cuadra',
+          'Arma el QC de consistencia de KPIs: misma métrica citada de forma distinta en diferentes slides',
+        ],
+        exercise: {
+          text: 'Pasa tu análisis del ejercicio 1 (el del comité de Luda) por el QC prompt completo. ¿Encuentra algún error o inconsistencia? Si no encuentra ninguno, ¿confías en que el QC es exhaustivo o podría haber pasado algo por alto?',
+          prompt: `Actúa como un analista de QC senior revisando este análisis antes de presentarlo al IC.
+
+[PEGA EL ANÁLISIS A REVISAR]
+
+Verifica EXHAUSTIVAMENTE:
+
+1. UNIDADES
+   — ¿Hay mezclas de €, k€, M€?
+   — ¿Los porcentajes están expresados de forma consistente?
+   — ¿Las cifras por unidad (por farmacia, por pedido) usan la misma base?
+
+2. FECHAS Y PERÍODOS
+   — ¿Hay referencias a períodos distintos que se comparan sin ajuste?
+   — ¿El YoY usa el mismo mes del año anterior como base?
+   — ¿"Este mes" y "el mes pasado" están correctamente identificados?
+
+3. BRIDGE LOGIC
+   — ¿El bridge de EBITDA suma correctamente?
+   — ¿Los add-backs están justificados y son consistentes?
+   — ¿El paso de cifras reportadas a ajustadas es trazable?
+
+4. CONSISTENCIA DE KPIs
+   — ¿El mismo KPI aparece con valores distintos en diferentes partes?
+   — ¿Las definiciones de métricas (ej: ARPU) son consistentes?
+
+Para cada error encontrado: LOCALIZACIÓN + DESCRIPCIÓN + CORRECCIÓN SUGERIDA.
+Si no encuentras errores, escribe "QC PASSED" con la lista de lo verificado.`,
+          claudeUrl: 'https://claude.ai/new'
+        }
+      },
+    ]
+  },
+  {
+    id: 'p3',
+    label: 'Fase 3 · Meses 2–3',
+    title: 'Senior Associate / VP',
+    subtitle: 'Automatizaciones y workflows que escalan a todo el equipo. De prompts individuales a sistemas.',
+    color: '#c9a84c',
+    colorDim: 'rgba(201,168,76,0.12)',
+    skills: [
+      {
+        id: 's11',
+        title: 'Reusable templates with variables',
+        level: 'L2', time: 'Mes 2', priority: 'Master',
+        desc: 'Las plantillas con variables son prompts donde los datos específicos del deal son intercambiables. En lugar de reescribir el prompt para cada oportunidad, tienes una plantilla donde cambias [EMPRESA], [SECTOR], [EV_RANGO] y obtienes el análisis correcto. Esto estandariza la calidad y elimina el tiempo de setup en cada deal.',
+        subtasks: [
+          'Identifica los 5 análisis que repites más frecuentemente (screening, comité, LOI, LP update, diligence)',
+          'Extrae las variables de cada análisis (datos que cambian entre deals)',
+          'Construye la plantilla con [VARIABLES] bien definidas y documentadas',
+          'Crea el sistema de gestión: dónde guardar las plantillas para que todo el equipo las use',
+        ],
+        exercise: {
+          text: 'Crea la plantilla de screening para add-on acquisitions. Las variables deben cubrir: empresa target, sector, tamaño, modelo de negocio, sinergias potenciales con la plataforma. Pruébala con dos oportunidades reales o ficticias.',
+          prompt: `PLANTILLA: Add-on Acquisition Screening
+[Guardar en: Notion/Drive/Playbook del equipo]
+
+Variables a completar antes de usar:
+— [TARGET]: nombre de la empresa target
+— [SECTOR]: sector específico
+— [EV_RANGO]: rango de valoración indicativa
+— [PLATAFORMA]: empresa plataforma existente en el portfolio
+— [SINERGIAS]: sinergias identificadas preliminarmente
+
+---
+SYSTEM: Eres analista senior de PE en [NOMBRE FONDO] evaluando add-on acquisitions para nuestra plataforma [PLATAFORMA].
+
+TAREA: Evalúa [TARGET] como potencial add-on. 
+
+CRITERIOS DE NUESTRO FONDO:
+— Tamaño mínimo: [DEFINIR]
+— Sectores objetivo: [DEFINIR]
+— Múltiplo máximo de entrada: [DEFINIR]
+
+FORMATO DE OUTPUT:
+1. Fit estratégico con [PLATAFORMA] (ALTO/MEDIO/BAJO + justificación)
+2. Sinergias cuantificables (revenue + cost)
+3. Red flags que requieren verificación
+4. Recomendación: AVANZAR / PASS / MÁS INFO`,
+          claudeUrl: 'https://claude.ai/new'
+        }
+      },
+      {
+        id: 's12',
+        title: 'Standard diligence schema by workstream',
+        level: 'L2', time: 'Mes 2', priority: 'Master',
+        desc: 'Un schema de diligencia por workstream es la lista definitiva de preguntas, datos a obtener y criterios de evaluación para cada área: commercial, Quality of Earnings, legal, tech y ESG. Con Claude puedes generar el schema inicial para cualquier sector en minutos, y luego refinarlo con el conocimiento específico de tu equipo.',
+        subtasks: [
+          'Construye el schema de commercial due diligence: mercado, competencia, clientes, canal',
+          'Diseña el schema de Quality of Earnings: normalización de EBITDA, sostenibilidad de márgenes',
+          'Crea el schema de legal: contratos clave, litigios, propiedad intelectual, regulatorio',
+          'Arma el schema de tech y ESG para deals de software / tech-enabled',
+        ],
+        exercise: {
+          text: 'Genera el schema completo de commercial due diligence para Luda Partners. El schema debe cubrir las preguntas específicas del sector farmacéutico / marketplace y estar ordenado por workstream con responsable asignado.',
+          prompt: `Genera el schema de Commercial Due Diligence para [EMPRESA] en el sector [SECTOR].
+
+El schema debe estar organizado en secciones. Para cada pregunta indica:
+— La pregunta exacta
+— Fuente de verificación (management, clientes, advisors externos, datos públicos)
+— Evidencia que resolvería la pregunta
+— Nivel de criticidad: MUST HAVE / NICE TO HAVE
+
+SECCIONES:
+1. Mercado total y dinámicas competitivas
+2. Posición competitiva y moat
+3. Análisis de clientes (concentración, churn, NPS)
+4. Canal de distribución y go-to-market
+5. Pricing y poder de fijación de precios
+6. Pipeline de crecimiento y nuevos mercados
+7. Riesgos regulatorios específicos del sector
+
+Al final: lista los 5 "must verify" que si fallan son deal killers.`,
+          claudeUrl: 'https://claude.ai/new'
+        }
+      },
+      {
+        id: 's13',
+        title: '"Diligence loop" automation',
+        level: 'L3', time: 'Mes 2', priority: 'Sometimes',
+        desc: 'El diligence loop conecta el CIM con las preguntas para los advisors y las actualiza automáticamente conforme llegan las respuestas. Cuando un advisor responde una pregunta, el memo se actualiza. Cuando aparece un nuevo documento en el data room, genera nuevas preguntas. Este flujo requiere Make o N8N y es tu primer agente de diligencia.',
+        subtasks: [
+          'Mapea el flujo completo: CIM → preguntas advisor → respuestas → actualizaciones del memo',
+          'Configura Make: trigger email con nuevo documento → Claude analiza → actualiza Notion',
+          'Prueba el loop con un documento real de diligencia',
+          'Añade lógica de escalado: si aparece un flag crítico, notifica al socio inmediatamente',
+        ],
+        exercise: {
+          text: 'Sin Make por ahora: simula el loop manualmente. Toma las respuestas de un advisor (o invéntalas para el ejercicio) y usa Claude para actualizar el memo de Luda con la nueva información. ¿Qué secciones cambian? ¿Cambia la recomendación?',
+          prompt: `Tienes el siguiente memo de inversión de [EMPRESA]:
+[PEGA EL MEMO EXISTENTE]
+
+Has recibido las siguientes respuestas del equipo de commercial due diligence:
+[PEGA LAS RESPUESTAS DEL ADVISOR]
+
+Actualiza el memo incorporando esta nueva información:
+1. Señala qué secciones cambian y por qué
+2. Actualiza los KPIs o supuestos que se ven afectados
+3. Indica si la recomendación final cambia
+4. Lista las preguntas que siguen sin responder después de este update
+5. Si hay nuevos red flags, añádelos con urgencia CRÍTICO/ALTO/MEDIO
+
+Mantén el formato del memo original. Marca las secciones actualizadas con [UPDATED].`,
+          claudeUrl: 'https://claude.ai/new'
+        }
+      },
+      {
+        id: 's14',
+        title: 'Pipeline: notes/reports → tables → insights → IC-ready language',
+        level: 'L3', time: 'Mes 2', priority: 'Master',
+        desc: 'El pipeline de notas convierte material en bruto — apuntes de reuniones, emails de management, reportes desordenados — en análisis IC-ready. Cuatro pasos: estructura las notas en tabla, extrae los insights clave, traduce a lenguaje de IC (directo, cuantitativo, con implicaciones), genera el borrador final.',
+        subtasks: [
+          'Construye el prompt de estructuración: notas crudas → tabla organizada por tema',
+          'Diseña el prompt de extracción: de la tabla a los 5 insights más relevantes',
+          'Crea el prompt de traducción: de insights a lenguaje IC (sin adjetivos, con cifras, con implicación)',
+          'Arma el prompt de síntesis: los insights en formato IC-ready listo para presentar',
+        ],
+        exercise: {
+          text: 'Coge las notas de tu última reunión con un equipo directivo de participada (o simúlalas). Pásalas por los cuatro pasos del pipeline. El output final debe ser usable directamente en el próximo comité sin más edición.',
+          prompt: `PASO 3 — TRADUCCIÓN A IC-READY LANGUAGE:
+
+Tienes esta lista de insights de la reunión con [EMPRESA]:
+[PEGA LOS INSIGHTS DEL PASO 2]
+
+Traduce cada insight a lenguaje IC-ready siguiendo estas reglas estrictas:
+— Sin adjetivos valorativos ("bueno", "malo", "sólido", "preocupante") — solo hechos
+— Cada insight debe incluir al menos una cifra o métrica
+— Cada insight debe terminar con su implicación para la inversión
+— Máximo 2 líneas por insight
+— Usa tiempo presente para estados actuales, pasado para hechos históricos
+
+FORMATO:
+[TEMA] — [HECHO CON CIFRA]. Implicación: [CONSECUENCIA PARA LA INVERSIÓN].
+
+Ejemplo correcto: "Churn — La compañía perdió 10 clientes en Q1 representando el 4% del MRR. Implicación: el churn está por encima del umbral sostenible para el nivel de CAC actual."`,
+          claudeUrl: 'https://claude.ai/new'
+        }
+      },
+      {
+        id: 's15',
+        title: 'Mgmt meeting guides: questions, follow-ups, watch items',
+        level: 'L2', time: 'Mes 2', priority: 'Master',
+        desc: 'Antes de cada reunión con un equipo directivo, Claude puede generar la guía completa: preguntas basadas en el último comité, follow-ups de compromisos anteriores, watch items de riesgo a monitorizar, y los decision triggers que determinarían si la situación requiere acción del fondo.',
+        subtasks: [
+          'Construye el prompt de preparación: del último comité a la agenda de la próxima reunión',
+          'Diseña el tracker de compromisos: qué dijo el management que haría y si lo cumplió',
+          'Crea la lista de watch items: señales específicas a vigilar en esta reunión',
+          'Define los decision triggers: qué respuestas cambiarían la recomendación del fondo',
+        ],
+        exercise: {
+          text: 'Usa el comité de Luda de mayo 2026 para generar la guía completa de la reunión de seguimiento de junio. Las preguntas deben ser específicas a los temas del comité: runway, Glovo, OTC, receta digital.',
+          prompt: `Basándote en el comité de dirección de [EMPRESA] de [MES]:
+[PEGA EL RESUMEN DEL ÚLTIMO COMITÉ]
+
+Genera la guía completa para la reunión de seguimiento:
+
+PREGUNTAS PRIORITARIAS (ordenadas por urgencia):
+[Para cada pregunta: por qué es crítica ahora + qué respuesta sería satisfactoria]
+
+FOLLOW-UPS DE COMPROMISOS:
+[Lista de compromisos del management del mes anterior + si fueron cumplidos según el comité]
+
+WATCH ITEMS (señales a observar):
+[Métricas o situaciones específicas que debes monitorizar en esta reunión]
+
+DECISION TRIGGERS:
+[Si el management dice X → acción del fondo Y]
+[Si el KPI Z está por debajo de N → escalar al socio]
+
+TONO DE LA REUNIÓN RECOMENDADO:
+[Basado en la situación actual: de apoyo / de seguimiento estricto / de urgencia]`,
+          claudeUrl: 'https://claude.ai/new'
+        }
+      },
+      {
+        id: 's16',
+        title: 'Function-style prompts for model commentary',
+        level: 'L2', time: 'Mes 3', priority: 'Master',
+        desc: 'Un function-style prompt es determinista: dado un input específico y estructurado, siempre produce el mismo tipo de output. Es como una función de código: f(inputs) = commentary. Para PE, el uso más potente es el model commentary: dado este modelo financiero con estos supuestos, genera el texto narrativo para el LP update.',
+        subtasks: [
+          'Define el schema de input exacto del modelo: las variables que entran en la función',
+          'Construye la función de model commentary: input estructurado → narrativo LP-ready',
+          'Prueba la función con tres escenarios distintos (base, upside, downside)',
+          'Verifica que el output es consistente y no alucina cifras que no están en el input',
+        ],
+        exercise: {
+          text: 'Con los datos financieros de Luda (o cualquier participada), construye la función de commentary. El input son los KPIs del trimestre, el output es el párrafo narrativo para el LP report.',
+          prompt: `FUNCIÓN: generate_model_commentary(inputs) → lp_commentary
+
+INPUT ESTRUCTURADO (rellena exactamente estos campos):
+{
+  "empresa": "[NOMBRE]",
+  "periodo": "[Q y AÑO]",
+  "revenue_actual": [CIFRA],
+  "revenue_budget": [CIFRA],
+  "revenue_yoy": "[%]",
+  "ebitda_actual": [CIFRA],
+  "ebitda_budget": [CIFRA],
+  "ebitda_margin": "[%]",
+  "hito_positivo_1": "[TEXTO]",
+  "hito_positivo_2": "[TEXTO]",
+  "riesgo_principal": "[TEXTO]",
+  "plan_accion": "[TEXTO]",
+  "outlook_proximo_trimestre": "[TEXTO]"
+}
+
+OUTPUT ESPERADO: Párrafo de 4-6 frases para LP report. Tono: profesional, directo, honesto sobre los gaps vs budget, enfocado en lo que el management está haciendo. Sin adjetivos vacíos. Con cifras específicas. Que un LP lo lea y entienda exactamente cómo está la compañía.`,
+          claudeUrl: 'https://claude.ai/new'
+        }
+      },
+      {
+        id: 's17',
+        title: 'Version playbooks like code',
+        level: 'L3', time: 'Mes 3', priority: 'Master',
+        desc: 'Un playbook de prompts bien mantenido es un activo del fondo. Como el código de software, necesita versionado (v1.0, v1.1), owners (quién lo mantiene actualizado), change logs (qué cambió y por qué) y un sistema de distribución para que todos en el equipo usen la última versión.',
+        subtasks: [
+          'Define la estructura del playbook: carpeta en Notion/Drive con un archivo por tipo de análisis',
+          'Implementa el sistema de versiones: número de versión + fecha + autor + cambios',
+          'Crea el proceso de actualización: cómo proponer mejoras y quién las aprueba',
+          'Establece el onboarding: cómo un nuevo miembro del equipo aprende a usar el playbook',
+        ],
+        exercise: {
+          text: 'Crea la estructura del playbook de tu fondo. Empieza con los tres prompts que ya has construido en las fases anteriores. Dale versión v1.0 a cada uno, documenta el owner y la fecha de creación.',
+          prompt: `Ayúdame a estructurar el playbook de prompts de [NOMBRE FONDO].
+
+ESTRUCTURA PROPUESTA:
+1. README — cómo usar este playbook, convenciones de nomenclatura
+2. Carpeta: /screening — prompts para nuevas oportunidades
+3. Carpeta: /portfolio — prompts para participadas
+4. Carpeta: /ic-prep — prompts para preparar Investment Committee
+5. Carpeta: /lp-comms — prompts para comunicaciones con LPs
+6. Carpeta: /templates — plantillas reutilizables
+
+Para cada prompt en el playbook, genera una ficha con:
+— Nombre y versión (v1.0)
+— Objetivo (en 1 línea)
+— Cuándo usar (trigger específico)
+— Inputs necesarios
+— Output esperado
+— Owner (quién lo mantiene)
+— Historial de cambios
+
+Genera la ficha del prompt de "CIM to screen" como ejemplo.`,
+          claudeUrl: 'https://claude.ai/new'
+        }
+      },
+      {
+        id: 's18',
+        title: 'QA harness: add-backs, cohorts, bridges, assumption consistency',
+        level: 'L3', time: 'Mes 3', priority: 'Master',
+        desc: 'El QA harness es el sistema completo de verificación que aplicas antes de que cualquier análisis financiero salga del equipo. Cubre los cuatro tipos de error más comunes en PE: add-backs no justificados, análisis de cohortes mal construidos, puentes financieros con gaps, y supuestos inconsistentes entre el modelo operativo y el modelo financiero.',
+        subtasks: [
+          'Construye el QA de add-backs: cada ajuste al EBITDA debe tener justificación + evidencia + clasificación (one-time/recurring)',
+          'Diseña el QA de cohortes: verifica que el análisis de retention / LTV usa la misma definición de cohorte',
+          'Crea el QA de bridges: EBITDA reportado → ajustado → normalizado → proyectado, cada paso verificado',
+          'Arma el QA de supuestos: modelo operativo y modelo financiero usan las mismas hipótesis',
+        ],
+        exercise: {
+          text: 'Construye el QA harness completo para el modelo financiero de una participada. Aplícalo a los datos de Luda para identificar qué add-backs necesitarías verificar con el management antes de normalizar el EBITDA de -321k.',
+          prompt: `QA HARNESS — ADD-BACKS Y NORMALIZACIÓN DE EBITDA
+
+Tienes el siguiente P&L reportado de [EMPRESA]:
+[PEGA EL P&L]
+
+Para cada potencial add-back al EBITDA, genera una ficha:
+
+NOMBRE DEL ADD-BACK: [descripción]
+IMPORTE: €[X]
+CLASIFICACIÓN: ONE-TIME / RECURRING / DISCUTIBLE
+JUSTIFICACIÓN: [por qué es legítimo ajustarlo]
+EVIDENCIA NECESARIA: [documento o declaración que lo confirmaría]
+RIESGO: si un auditor rechaza este add-back, impacto en EBITDA normalizado = €[X]
+
+Al final:
+— EBITDA reportado: €[X]
+— Total add-backs (solo los justificados): €[X]  
+— EBITDA normalizado: €[X]
+— EBITDA normalizado como % de EBITDA reportado: [X]%
+— Flag si la normalización es >20% del EBITDA reportado (señal de alerta)`,
+          claudeUrl: 'https://claude.ai/new'
+        }
+      },
+    ]
+  },
+  {
+    id: 'p4',
+    label: 'Fase 4 · Meses 3–5',
+    title: 'Principal / Director',
+    subtitle: 'Pensamiento de nivel IC y sistemas de decisión. Las habilidades que distinguen a los mejores.',
+    color: '#c97a5a',
+    colorDim: 'rgba(201,122,90,0.12)',
+    skills: [
+      {
+        id: 's19',
+        title: 'Red-team prompts to surface "deal killers" before IC',
+        level: 'L3', time: 'Mes 3', priority: 'Master',
+        desc: 'Antes de cada IC, el mejor uso de Claude es intentar destruir tu propia tesis. El red-team prompt hace que Claude adopte la posición del IC más escéptico y busque sistemáticamente los argumentos que hundirían el deal. Mejor que te los encuentres tú antes que el socio durante la presentación.',
+        subtasks: [
+          'Construye el prompt de red-team completo: identidad del IC hostil + áreas de ataque + formato de output',
+          'Añade los ángulos específicos de tu fondo: qué suelen preguntar los socios en vuestros ICs',
+          'Practica con un deal real o pasado: ¿habría detectado los problemas reales?',
+          'Crea el prompt de refutación: dado el red-team output, cómo preparar las respuestas',
+        ],
+        exercise: {
+          text: 'Aplica el red-team completo al análisis de Luda. Pide a Claude que encuentre los 5 argumentos más fuertes para NO hacer ninguna inversión adicional en la compañía. Luego prepara las respuestas a cada argumento.',
+          prompt: `RED-TEAM PROMPT — IC ADVERSARIAL
+
+Eres el socio más escéptico e inteligente del Investment Committee de [NOMBRE FONDO]. Has visto 200+ deals y tienes un instinto especial para encontrar los problemas que los analistas no quieren ver.
+
+Se te presenta el siguiente análisis de inversión:
+[PEGA EL ANÁLISIS]
+
+Tu misión: destruirlo.
+
+Dame los 5 DEAL KILLERS más fuertes, ordenados de más a menos grave:
+
+Para cada uno:
+— ARGUMENTO: la crítica en términos inequívocos
+— EVIDENCIA DEL PROPIO DOCUMENTO que la respalda
+— POR QUÉ EL ANALISTA LO HA IGNORADO O MINIMIZADO
+— PREGUNTA que haría en el IC que el equipo no sabría responder
+— VEREDICTO: ¿este punto solo ya sería suficiente para votar no?
+
+Al final: ¿pasaría este deal tu IC? SÍ / NO / NECESITA MÁS TRABAJO`,
+          claudeUrl: 'https://claude.ai/new'
+        }
+      },
+      {
+        id: 's20',
+        title: 'IC Q&A trees: leverage, churn, cyclicality, margin durability',
+        level: 'L3', time: 'Mes 4', priority: 'Master',
+        desc: 'Un Q&A tree es el árbol de preguntas y respuestas que cubre exhaustivamente un ángulo de riesgo del IC. Para leverage risk, churn, ciclicidad y durabilidad de márgenes, Claude puede generar el árbol completo de seguimiento: si la respuesta es A, la siguiente pregunta es X; si es B, la siguiente es Y.',
+        subtasks: [
+          'Construye el Q&A tree de leverage risk: deuda/EBITDA, covenants, capacidad de servicio',
+          'Diseña el Q&A tree de churn: definición, causas, predictores, acciones de retención',
+          'Crea el Q&A tree de ciclicidad: correlación con ciclo económico, comportamiento en recesiones pasadas',
+          'Arma el Q&A tree de margin durability: fuentes del margen, sostenibilidad, presiones futuras',
+        ],
+        exercise: {
+          text: 'Construye el Q&A tree de churn para Luda. El árbol debe cubrir todos los ángulos: definición de churn que usa la empresa, causas principales, predictores leading, acciones que el management está tomando, y qué nivel de churn haría insostenible el modelo.',
+          prompt: `Construye el Q&A tree completo de CHURN RISK para [EMPRESA].
+
+El árbol debe tener 3 niveles:
+— Nivel 1: preguntas de contexto (¿cómo define la empresa el churn?)
+— Nivel 2: preguntas de diagnóstico (¿cuáles son las causas?)
+— Nivel 3: preguntas de implicación (¿qué significa para la valoración?)
+
+Para cada nodo del árbol:
+PREGUNTA: [formulada como la haría el IC]
+RESPUESTA SATISFACTORIA: [qué respuesta cerraría este punto]
+RESPUESTA PREOCUPANTE: [qué respuesta requeriría profundizar]
+SI PREOCUPANTE → SIGUIENTE PREGUNTA: [seguimiento]
+
+UMBRALES DE REFERENCIA para este sector:
+— Churn aceptable: [X%]
+— Churn preocupante: [Y%]
+— Churn deal-breaker: [Z%]
+
+Al final: ¿qué nivel de churn haría insostenible el modelo de [EMPRESA]?`,
+          claudeUrl: 'https://claude.ai/new'
+        }
+      },
+      {
+        id: 's21',
+        title: 'Scenario stack: drivers → cases → leading indicators → triggers',
+        level: 'L3', time: 'Mes 4', priority: 'Master',
+        desc: 'El scenario stack convierte el modelo financiero en un sistema de alertas tempranas. Partes de los drivers del negocio, defines los casos (base/upside/downside), identificas los leading indicators que te dirán antes de fin de trimestre hacia qué caso está yendo la compañía, y estableces los triggers que requieren acción del fondo.',
+        subtasks: [
+          'Identifica los 3-5 drivers que más impactan el EBITDA de la compañía',
+          'Define los tres escenarios con los rangos de cada driver',
+          'Mapea los leading indicators: métricas mensuales o semanales que predicen cada escenario',
+          'Establece los covenant y liquidity triggers: qué métricas en qué nivel requieren acción inmediata',
+        ],
+        exercise: {
+          text: 'Construye el scenario stack para Luda. Los drivers deben incluir: GMV YoY, churn de farmacias, apertura de zonas OTC, y evolución de Glovo. Los triggers deben ser específicos a la situación actual de runway de 1.5 meses.',
+          prompt: `Construye el scenario stack completo para [EMPRESA].
+
+DRIVERS IDENTIFICADOS: [lista los 3-5 drivers principales]
+
+PARA CADA ESCENARIO (UPSIDE / BASE / DOWNSIDE):
+— Supuestos de cada driver
+— Revenue y EBITDA resultante
+— Runway implicado
+— Probabilidad estimada (%)
+
+LEADING INDICATORS (métricas mensuales que predicen el escenario):
+— Indicador 1: si está por encima de [X] → señal de upside
+— Indicador 1: si está por debajo de [Y] → señal de downside
+[repetir para cada driver]
+
+COVENANT TRIGGERS (acción requerida):
+— Si [MÉTRICA] cae por debajo de [UMBRAL] durante [PERÍODO] → [ACCIÓN DEL FONDO]
+
+LIQUIDITY TRIGGERS:
+— Si runway cae por debajo de [N] meses → escalar al socio inmediatamente
+— Si [KPI] cruza [UMBRAL] → iniciar conversaciones de bridge financing
+
+DASHBOARD DE MONITORING: 
+Lista de 5 métricas a revisar mensualmente con sus semáforos (verde/amarillo/rojo)`,
+          claudeUrl: 'https://claude.ai/new'
+        }
+      },
+      {
+        id: 's22',
+        title: 'Retrieval briefs from firm history',
+        level: 'L3', time: 'Mes 4', priority: 'Sometimes',
+        desc: 'Los retrieval briefs extraen conocimiento de deals pasados del fondo para informar decisiones presentes. Deals similares que sí funcionaron, deals similares que fallaron, post-mortems de inversiones pasadas. Claude puede procesar el historial del fondo y generar el brief de "qué hemos aprendido en situaciones parecidas".',
+        subtasks: [
+          'Recopila el historial de deals relevantes en formato estructurado (sector, tamaño, resultado)',
+          'Construye el prompt de retrieval: dado este deal, encuentra los más similares en el histórico',
+          'Genera el brief de lecciones aprendidas: qué funcionó, qué no, qué habría cambiado',
+          'Integra el brief como sección permanente en tu template de IC memo',
+        ],
+        exercise: {
+          text: 'Crea el template de retrieval brief que usarías en vuestro fondo. Si no tienes histórico digitalizado, simula tres deals pasados (sector, outcome, lecciones) y usa Claude para extraer el patrón relevante para Luda.',
+          prompt: `RETRIEVAL BRIEF — Deals históricos relevantes
+
+Contexto del deal actual: [EMPRESA] en sector [SECTOR], estadio [EARLY/GROWTH/LATE], situación [DESCRIPCIÓN EN 2 LÍNEAS]
+
+Historial de deals del fondo:
+[PEGA EL HISTORIAL ESTRUCTURADO O SIMULA CON 3-4 DEALS]
+
+Genera el retrieval brief:
+
+DEALS MÁS SIMILARES (máx. 3):
+Para cada uno: similitudes clave, diferencias importantes, outcome, lección principal
+
+PATRONES DE ÉXITO en situaciones similares:
+— Factor 1 que predijo el buen outcome
+— Factor 2 que predijo el buen outcome
+
+PATRONES DE FALLO en situaciones similares:
+— Factor 1 que predijo el mal outcome
+— Factor 2 que predijo el mal outcome
+
+APLICACIÓN AL DEAL ACTUAL:
+¿Qué señales del deal actual coinciden con los patrones de éxito?
+¿Qué señales coinciden con los patrones de fallo?
+Pregunta crítica que el histórico sugiere que debemos responder antes de avanzar.`,
+          claudeUrl: 'https://claude.ai/new'
+        }
+      },
+      {
+        id: 's23',
+        title: 'One-view synthesis: commercial + QofE + legal',
+        level: 'L3', time: 'Mes 4', priority: 'Master',
+        desc: 'En un proceso de diligencia real, tienes tres o cuatro workstreams produciendo información en paralelo. La one-view synthesis fusiona todo en un único documento coherente que responde a una sola pregunta: ¿hacemos el deal? Claude puede procesar los outputs de cada workstream y generar la síntesis que lleva al IC.',
+        subtasks: [
+          'Define el formato de síntesis: qué secciones, en qué orden, con qué nivel de detalle',
+          'Construye el prompt de fusión: inputs de commercial + QofE + legal → una narrativa coherente',
+          'Añade la lógica de conflictos: qué pasa cuando commercial dice "sí" pero legal dice "riesgo alto"',
+          'Genera la sección "what matters": los 3 hechos más importantes para la decisión de IC',
+        ],
+        exercise: {
+          text: 'Simula los outputs de los tres workstreams para Luda (aunque sea brevemente) y usa Claude para generar la one-view synthesis. La síntesis no debe repetir todo lo que dijeron los advisors — debe extraer lo que realmente importa para la decisión.',
+          prompt: `ONE-VIEW SYNTHESIS — Investment Committee
+
+INPUTS:
+Commercial DD (resumen): [PEGA]
+Quality of Earnings (resumen): [PEGA]  
+Legal DD (resumen): [PEGA]
+[Tech DD si aplica]: [PEGA]
+
+INSTRUCCIONES:
+No resumo cada workstream. Fusiona toda la información en una narrativa coherente que responda: ¿debemos hacer este deal y a qué precio?
+
+ESTRUCTURA DE LA SÍNTESIS:
+
+## What matters (3 hechos que determinan la decisión)
+[Un párrafo. Solo lo más importante. Sin contexto innecesario.]
+
+## Tesis de inversión revisada
+[Cómo ha cambiado la tesis después de la diligencia]
+
+## Riesgos residuales (los que no se pudieron resolver)
+[Lista priorizada. Para cada uno: impacto en precio si se materializa]
+
+## Ajustes al modelo
+[Cambios en supuestos derivados de la diligencia]
+
+## Recomendación final
+→ [PROCEDER / PROCEDER CON AJUSTE DE PRECIO / NO PROCEDER]
+Condiciones: [si las hay]`,
+          claudeUrl: 'https://claude.ai/new'
+        }
+      },
+      {
+        id: 's24',
+        title: 'Playbooks by deal type',
+        level: 'L3', time: 'Mes 5', priority: 'Sometimes',
+        desc: 'Cada tipo de deal tiene su propia lógica: una plataforma no se analiza igual que un add-on, ni un carve-out igual que un take-private. Los playbooks por deal type son bibliotecas de prompts especializados para cada situación, con las preguntas específicas, los riesgos propios y los ajustes de valoración característicos de cada estructura.',
+        subtasks: [
+          'Documenta las características únicas de cada deal type: platform, add-on, carve-out, take-private',
+          'Construye el playbook de platform acquisition: análisis de escalabilidad, M&A roadmap, key hires',
+          'Diseña el playbook de carve-out: standalone costs, TSA risk, culture/integration',
+          'Crea el playbook de take-private: análisis de shareholders, proceso de delisting, value creation post-privatización',
+        ],
+        exercise: {
+          text: 'Construye el playbook completo para add-on acquisitions en el sector de Luda (pharma-tech / marketplace). Las preguntas deben ser específicas a cómo una add-on encajaría con Luda como plataforma.',
+          prompt: `PLAYBOOK: Add-on Acquisition para plataforma [NOMBRE PLATAFORMA] en [SECTOR]
+
+Este playbook es específico para evaluar add-ons que refuerzan nuestra posición en [SECTOR].
+
+CRITERIOS DE FIT (debe cumplir al menos 3 de 5):
+[Define los criterios específicos de tu tesis]
+
+PREGUNTAS DE SCREENING (primeros 30 min con el management):
+[10 preguntas ordenadas por importancia]
+
+ANÁLISIS DE SINERGIAS:
+— Revenue synergies: cómo cuantificarlas y en qué plazo son realizables
+— Cost synergies: qué eliminar / compartir / centralizar
+— Multiple expansion: ¿mejora la valoración del portfolio?
+
+RED FLAGS ESPECÍFICOS DE ADD-ONS:
+[Los problemas más comunes en add-ons de este sector]
+
+AJUSTES DE VALORACIÓN vs plataforma standalone:
+— Premium por sinergias: metodología de cálculo
+— Descuento por tamaño: aplicar o no y cuándo
+
+PROCESO DE INTEGRACIÓN:
+— Day 1 priorities
+— 100-day plan estándar
+— KPIs de éxito de integración a 12 meses`,
+          claudeUrl: 'https://claude.ai/new'
+        }
+      },
+      {
+        id: 's25',
+        title: 'Evaluation harness from past deals',
+        level: 'L4', time: 'Mes 5', priority: 'Master',
+        desc: 'El evaluation harness es el test más riguroso de tu sistema de análisis con IA: ¿habría detectado los problemas reales de tus inversiones pasadas? Coges un deal que salió mal, lo pasas por todos los prompts que tienes ahora, y verificas si el sistema habría levantado las banderas rojas que en su momento se pasaron por alto.',
+        subtasks: [
+          'Elige un deal pasado con outcome conocido (positivo o negativo)',
+          'Reconstruye los documentos de diligencia que tenías en el momento de la decisión',
+          'Pasa todos los prompts relevantes sobre ese material histórico',
+          'Compara los outputs con lo que realmente ocurrió: ¿qué detectó el sistema? ¿Qué se perdió?',
+        ],
+        exercise: {
+          text: 'Elige una participada pasada (o simula una con outcome conocido). Aplica el red-team prompt + el scenario stack + el QA harness sobre el material original de diligencia. ¿Habría cambiado la decisión de inversión? ¿Qué prompt habría sido más valioso tener entonces?',
+          prompt: `EVALUATION HARNESS — Test retrospectivo
+
+Deal evaluado: [EMPRESA]
+Fecha de inversión: [FECHA]
+Outcome real: [DESCRIPCIÓN — qué pasó, cuándo, por qué]
+
+Material original de diligencia disponible: [LISTA]
+
+PASO 1 — RED-TEAM RETROSPECTIVO:
+Aplica el red-team prompt al material original. ¿Habría identificado el problema real?
+[SÍ / PARCIALMENTE / NO] — Explicación
+
+PASO 2 — SCENARIO STACK:
+Con el material original, ¿en qué escenario estaba la compañía?
+¿Los leading indicators de downside estaban presentes en la diligencia?
+[SÍ / PARCIALMENTE / NO] — Explicación
+
+PASO 3 — ANÁLISIS DE GAPS:
+¿Qué información tenías que el sistema no procesó bien?
+¿Qué información no tenías que habría cambiado el análisis?
+¿Qué pregunta no hiciste que habría revelado el problema?
+
+LECCIÓN APRENDIDA:
+Ajuste concreto al playbook del fondo derivado de este análisis retrospectivo.`,
+          claudeUrl: 'https://claude.ai/new'
+        }
+      },
+      {
+        id: 's26',
+        title: 'Guardrails: citations, confidence tags, forbidden claims',
+        level: 'L3', time: 'Mes 5', priority: 'Master',
+        desc: 'Los guardrails son las instrucciones que previenen que Claude genere análisis incorrectos o inventados. Los tres guardrails más importantes para PE: citations obligatorias (cada cifra con su fuente), confidence tags (Claude señala cuándo está inferiendo vs citando), y forbidden claims (una lista de afirmaciones que Claude no puede hacer sin evidencia directa).',
+        subtasks: [
+          'Construye el sistema de citations: regla de fuente obligatoria para cada cifra',
+          'Diseña los confidence tags: [CITADO], [INFERIDO], [SUPUESTO], [NO VERIFICADO]',
+          'Define la forbidden claims list para tu fondo: afirmaciones que nunca deben aparecer sin evidencia',
+          'Integra los tres guardrails en tu system prompt base',
+        ],
+        exercise: {
+          text: 'Añade los tres guardrails a tu system prompt actual. Pide a Claude que analice el comité de Luda con los guardrails activos. ¿Cuántas afirmaciones marca como [INFERIDO] o [SUPUESTO]? ¿Te sorprende la cantidad?',
+          prompt: `Añade estos guardrails a tu system prompt permanente:
+
+GUARDRAIL 1 — CITATIONS:
+Cada cifra va seguida de su fuente: (slide N), (p. N), o (sección: nombre).
+Si no puedes citar, escribe "[dato no localizado en el documento]".
+
+GUARDRAIL 2 — CONFIDENCE TAGS:
+Etiqueta cada afirmación relevante:
+[CITADO] = extracción directa del documento
+[INFERIDO] = deducción lógica de datos del documento  
+[SUPUESTO] = hipótesis que no está en el documento
+[NO VERIFICADO] = dato que requiere confirmación externa
+
+GUARDRAIL 3 — FORBIDDEN CLAIMS:
+NUNCA escribas estas afirmaciones sin evidencia directa:
+— "La compañía está en track para [objetivo]" sin datos de progreso
+— "El management está comprometido con [iniciativa]" sin cita
+— "El mercado es de [tamaño]" sin fuente
+— "Los márgenes mejorarán debido a [razón]" sin plan específico
+— Cualquier proyección sin indicar que es [SUPUESTO]`,
+          claudeUrl: 'https://claude.ai/new'
+        }
+      },
+    ]
+  },
+  {
+    id: 'p5',
+    label: 'Fase 5 · Meses 5–8',
+    title: 'Partner / Managing Partner',
+    subtitle: 'Sistemas a nivel de firma. LP communications, fundraising y knowledge base institucional.',
+    color: '#a05a9e',
+    colorDim: 'rgba(160,90,158,0.12)',
+    skills: [
+      {
+        id: 's27',
+        title: 'Personalize outreach from thesis + signals',
+        level: 'L3', time: 'Mes 5', priority: 'Master',
+        desc: 'El outreach personalizado usa la tesis del fondo combinada con señales específicas de la empresa target (ronda reciente, cambio de management, expansión geográfica) para generar mensajes de prospección que no parecen spam. Claude puede generar docenas de emails personalizados en minutos, cada uno con una razón específica para contactar en este momento.',
+        subtasks: [
+          'Define los 5-7 tipos de señales que activan outreach en tu tesis de inversión',
+          'Construye el prompt de personalización: signal + empresa + tesis → email personalizado',
+          'Genera 10 variaciones y evalúa cuáles suenan genuinas vs genéricas',
+          'Crea el sistema de seguimiento: cuándo hacer follow-up y con qué mensaje',
+        ],
+        exercise: {
+          text: 'Identifica 3 empresas en tu radar de deal sourcing. Para cada una, encuentra una señal reciente (noticia, ronda, LinkedIn post del CEO) y genera el email de outreach personalizado que conecta esa señal con vuestra tesis.',
+          prompt: `OUTREACH PERSONALIZADO — Deal Sourcing
+
+Empresa target: [NOMBRE]
+Sector: [SECTOR]
+Señal específica: [EVENTO O NOTICIA RECIENTE]
+Nuestra tesis relevante: [POR QUÉ ENCAJA CON NUESTRO FONDO]
+Contacto: [NOMBRE Y CARGO]
+
+Genera el email de outreach con estas restricciones:
+— Máximo 5 líneas de cuerpo
+— Primera línea: referencia específica a la señal (demuestra que has hecho deberes)
+— Segunda línea: conexión con nuestra tesis (por qué este momento tiene sentido)
+— Tercera/cuarta línea: propuesta de valor (qué aportaríamos además de capital)
+— Quinta línea: CTA específico (llamada de 20 min, no "stay in touch")
+
+Tono: peer-to-peer, no como inversor buscando oportunidades. Como alguien que tiene algo valioso que compartir.
+
+Genera 2 variaciones: una más directa, una más sutil.`,
+          claudeUrl: 'https://claude.ai/new'
+        }
+      },
+      {
+        id: 's28',
+        title: '"Firm voice" instruction sets with guardrails',
+        level: 'L3', time: 'Mes 6', priority: 'Master',
+        desc: 'El firm voice es el conjunto de instrucciones que garantiza que todas las comunicaciones del fondo — emails al management, cartas a LPs, presentaciones al consejo — tienen el mismo tono, estilo y nivel de profesionalidad. Es la voz institucional del fondo, codificada en un system prompt.',
+        subtasks: [
+          'Define los atributos del firm voice de tu fondo: formal/informal, directo/diplomático, técnico/accessible',
+          'Construye el instruction set completo con ejemplos de qué SÍ y qué NO',
+          'Crea variaciones del firm voice: una para management, una para LPs, una para consejo',
+          'Añade guardrails específicos: qué nunca debe aparecer en comunicaciones oficiales del fondo',
+        ],
+        exercise: {
+          text: 'Redacta el firm voice instruction set de tu fondo. Usa tres emails reales que hayas enviado como ejemplos del estilo correcto. Luego prueba pidiéndole a Claude que redacte un email difícil (dar malas noticias al management de Luda sobre el runway) en el firm voice del fondo.',
+          prompt: `FIRM VOICE INSTRUCTION SET — [NOMBRE FONDO]
+
+IDENTIDAD DE VOZ:
+— Tono: [describe en 3 adjetivos]
+— Registro: [formal / profesional / conversacional]
+— Perspectiva: [nosotros como socios / nosotros como directores / yo como socio principal]
+
+PRINCIPIOS DE COMUNICACIÓN:
+— Siempre [PRINCIPIO 1]
+— Nunca [COSA A EVITAR 1]
+— Cuando damos malas noticias: [APPROACH]
+— Cuando pedimos acción: [APPROACH]
+
+EJEMPLOS DE NUESTRO ESTILO:
+Correcto: "[EJEMPLO DE EMAIL REAL]"
+Incorrecto: "[VERSIÓN GENÉRICA DE LO MISMO]"
+
+GUARDRAILS:
+— No usar jerga de consultoría ("synergies", "leverage", "scalable" como adjetivos vacíos)
+— No usar lenguaje corporativo evasivo cuando hay un problema real
+— [AÑADIR GUARDRAILS ESPECÍFICOS DE TU FONDO]
+
+Ahora redacta el siguiente mensaje siguiendo este firm voice: [TAREA]`,
+          claudeUrl: 'https://claude.ai/new'
+        }
+      },
+      {
+        id: 's29',
+        title: 'Permissioned knowledge base with update cadence',
+        level: 'L4', time: 'Mes 6', priority: 'Sometimes',
+        desc: 'La knowledge base permisionada es la memoria institucional del fondo, accesible por IA. Contiene los playbooks de deals pasados, las lecciones aprendidas, las tesis sectoriales, el historial de ICs. Cada deal nuevo alimenta la base. Con el tiempo, Claude puede responder preguntas como "¿qué hemos aprendido de deals similares en retail?".',
+        subtasks: [
+          'Define la estructura de la knowledge base: qué entra, en qué formato, quién tiene acceso',
+          'Establece el update cadence: qué se añade después de cada deal (screening, IC, portfolio, exit)',
+          'Configura los permisos: qué puede ver cada nivel del equipo',
+          'Construye el prompt de retrieval: cómo consultar la knowledge base para informar una decisión',
+        ],
+        exercise: {
+          text: 'Diseña la estructura de la knowledge base de tu fondo. Define qué documentos entran después de cada deal, quién los sube, y cómo se consultarán. Empieza con un deal real y documenta la ficha completa.',
+          prompt: `KNOWLEDGE BASE — Ficha de deal post-IC
+
+Esta ficha se completa después de cada Investment Committee, independientemente del outcome.
+
+DEAL: [NOMBRE EMPRESA]
+FECHA IC: [FECHA]
+SECTOR: [SECTOR]
+DEAL TYPE: [platform / add-on / carve-out / take-private / growth]
+OUTCOME: [APROBADO / RECHAZADO / APLAZADO]
+
+SI APROBADO:
+— Tesis principal en 3 líneas
+— Supuestos clave (los 3 más importantes para el retorno)
+— Riesgos aceptados conscientemente
+— Precio de entrada y múltiplo
+
+SI RECHAZADO:
+— Razón principal del rechazo
+— Red flags que llevaron a la decisión
+— Qué habría tenido que ser diferente para avanzar
+
+LECCIONES PARA EL PLAYBOOK:
+— Qué haríamos distinto en el proceso
+— Qué pregunta deberíamos hacer antes en el screening
+— Ajuste sugerido a algún template o criterio del fondo
+
+ETIQUETAS: [para facilitar retrieval futuro]`,
+          claudeUrl: 'https://claude.ai/new'
+        }
+      },
+      {
+        id: 's30',
+        title: 'Value creation pipeline: KPIs → variance → initiatives → action tracking',
+        level: 'L3', time: 'Mes 6', priority: 'Sometimes',
+        desc: 'El value creation pipeline convierte la información mensual de las participadas en iniciativas concretas con owners y tracking. KPIs del mes → análisis de varianza → identificación de iniciativas → asignación de responsables → seguimiento de progreso. Claude puede automatizar los tres primeros pasos.',
+        subtasks: [
+          'Define los KPIs de value creation para cada participada (diferentes de los KPIs de monitoring)',
+          'Construye el prompt de varianza: del dato al análisis de causa raíz en 3 niveles',
+          'Diseña el prompt de iniciativas: de la causa raíz a las acciones concretas con owner y deadline',
+          'Crea el dashboard de tracking: cómo visualizar el progreso de las iniciativas en portfolio',
+        ],
+        exercise: {
+          text: 'Aplica el value creation pipeline a Luda. Los KPIs de varianza son el runway, el GMV vs plan y el churn. Para cada uno, identifica la causa raíz y propón la iniciativa de value creation con el owner más adecuado del equipo directivo.',
+          prompt: `VALUE CREATION PIPELINE — [EMPRESA] [MES]
+
+PASO 1 — VARIANZA DE KPIs:
+Para cada KPI por debajo del plan:
+— KPI: [métrica]
+— Valor real vs plan: [X vs Y = varianza de Z%]
+— Causa raíz nivel 1 (qué pasó)
+— Causa raíz nivel 2 (por qué pasó)
+— Causa raíz nivel 3 (qué lo causó a nivel estructural)
+
+PASO 2 — INICIATIVAS DE VALUE CREATION:
+Para cada causa raíz nivel 3:
+— Iniciativa: [acción concreta]
+— Owner sugerido: [cargo en el equipo directivo]
+— Recursos necesarios: [equipo, presupuesto, tiempo]
+— Indicador de éxito: [métrica que mejoraría]
+— Timeline: [cuándo debería verse el impacto]
+— Prioridad: CRÍTICO / ALTO / MEDIO
+
+PASO 3 — COMPROMISOS A SOLICITAR EN EL PRÓXIMO COMITÉ:
+[Lista de compromisos específicos, mensurables, con fecha]`,
+          claudeUrl: 'https://claude.ai/new'
+        }
+      },
+      {
+        id: 's31',
+        title: 'LP research briefs using AI',
+        level: 'L3', time: 'Mes 7', priority: 'Master',
+        desc: 'Antes de cualquier reunión de fundraising, Claude puede generar un brief completo sobre el LP: su estrategia de allocations, sus restricciones (geografía, tamaño de fondo, track record mínimo), sus inversiones previas en PE similares, y un mapa de decisión que anticipa sus preguntas y preocupaciones.',
+        subtasks: [
+          'Construye el template de LP research: qué información buscar y en qué fuentes',
+          'Diseña el prompt de perfil LP: de la información pública al brief de reunión',
+          'Crea el mapa de objeciones: las preguntas que probablemente hará y cómo responderlas',
+          'Arma el prompt de personalización del pitch: cómo adaptar la presentación a este LP específico',
+        ],
+        exercise: {
+          text: 'Elige un LP real o hipotético (family office, fondo de fondos, endowment). Con información pública disponible, genera el brief completo de reunión: perfil, prioridades, restricciones, mapa de objeciones y cómo personalizar el pitch.',
+          prompt: `LP RESEARCH BRIEF — Preparación de reunión de fundraising
+
+LP: [NOMBRE E INSTITUCIÓN]
+Tipo: [family office / FoF / endowment / pension fund / soberano]
+Reunión: [FECHA Y OBJETIVO — primera reunión / follow-up / closing]
+
+PERFIL DEL LP:
+— AUM estimado y % histórico en PE
+— Geografías y sectores de preferencia
+— Vintage years de compromisos recientes
+— Fondos de PE comparables en los que ha invertido
+— Ticket size típico en fondos similares al nuestro
+
+PRIORIDADES CONOCIDAS:
+— Qué le importa más a este LP (retorno / riesgo / ESG / relación / reportes)
+— Restricciones conocidas (geografía, tamaño fondo, track record mínimo)
+— Timing del decision process
+
+MAPA DE OBJECIONES (preguntas probables + respuestas):
+— Objeción 1: [pregunta] → Respuesta: [cómo responder]
+— Objeción 2: [pregunta] → Respuesta: [cómo responder]
+— Objeción 3: [pregunta] → Respuesta: [cómo responder]
+
+PERSONALIZACIÓN DEL PITCH:
+— Qué parte del track record destacar para este LP
+— Qué case study resonará más
+— Qué NOT mencionar (no fit con su mandato)`,
+          claudeUrl: 'https://claude.ai/new'
+        }
+      },
+      {
+        id: 's32',
+        title: 'Pitch tailoring: track record framing + case studies per LP',
+        level: 'L3', time: 'Mes 7', priority: 'Master',
+        desc: 'El mismo track record puede presentarse de formas radicalmente distintas según el LP. Para un LP orientado a retorno: IRRs y MOICs. Para uno orientado a ESG: impacto y governanza. Para uno nuevo en PE: comparables de mercado. Claude puede generar la versión personalizada del pitch para cada audiencia manteniendo la honestidad y el rigor.',
+        subtasks: [
+          'Documenta el track record completo en formato estructurado (base de datos de deals)',
+          'Construye el prompt de framing: dado este LP y sus prioridades, cómo presentar el track record',
+          'Diseña el selector de case studies: de todos los deals, cuál presentar para cada tipo de LP',
+          'Crea el prompt de narrativa: cómo conectar el track record con la tesis del siguiente fondo',
+        ],
+        exercise: {
+          text: 'Coge el mismo track record ficticio o real de 5 deals. Genera dos versiones del pitch: una para un family office orientado a retorno absoluto y otra para un fondo de fondos ESG-focused. ¿Cómo cambia el framing? ¿Qué deals destacas en cada versión?',
+          prompt: `PITCH TAILORING — Track record para [LP ESPECÍFICO]
+
+TRACK RECORD DISPONIBLE:
+[Lista de deals con: sector, año, múltiplo, IRR, descripción breve, ángulo ESG si aplica]
+
+LP TARGET: [NOMBRE]
+Prioridades de este LP: [LISTA]
+Restricciones de este LP: [LISTA]
+
+GENERA:
+
+1. SELECCIÓN DE DEALS A PRESENTAR (máx. 3-4):
+— Por qué estos y no otros para este LP específico
+— Cómo ordenarlos (no siempre el mejor retorno es el primero)
+
+2. FRAMING DEL TRACK RECORD:
+— Headline: [la frase que resume el track record para este LP]
+— Estadística clave a destacar: [la que más resuena con sus prioridades]
+— Estadística a no mencionar proactivamente: [la que podría ser malinterpretada]
+
+3. NARRATIVA DEL CASO ESTRELLA:
+[El case study más relevante para este LP, contado en 5 líneas: contexto, tesis, ejecución, outcome, lección]
+
+4. CONEXIÓN CON EL SIGUIENTE FONDO:
+[Cómo el track record demuestra que el próximo fondo replicará o mejorará los resultados]`,
+          claudeUrl: 'https://claude.ai/new'
+        }
+      },
+      {
+        id: 's33',
+        title: 'LP update using AI: performance → attribution → commentary → draft',
+        level: 'L3', time: 'Mes 7', priority: 'Sometimes',
+        desc: 'El LP update trimestral es uno de los documentos que más tiempo consume y más impacto tiene en la relación con los inversores. Claude puede automatizar el pipeline completo: de los datos de performance al narrativo de atribución, al commentary por empresa, al borrador del quarterly report.',
+        subtasks: [
+          'Define el formato de LP update de tu fondo (qué secciones, qué nivel de detalle)',
+          'Construye el prompt de atribución: de los retornos al análisis de qué los causó',
+          'Diseña el prompt de commentary por empresa: los puntos clave del trimestre en 3-4 líneas',
+          'Crea el prompt de síntesis: del portfolio al narrativo del trimestre para el LP',
+        ],
+        exercise: {
+          text: 'Con los datos de Luda del Q1 2026 (los del comité de mayo), genera el bloque de LP update para esta participada. Debe incluir: performance del trimestre, atribución, commentary y outlook.',
+          prompt: `LP UPDATE — [EMPRESA] Q[N] [AÑO]
+
+DATOS DEL TRIMESTRE:
+[Pega los KPIs clave del período]
+
+GENERA EL BLOQUE DE LP UPDATE:
+
+PERFORMANCE (máx. 3 líneas):
+[Qué pasó numéricamente. Sin adjetivos. Con cifras. Comparado con budget y YoY.]
+
+ATRIBUCIÓN (máx. 3 líneas):
+[Por qué pasó. Factores internos vs externos. Decisiones del management vs mercado.]
+
+COMMENTARY (máx. 4 líneas):
+[Contexto relevante que los números no capturan. Hitos importantes. Decisiones tomadas.]
+
+OUTLOOK (máx. 2 líneas):
+[Qué esperar el próximo trimestre. Solo si hay visibilidad suficiente para decirlo con rigor.]
+
+ACCIÓN DEL FONDO (si aplica):
+[Qué está haciendo el fondo para apoyar a la compañía este trimestre]
+
+TONO: profesional, honesto sobre los gaps, constructivo sobre el plan. No glorificar ni catastrofizar.`,
+          claudeUrl: 'https://claude.ai/new'
+        }
+      },
+      {
+        id: 's34',
+        title: 'Fundraising CRM using AI: notes → objections → next steps → follow-ups',
+        level: 'L4', time: 'Mes 8', priority: 'Master',
+        desc: 'El fundraising CRM con IA convierte cada reunión con un LP en un sistema de seguimiento estructurado. Las notas de la reunión se transforman automáticamente en objeciones catalogadas, next steps con responsable y deadline, y follow-ups personalizados. Con Make o N8N, el proceso puede ser completamente automático.',
+        subtasks: [
+          'Define el formato de nota de reunión LP que alimentará el CRM',
+          'Construye el prompt de extracción: de notas crudas a objeciones / interesse / next steps estructurados',
+          'Diseña los templates de follow-up para cada tipo de outcome de reunión',
+          'Conecta con Make: trigger nueva nota en Notion → Claude procesa → actualiza CRM → genera email',
+        ],
+        exercise: {
+          text: 'Simula las notas de una reunión con un LP (family office, 45 minutos, primera reunión). Usa Claude para extraer las objeciones, los señales de interés, los next steps acordados y el email de follow-up. Todo en menos de 5 minutos.',
+          prompt: `FUNDRAISING CRM — Procesamiento de reunión LP
+
+NOTAS CRUDAS DE LA REUNIÓN:
+Fecha: [FECHA]
+LP: [NOMBRE E INSTITUCIÓN]
+Asistentes: [LISTA]
+Duración: [N min]
+Notas: [PEGA TUS NOTAS TAL CUAL — pueden ser desordenadas]
+
+EXTRAE Y ESTRUCTURA:
+
+SEÑALES DE INTERÉS:
+— [Lo que dijo que indica interés genuino, con cita si posible]
+
+OBJECIONES EXPLÍCITAS:
+— [Objeción] → Respuesta que dimos → Quedó satisfecha: SÍ / PARCIALMENTE / NO
+
+OBJECIONES IMPLÍCITAS (lo que NO dijo pero insinuó):
+— [Interpretación] → Cómo abordarla en el follow-up
+
+COMPROMISOS DEL LP:
+— [Lo que el LP se comprometió a hacer] → Deadline: [FECHA]
+
+NEXT STEPS (nuestro lado):
+— [Acción] → Owner: [NOMBRE] → Deadline: [FECHA]
+
+EMAIL DE FOLLOW-UP (enviar en 24h):
+[Redacta el email en el firm voice del fondo, referenciando puntos específicos de la reunión, confirmando next steps, sin ser servil]`,
+          claudeUrl: 'https://claude.ai/new'
+        }
+      },
+    ]
+  }
+];
+
+// ═══════════════════════════════════════════════
+// SUPABASE CONFIG
+// ═══════════════════════════════════════════════
+let supabase = null;
+let currentUser = null;
+let userProgress = {}; // { skillId: { skill: bool, subtasks: {idx: bool} } }
+let currentPhase = 0;
+
+function getConfig() {
+  return {
+    url: localStorage.getItem('sb_url'),
+    key: localStorage.getItem('sb_key')
+  };
+}
+
+function initSupabase(url, key) {
+  supabase = window.supabase.createClient(url, key);
+}
+
+async function loadProgress() {
+  if (!supabase || !currentUser) return;
+  try {
+    const { data } = await supabase
+      .from('progress')
+      .select('*')
+      .eq('user_id', currentUser.id);
+    userProgress = {};
+    (data || []).forEach(row => {
+      if (!userProgress[row.skill_id]) userProgress[row.skill_id] = { skill: false, subtasks: {} };
+      if (row.subtask_id === '__skill__') {
+        userProgress[row.skill_id].skill = row.completed;
+      } else {
+        userProgress[row.skill_id].subtasks[row.subtask_id] = row.completed;
+      }
+    });
+  } catch(e) { console.error('loadProgress error', e); }
+}
+
+async function saveProgress(skillId, subtaskId, completed) {
+  if (!supabase || !currentUser) return;
+  try {
+    await supabase.from('progress').upsert({
+      user_id: currentUser.id,
+      skill_id: skillId,
+      subtask_id: subtaskId,
+      completed,
+      updated_at: new Date().toISOString()
+    }, { onConflict: 'user_id,skill_id,subtask_id' });
+  } catch(e) { console.error('saveProgress error', e); }
+}
+
+// ═══════════════════════════════════════════════
+// AUTH
+// ═══════════════════════════════════════════════
+let authMode = 'login';
+
+function toggleAuthMode() {
+  authMode = authMode === 'login' ? 'register' : 'login';
+  document.getElementById('auth-title').textContent = authMode === 'login' ? 'Accede al curso' : 'Crea tu cuenta';
+  document.getElementById('auth-subtitle').textContent = authMode === 'login' ? 'Domina la IA en Private Equity con tu equipo.' : 'Únete al equipo en el curso de IA para PE.';
+  document.getElementById('auth-btn').textContent = authMode === 'login' ? 'Entrar' : 'Crear cuenta';
+  document.getElementById('auth-toggle-text').textContent = authMode === 'login' ? '¿Primera vez?' : '¿Ya tienes cuenta?';
+  document.getElementById('auth-toggle-link').textContent = authMode === 'login' ? 'Crear cuenta' : 'Inicia sesión';
+  document.getElementById('name-field').classList.toggle('hidden', authMode === 'login');
+  document.getElementById('auth-error').style.display = 'none';
+}
+
+async function handleAuth() {
+  const email = document.getElementById('auth-email').value.trim();
+  const password = document.getElementById('auth-password').value;
+  const btn = document.getElementById('auth-btn');
+  const errEl = document.getElementById('auth-error');
+  errEl.style.display = 'none';
+  if (!email || !password) { showError('Email y contraseña requeridos.'); return; }
+  btn.disabled = true;
+  btn.textContent = '…';
+  try {
+    let result;
+    if (authMode === 'register') {
+      const name = document.getElementById('auth-name').value.trim();
+      result = await supabase.auth.signUp({ email, password, options: { data: { full_name: name } } });
+    } else {
+      result = await supabase.auth.signInWithPassword({ email, password });
+    }
+    if (result.error) { showError(result.error.message); btn.disabled = false; btn.textContent = authMode === 'login' ? 'Entrar' : 'Crear cuenta'; return; }
+    currentUser = result.data.user;
+    await loadProgress();
+    showApp();
+  } catch(e) { showError('Error de conexión. Verifica la configuración de Supabase.'); btn.disabled = false; btn.textContent = authMode === 'login' ? 'Entrar' : 'Crear cuenta'; }
+}
+
+function showError(msg) {
+  const el = document.getElementById('auth-error');
+  el.textContent = msg;
+  el.style.display = 'block';
+}
+
+async function logout() {
+  if (supabase) await supabase.auth.signOut();
+  currentUser = null; userProgress = {};
+  document.getElementById('app').style.display = 'none';
+  document.getElementById('auth-screen').classList.remove('hidden');
+}
+
+// ═══════════════════════════════════════════════
+// SETUP
+// ═══════════════════════════════════════════════
+function saveConfig() {
+  const url = document.getElementById('sb-url').value.trim();
+  const key = document.getElementById('sb-key').value.trim();
+  if (!url || !key) { toast('Introduce la URL y la key de Supabase', 'error'); return; }
+  localStorage.setItem('sb_url', url);
+  localStorage.setItem('sb_key', key);
+  initSupabase(url, key);
+  document.getElementById('setup-screen').classList.add('hidden');
+  document.getElementById('auth-screen').classList.remove('hidden');
+  toast('Configuración guardada. Ahora crea tu cuenta.', 'success');
+}
+
+function copySQL() {
+  const sql = `create table if not exists progress (
+  id uuid default gen_random_uuid() primary key,
+  user_id uuid references auth.users on delete cascade,
+  skill_id text not null,
+  subtask_id text not null,
+  completed boolean default false,
+  updated_at timestamptz default now(),
+  unique(user_id, skill_id, subtask_id)
+);
+alter table progress enable row level security;
+create policy "Users manage own progress" on progress
+  for all using (auth.uid() = user_id);`;
+  navigator.clipboard.writeText(sql);
+  toast('SQL copiado al portapapeles', 'success');
+}
+
+// ═══════════════════════════════════════════════
+// APP RENDER
+// ═══════════════════════════════════════════════
+function showApp() {
+  document.getElementById('auth-screen').classList.add('hidden');
+  document.getElementById('setup-screen').classList.add('hidden');
+  document.getElementById('app').style.display = 'block';
+
+  const name = currentUser?.user_metadata?.full_name || currentUser?.email?.split('@')[0] || 'Tú';
+  const initials = name.split(' ').map(n=>n[0]).join('').slice(0,2).toUpperCase();
+  document.getElementById('user-avatar').textContent = initials;
+  document.getElementById('user-display-name').textContent = name;
+
+  renderNav();
+  renderPhase(0);
+  updateGlobalProgress();
+}
+
+function renderNav() {
+  const nav = document.getElementById('phase-nav');
+  nav.innerHTML = PHASES.map((p, i) => {
+    const total = p.skills.length;
+    const done = p.skills.filter(s => userProgress[s.id]?.skill).length;
+    return `<div class="phase-nav-item ${i===currentPhase?'active':''}" onclick="renderPhase(${i})">
+      <div class="phase-nav-label">${p.label}</div>
+      <div class="phase-nav-title">${p.title}</div>
+      <div class="phase-nav-count"><span>${done}</span> / ${total} completadas</div>
+    </div>`;
+  }).join('');
+}
+
+function renderPhase(idx) {
+  currentPhase = idx;
+  const p = PHASES[idx];
+  renderNav();
+
+  const total = p.skills.length;
+  const done = p.skills.filter(s => userProgress[s.id]?.skill).length;
+
+  const levelMap = { L1: 'badge-l1', L2: 'badge-l2', L3: 'badge-l3', L4: 'badge-l4' };
+
+  const html = `
+    <div class="phase-header-bar">
+      <span class="phase-tag" style="background:${p.colorDim};color:${p.color}">${p.label}</span>
+      <h1>${p.title}</h1>
+      <p>${p.subtitle}</p>
+      <div class="phase-stats">
+        <div class="phase-stat"><strong>${done} / ${total}</strong> habilidades completadas</div>
+        <div class="phase-stat"><strong>${Math.round(done/total*100)}%</strong> de esta fase</div>
+      </div>
+    </div>
+    ${p.skills.map(s => renderSkillCard(s, levelMap)).join('')}
+  `;
+
+  document.getElementById('main-content').innerHTML = html;
+  window.scrollTo(0,0);
+}
+
+function renderSkillCard(s, levelMap) {
+  const prog = userProgress[s.id] || { skill: false, subtasks: {} };
+  const isDone = prog.skill;
+  const subtasksDone = s.subtasks.filter((_,i) => prog.subtasks[i]).length;
+  const lvlClass = levelMap[s.level] || 'badge-l1';
+
+  return `
+  <div class="skill-card ${isDone?'completed':''}" id="card-${s.id}">
+    <div class="skill-header" onclick="toggleExpand('${s.id}')">
+      <div class="skill-checkbox" onclick="event.stopPropagation(); toggleSkill('${s.id}')">
+        <svg width="10" height="10" viewBox="0 0 10 10">
+          <polyline points="1.5,5 4,7.5 8.5,2" fill="none" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div class="skill-title-wrap">
+        <div class="skill-title">${s.title}</div>
+        <div class="skill-badges">
+          <span class="badge ${lvlClass}">${s.level}</span>
+          <span class="badge badge-time">${s.time}</span>
+          <span class="badge badge-must">${s.priority}</span>
+          ${subtasksDone > 0 ? `<span class="badge" style="background:rgba(74,158,110,0.15);color:#6dba91">${subtasksDone}/${s.subtasks.length} subtareas</span>` : ''}
+        </div>
+      </div>
+      <svg class="skill-chevron" width="16" height="16" viewBox="0 0 16 16" fill="none">
+        <polyline points="4,6 8,10 12,6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+    <div class="skill-body">
+      <div class="skill-section">
+        <div class="skill-section-title">Qué aprenderás</div>
+        <div class="skill-desc">${s.desc}</div>
+      </div>
+      <div class="skill-section">
+        <div class="skill-section-title">Subtareas</div>
+        ${s.subtasks.map((st, i) => {
+          const stDone = prog.subtasks[i] || false;
+          return `<div class="subtask ${stDone?'done':''}" id="st-${s.id}-${i}" onclick="toggleSubtask('${s.id}',${i})">
+            <div class="subtask-check">
+              <svg class="subtask-check-icon" width="8" height="8" viewBox="0 0 10 10">
+                <polyline points="1.5,5 4,7.5 8.5,2" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <div class="subtask-text">${st}</div>
+          </div>`;
+        }).join('')}
+      </div>
+      <div class="skill-section">
+        <div class="skill-section-title">Ejercicio final</div>
+        <div class="exercise-box">
+          <div class="exercise-label">✦ Ejercicio práctico</div>
+          <div class="exercise-text">${s.exercise.text}</div>
+          <div class="exercise-prompt">${s.exercise.prompt}</div>
+          <div class="exercise-actions">
+            <button class="btn-outline" onclick="copyPrompt('${s.id}')">Copiar prompt</button>
+            <a class="btn-gold" href="${s.exercise.claudeUrl}" target="_blank">Abrir en Claude ↗</a>
+          </div>
+        </div>
+      </div>
+      <button class="mark-complete-btn" onclick="toggleSkill('${s.id}')">
+        ${isDone ? '✓ Completada — clic para reabrir' : '✓ Marcar como completada'}
+      </button>
+    </div>
+  </div>`;
+}
+
+function toggleExpand(skillId) {
+  const card = document.getElementById('card-' + skillId);
+  card.classList.toggle('expanded');
+}
+
+async function toggleSkill(skillId) {
+  if (!userProgress[skillId]) userProgress[skillId] = { skill: false, subtasks: {} };
+  userProgress[skillId].skill = !userProgress[skillId].skill;
+  await saveProgress(skillId, '__skill__', userProgress[skillId].skill);
+  const card = document.getElementById('card-' + skillId);
+  if (card) {
+    card.classList.toggle('completed', userProgress[skillId].skill);
+    const titleEl = card.querySelector('.skill-title');
+    if (titleEl) titleEl.style.textDecoration = userProgress[skillId].skill ? 'line-through' : '';
+    const btn = card.querySelector('.mark-complete-btn');
+    if (btn) btn.textContent = userProgress[skillId].skill ? '✓ Completada — clic para reabrir' : '✓ Marcar como completada';
+  }
+  updateGlobalProgress();
+  renderNav();
+  if (userProgress[skillId].skill) toast('Habilidad completada 🎯', 'success');
+}
+
+async function toggleSubtask(skillId, idx) {
+  if (!userProgress[skillId]) userProgress[skillId] = { skill: false, subtasks: {} };
+  userProgress[skillId].subtasks[idx] = !userProgress[skillId].subtasks[idx];
+  await saveProgress(skillId, String(idx), userProgress[skillId].subtasks[idx]);
+  const el = document.getElementById(`st-${skillId}-${idx}`);
+  if (el) el.classList.toggle('done', userProgress[skillId].subtasks[idx]);
+  const skill = PHASES.flatMap(p=>p.skills).find(s=>s.id===skillId);
+  if (skill) {
+    const done = skill.subtasks.filter((_,i) => userProgress[skillId].subtasks[i]).length;
+    const card = document.getElementById('card-' + skillId);
+    if (card) {
+      let badge = card.querySelector('.badge-subtask-count');
+      if (!badge) {
+        badge = document.createElement('span');
+        badge.className = 'badge badge-subtask-count';
+        badge.style.cssText = 'background:rgba(74,158,110,0.15);color:#6dba91';
+        card.querySelector('.skill-badges').appendChild(badge);
+      }
+      badge.textContent = `${done}/${skill.subtasks.length} subtareas`;
+      if (done === 0) badge.remove();
+    }
+  }
+}
+
+function updateGlobalProgress() {
+  const allSkills = PHASES.flatMap(p => p.skills);
+  const done = allSkills.filter(s => userProgress[s.id]?.skill).length;
+  const total = allSkills.length;
+  document.getElementById('prog-label-text').textContent = `${done} / ${total}`;
+  document.getElementById('prog-fill').style.width = `${(done/total*100).toFixed(1)}%`;
+}
+
+function copyPrompt(skillId) {
+  const skill = PHASES.flatMap(p=>p.skills).find(s=>s.id===skillId);
+  if (skill) {
+    navigator.clipboard.writeText(skill.exercise.prompt);
+    toast('Prompt copiado', 'success');
+  }
+}
+
+function toast(msg, type='') {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.className = `toast ${type} show`;
+  setTimeout(() => el.classList.remove('show'), 2800);
+}
+
+// ═══════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════
+window.addEventListener('load', async () => {
+  const cfg = getConfig();
+  const loading = document.getElementById('loading');
+
+  if (!cfg.url || !cfg.key) {
+    loading.style.opacity = '0';
+    setTimeout(() => loading.style.display = 'none', 300);
+    document.getElementById('setup-screen').classList.remove('hidden');
+    return;
+  }
+
+  initSupabase(cfg.url, cfg.key);
+
+  try {
+    const { data: { session } } = await supabase.auth.getSession();
+    if (session?.user) {
+      currentUser = session.user;
+      await loadProgress();
+      loading.style.opacity = '0';
+      setTimeout(() => loading.style.display = 'none', 300);
+      showApp();
+    } else {
+      loading.style.opacity = '0';
+      setTimeout(() => loading.style.display = 'none', 300);
+      document.getElementById('auth-screen').classList.remove('hidden');
+    }
+  } catch(e) {
+    loading.style.opacity = '0';
+    setTimeout(() => loading.style.display = 'none', 300);
+    document.getElementById('auth-screen').classList.remove('hidden');
+  }
+});
+</script>
+</body>
+</html>
