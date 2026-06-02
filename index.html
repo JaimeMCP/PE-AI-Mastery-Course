@@ -31,6 +31,28 @@
     --font-body: 'DM Sans', sans-serif;
     --font-mono: 'DM Mono', monospace;
   }
+  html.light {
+    --bg: #f8f7f4;
+    --bg2: #ffffff;
+    --bg3: #f0ede8;
+    --bg4: #e8e4de;
+    --border: #ddd9d2;
+    --border2: #c8c3ba;
+    --text: #1a1917;
+    --text2: #5a5754;
+    --text3: #9a9590;
+    --gold: #8a6d1e;
+    --gold2: #a07d22;
+    --gold-dim: rgba(138,109,30,0.10);
+    --green: #2d7a50;
+    --green-dim: rgba(45,122,80,0.10);
+    --red: #a03030;
+    --blue: #2a5f8a;
+    --blue-dim: rgba(42,95,138,0.10);
+  }
+  /* Theme toggle button */
+  .theme-toggle { background:none; border:1px solid var(--border2); border-radius:20px; padding:4px 10px; cursor:pointer; color:var(--text2); font-family:var(--font-body); font-size:11px; display:flex; align-items:center; gap:5px; transition:all .15s; }
+  .theme-toggle:hover { border-color:var(--gold); color:var(--gold); }
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   html { scroll-behavior: smooth; }
   body {
@@ -818,6 +840,55 @@
   .case-doc { display:flex; align-items:center; gap:8px; padding:8px 10px; background:var(--bg3); border-radius:var(--radius); font-size:13px; color:var(--text2); cursor:pointer; transition:background .1s; }
   .case-doc:hover { background:var(--bg4); color:var(--text); }
 
+
+  /* ── DYNAMICS SHARED ── */
+  .dynamics-section { margin:16px 0; border-radius:var(--radius-lg); overflow:hidden; }
+  .dynamics-label { font-size:11px; font-weight:500; text-transform:uppercase; letter-spacing:.08em; color:var(--text3); margin-bottom:10px; }
+
+  /* ── BEFORE / AFTER ── */
+  .ba-section { background:var(--bg3); border:1px solid var(--border); padding:16px; }
+  .ba-intro { font-size:13px; color:var(--text2); margin-bottom:14px; line-height:1.6; }
+  .ba-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  @media(max-width:768px){ .ba-grid { grid-template-columns:1fr; } }
+  .ba-card { border-radius:var(--radius); padding:12px; border:1px solid var(--border2); }
+  .ba-bad { background:rgba(194,90,90,0.05); border-color:rgba(194,90,90,0.2); }
+  .ba-good { background:rgba(74,158,110,0.05); border-color:rgba(74,158,110,0.2); }
+  .ba-card-label { font-size:11px; font-weight:500; margin-bottom:8px; }
+  .ba-card-label.bad { color:#c25a5a; }
+  .ba-card-label.good { color:#4a9e6e; }
+  .ba-prompt-box { font-family:var(--font-mono); font-size:10px; background:var(--bg4); border-radius:4px; padding:8px; color:var(--text3); margin-bottom:8px; white-space:pre-wrap; word-break:break-word; line-height:1.5; }
+  .ba-output { font-size:12px; color:var(--text2); line-height:1.6; margin-bottom:10px; padding:10px; background:var(--bg2); border-radius:4px; white-space:pre-wrap; word-break:break-word; min-height:80px; }
+  .ba-issues { display:flex; flex-direction:column; gap:4px; }
+  .ba-issue { font-size:11px; line-height:1.4; padding:3px 0; }
+  .bad-issue { color:#c87a7a; }
+  .good-issue { color:#6dba91; }
+
+  /* ── SCAFFOLDING ── */
+  .sc-section { background:var(--bg3); border:1px solid rgba(201,168,76,0.2); padding:16px; }
+  .sc-steps { display:flex; flex-direction:column; gap:0; }
+  .sc-step { display:flex; gap:14px; padding:14px 0; border-bottom:1px solid var(--border); }
+  .sc-step:last-child { border-bottom:none; padding-bottom:0; }
+  .sc-step-num { width:28px; height:28px; border-radius:50%; background:var(--gold-dim); border:1px solid var(--gold); color:var(--gold); font-size:12px; font-weight:600; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:2px; }
+  .sc-step-body { flex:1; min-width:0; }
+  .sc-step-title { font-size:13px; font-weight:500; color:var(--text); margin-bottom:4px; }
+  .sc-step-desc { font-size:12px; color:var(--text2); line-height:1.5; margin-bottom:6px; }
+  .sc-step-detail { font-size:12px; color:var(--text3); line-height:1.5; padding:8px 10px; background:var(--bg4); border-radius:var(--radius); border-left:2px solid var(--border2); }
+  .sc-code { font-family:var(--font-mono); font-size:10px; background:var(--bg4); border:1px solid var(--border2); border-radius:var(--radius); padding:10px; color:var(--text2); white-space:pre; overflow-x:auto; margin-top:8px; line-height:1.6; }
+
+  /* ── FIND THE ERROR ── */
+  .fte-section { background:var(--bg3); border:1px solid rgba(147,128,212,0.2); padding:16px; }
+  .fte-intro { font-size:13px; color:var(--text2); margin-bottom:12px; line-height:1.6; }
+  .fte-output { font-family:var(--font-mono); font-size:11px; background:var(--bg4); border:1px solid var(--border2); border-radius:var(--radius); padding:12px; color:var(--text2); white-space:pre-wrap; word-break:break-word; line-height:1.7; margin-bottom:10px; }
+  .fte-hint { font-size:12px; color:var(--text3); font-style:italic; margin-bottom:12px; padding:8px 10px; background:var(--bg4); border-radius:var(--radius); border-left:2px solid var(--border2); }
+  .fte-reveal-btn { background:rgba(147,128,212,0.12); border:1px solid rgba(147,128,212,0.3); border-radius:var(--radius); padding:8px 16px; color:#9380d4; font-family:var(--font-body); font-size:12px; cursor:pointer; transition:all .15s; margin-bottom:12px; }
+  .fte-reveal-btn:hover { background:rgba(147,128,212,0.2); }
+  .fte-errors { display:none; flex-direction:column; gap:10px; }
+  .fte-errors.visible { display:flex; animation:fadeIn .3s ease; }
+  .fte-error { display:flex; gap:12px; padding:12px; background:var(--bg2); border-radius:var(--radius); border:1px solid rgba(194,90,90,0.2); }
+  .fte-error-num { width:22px; height:22px; border-radius:50%; background:rgba(194,90,90,0.15); border:1px solid rgba(194,90,90,0.3); color:#c87a7a; font-size:11px; font-weight:600; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:1px; }
+  .fte-error-body { flex:1; }
+  .fte-error-loc { font-size:12px; font-weight:500; color:#c87a7a; margin-bottom:4px; font-family:var(--font-mono); }
+  .fte-error-exp { font-size:12px; color:var(--text2); line-height:1.5; }
 </style>
 </head>
 <body>
@@ -909,6 +980,7 @@
       <div class="user-pill">
         <div class="user-avatar" id="user-avatar">—</div>
         <span class="user-name" id="user-display-name">—</span>
+        <button class="theme-toggle" onclick="toggleTheme()" id="theme-btn" title="Cambiar tema">🌙</button>
         <button class="logout-btn" onclick="logout()" title="Cerrar sesión">✕</button>
       </div>
     </div>
@@ -3750,6 +3822,628 @@ function getTimeEst(skillId) {
   if (!t) return '';
   return `<span class="skill-time-est"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="5" stroke="currentColor" stroke-width="1"/><path d="M6 3.5V6L7.5 7.5" stroke="currentColor" stroke-width="1" stroke-linecap="round"/></svg>${t} min</span>`;
 }
+
+// ═══════════════════════════════════════════════
+// DINÁMICA 1: ANTES VS DESPUÉS
+// Skills: s1, s2, s3, s4, s5, s6
+// ═══════════════════════════════════════════════
+const BEFORE_AFTER = {
+  's1': {
+    label: 'Mira la diferencia antes de practicar',
+    intro: 'El mismo comité de Luda. Dos prompts. Dos outputs radicalmente distintos. Identifica qué hace diferente al segundo antes de escribir el tuyo.',
+    before: {
+      label: 'Prompt sin estructura',
+      prompt: 'Analiza este informe de comité de dirección de Luda.',
+      output: `Luda es una empresa de tecnología farmacéutica que opera en el mercado español. El informe muestra que la empresa está trabajando en varios verticales incluyendo shortage, UM y OTC. El GMV sigue siendo negativo año contra año pero hay señales de mejora. La compañía tiene varios retos pendientes como la apertura de nuevas zonas y el lanzamiento de la receta digital. En general parece que el equipo está trabajando para revertir la tendencia negativa y esperan mejorar en el próximo trimestre.`,
+      problems: ['Sin cifras concretas', 'No hay recomendación', 'Tono descriptivo, no decisional', 'No identifica el runway crítico de 1.5 meses', 'No sirve para llevar al IC']
+    },
+    after: {
+      label: 'Prompt con deliverable + decision context + format',
+      prompt: 'DELIVERABLE: Análisis IC-ready\nDECISION CONTEXT: Decidir en 30 días entre bridge financing o contingency plan\nFORMAT: Resumen 5 bullets / KPIs tabla / Alertas por urgencia / Recomendación',
+      output: `⚠ FLAG CRÍTICO: Runway 1.5 meses — acción requerida antes de fin de junio.
+
+RESUMEN EJECUTIVO:
+— GMV YoY negativo mejorando: -5pp vs mes anterior, tendencia hacia neutro en junio
+— Ventas netas marzo +81% YoY; Margen Bruto 251k; EBITDA -321k
+— Caja 323k → Runway 1.5 meses: riesgo de liquidez inmediato
+— 14 puntos por debajo del plan global; Glovo y OTC principales lastres
+— Luda Trends: 90%+ farmacias en fase de automatización — producto core sólido
+
+→ RECOMENDACIÓN: CONTINGENCY PLAN
+Justificación: Runway insuficiente para esperar reversión orgánica. Prioridad: bridge o reducción de costes antes de 30 días.`,
+      improvements: ['Flag crítico al inicio', 'Cifras exactas en cada punto', 'Recomendación explícita con justificación', 'Accionable para el IC', 'Formato consistente y reutilizable']
+    }
+  },
+  's2': {
+    label: 'Mismo documento, distinto rol — mira qué cambia',
+    intro: 'El System + Role cambia el ángulo del análisis completamente. Aquí el mismo documento analizado con dos roles distintos. Observa cómo el foco es diferente.',
+    before: {
+      label: 'Sin system prompt — Claude genérico',
+      prompt: 'Analiza la situación financiera de Luda Partners.',
+      output: `Luda Partners es una empresa tecnológica en el sector farmacéutico. Sus finanzas muestran un crecimiento significativo en ventas netas del 81% interanual, lo cual es muy positivo. Sin embargo, el EBITDA es negativo en -321k, lo que indica que la empresa todavía no es rentable. La caja disponible es de 323k euros. La empresa opera en varios verticales como shortage, UM y OTC. En general, la empresa muestra señales mixtas con buen crecimiento en ventas pero todavía sin rentabilidad, lo cual es común en empresas tecnológicas en fase de crecimiento.`,
+      problems: ['Tono de analista financiero genérico', 'No hay criterio de inversión', '"Muy positivo" — adjetivo vacío', 'Normaliza el EBITDA negativo sin profundizar', 'No hay implicación para la decisión del fondo']
+    },
+    after: {
+      label: 'Con System → Role de portfolio monitoring',
+      prompt: 'SYSTEM: Analista senior de PE. Outputs IC-ready. Nunca inventas datos.\nROL: Portfolio monitoring — evalúas con criterio de si ampliarías posición.\nCONTEXTO: Decisión sobre bridge en 3 semanas.',
+      output: `⚠ CRÍTICO: Runway 1.5 meses. La pregunta no es si el negocio funciona — es si hay tiempo.
+
+Ventas netas +81% YoY confirman tracción del producto. El problema es structural cash timing: la compañía está quemando más rápido de lo que ingresa. EBITDA -321k con 323k de caja no da margen para esperar la reversión natural del GMV YoY.
+
+Implicación para el fondo: la decisión de inversión (bridge o contingencia) no puede esperar al próximo comité. El análisis de esta semana tiene que producir una recomendación ejecutable antes del día 30.`,
+      improvements: ['Identifica la decisión real (no el análisis)', 'Prioriza por urgencia, no por relevancia genérica', 'Tono de alguien con skin in the game', 'Conecta cada dato con la implicación para el fondo', 'Lleva directamente a la acción']
+    }
+  },
+  's3': {
+    label: 'Con y sin ejemplo de referencia — la diferencia es el estilo',
+    intro: 'Few-shot prompting no cambia lo que dice el análisis — cambia cómo suena. Aquí el mismo análisis con y sin tu memo de referencia.',
+    before: {
+      label: 'Sin few-shot — estilo genérico de IA',
+      prompt: 'Analiza el comité de Luda de mayo 2026 y genera un resumen ejecutivo.',
+      output: `El comité de dirección de Luda Partners correspondiente a mayo de 2026 presenta los siguientes puntos clave:
+
+En términos de rendimiento financiero, la compañía muestra una evolución positiva en sus métricas de GMV con una mejora de 5 puntos porcentuales respecto al mes anterior, aunque el indicador YoY sigue siendo negativo. Las ventas netas experimentaron un crecimiento del 81% interanual en marzo, lo cual refleja la buena evolución del negocio core.
+
+Respecto a los retos identificados, destacan la situación de liquidez con un runway de 1.5 meses, el impacto negativo de Glovo en el vertical UM, y los retrasos en la apertura de nuevas zonas OTC.`,
+      problems: ['Estructura de bullet points genérica de IA', '"Presenta los siguientes puntos clave" — frase de plantilla', 'Pasivo y descriptivo', 'No suena a PE — suena a informe de consultoría', 'Ningún fondo reconocería esto como suyo']
+    },
+    after: {
+      label: 'Con few-shot de gold memo — estilo del fondo',
+      prompt: 'EJEMPLO DE ESTILO:\n[Tu mejor memo anterior]\n\nReplica exactamente el tono, estructura y nivel de detalle del ejemplo en el análisis de Luda.',
+      output: `Luda — Mayo 2026 | Runway: 1.5m | Recomendación: Contingency plan
+
+GMV YoY mejora 5pp pero sigue negativo — tendencia correcta, timing insuficiente dada la posición de caja. Shortage alcanza neutro; Glovo (-7pp en 2 meses) y OTC (retrasos apertura de zonas) siguen lastrando.
+
+Caja 323k / burn implícito ~215k/mes → 1.5m runway. No hay buffer para esperar la reversión del plan.
+
+Luda Trends: 230 clientes, 90%+ en fase 3 de automatización. El producto funciona — el problema es financiero, no de mercado.
+
+Acción: bridge de liquidez o reducción de estructura antes del 30 de junio.`,
+      improvements: ['Primera línea con todo lo importante', 'Cifras sin palabras de relleno', 'Razonamiento visible (runway / burn implícito)', 'Tono directo de alguien que tiene que tomar una decisión', 'Cualquier socio de PE reconocería este estilo']
+    }
+  },
+  's4': {
+    label: 'Con y sin force schema — la diferencia es la exhaustividad',
+    intro: 'Sin schema, Claude omite lo que no ve claramente. Con schema, te obliga a enfrentarte a los gaps. Mira la diferencia en cobertura.',
+    before: {
+      label: 'Sin force schema',
+      prompt: 'Describe el modelo de negocio de Luda Partners.',
+      output: `Luda Partners opera un marketplace B2B para el sector farmacéutico en España. La compañía conecta farmacias con distribuidores y ofrece servicios de entrega a través de riders. Sus principales verticales son shortage (gestión de medicamentos difíciles de encontrar), UM (última milla) y OTC (productos de venta libre). También tiene un producto SaaS llamado Luda Trends para la gestión de compras automáticas en farmacias. La empresa genera ingresos a través de comisiones en las transacciones y cuotas de suscripción.`,
+      problems: ['No hay unit economics (CAC, LTV, churn)', 'No hay % de ingresos recurrentes vs transaccionales', 'No identifica qué datos NO están en el documento', 'Descripción superficial que no sirve para una decisión de inversión']
+    },
+    after: {
+      label: 'Con force schema de business model PE',
+      prompt: 'Rellena OBLIGATORIAMENTE este schema. Si un campo no está en el documento, escribe "No reportado":\n1. Fuentes de ingreso\n2. % recurrente vs transaccional\n3. CAC / LTV / Churn\n4. Palancas de crecimiento (3)\n5. Riesgos estructurales (3)',
+      output: `1. FUENTES DE INGRESO: Comisiones Shortage/UM/OTC + cuotas SaaS Trends (mensual/trimestral/semestral/anual)
+
+2. RECURRENTE vs TRANSACCIONAL: Trends MRR ~recurrente (230 farmacias × ticket medio). UM/OTC transaccional. Estimado: 40% recurrente / 60% transaccional. [No reportado explícitamente]
+
+3. UNIT ECONOMICS:
+— CAC: No reportado
+— LTV proxy: ARPU × (1/churn rate). Churn mayo: 10 bajas / ~230 clientes ≈ 4.3% mensual → LTV ~23 meses de ARPU
+— Churn: 4.3% mensual (10 bajas en mayo) [dato en slide 27]
+
+4. PALANCAS DE CRECIMIENTO:
+— Apertura zonas OTC: retrasada pero en progreso (slide 33)
+— Receta digital: lanzamiento pendiente, impacto estimado no reportado
+— Recuperación GMV Glovo: +7pp en 2 meses, tendencia positiva
+
+5. RIESGOS ESTRUCTURALES:
+— Dependencia de Glovo (lastra UM, riesgo de concentración)
+— Runway 1.5 meses (existencial a corto plazo)
+— Retrasos sistemáticos en apertura de nuevas zonas`,
+      improvements: ['Cubre todos los campos aunque sea con "No reportado"', 'Fuerza el razonamiento explícito (LTV calculado con los datos disponibles)', 'Cita las fuentes (slide 27, slide 33)', 'Los gaps son visibles — sabes qué preguntar en el comité', 'Formato reutilizable para cualquier participada']
+    }
+  },
+  's5': {
+    label: 'Draft vs versión tras el skeptic — mira cuánto mejora',
+    intro: 'El valor del multi-pass no es el draft — es lo que le hace el skeptic al draft. Aquí el mismo análisis antes y después del Pass 2.',
+    before: {
+      label: 'Pass 1 — Draft inicial',
+      prompt: 'Analiza el comité de Luda de mayo 2026.',
+      output: `RECOMENDACIÓN: CONTINGENCY PLAN
+
+El runway de 1.5 meses es el factor determinante. Con 323k de caja y un burn rate implícito de ~215k/mes, la compañía necesita una decisión de liquidez antes de fin de junio.
+
+Positivos: GMV YoY mejorando (+5pp), Luda Trends con buena adopción (90%+ en automatización), Uber creciendo +42% YoY.
+
+Plan: reducción de costes o bridge de liquidez inmediato. Si el management puede demostrar que el GMV YoY llega a positivo en junio, el bridge se justifica.`,
+      problems: ['Asume que el burn rate de ~215k/mes es correcto sin verificarlo', 'No cuestiona si el GMV positivo en junio es realista', 'No analiza si hay palancas de reducción de costes concretas', 'Demasiado optimista con Luda Trends como factor mitigante']
+    },
+    after: {
+      label: 'Pass 3 — Tras el skeptic',
+      prompt: 'Incorpora estas críticas válidas del IC escéptico:\n1. El burn rate de 215k/mes es inferido, no confirmado\n2. La proyección de GMV positivo en junio no tiene base en el documento\n3. No hay plan de costes concreto',
+      output: `RECOMENDACIÓN: CONTINGENCY PLAN — con reservas importantes
+
+⚠ DATOS NO CONFIRMADOS: El burn rate de ~215k/mes es inferencia (caja 323k / runway 1.5m declarado por management). No hay P&L de caja en el documento que lo valide. [SUPUESTO]
+
+El GMV YoY positivo en junio es expectativa del management (slide 3), no proyección con base cuantitativa. La mejora de 5pp en mayo no implica necesariamente +5pp adicionales en junio.
+
+CONTINGENCY PLAN se mantiene como recomendación, pero el análisis requiere dos datos antes del IC: (1) estado de tesorería validado por CFO, (2) plan de reducción de costes con cifras concretas.
+
+Sin esos datos, el bridge financing no puede justificarse con la información disponible.`,
+      improvements: ['Distingue datos confirmados de inferidos', 'Marca supuestos explícitamente con [SUPUESTO]', 'La recomendación se mantiene pero con condiciones', 'Identifica qué datos faltan para que el análisis sea completo', 'Un IC real aceptaría este nivel de rigor']
+    }
+  },
+  's6': {
+    label: 'Con y sin evidence discipline — la diferencia es la fiabilidad',
+    intro: 'Sin citations, no sabes qué es real y qué inventó Claude. Con citations, cada cifra es verificable en segundos. Mira la diferencia.',
+    before: {
+      label: 'Sin evidence discipline',
+      prompt: 'Dame los KPIs principales de Luda de mayo 2026.',
+      output: `Los principales KPIs de Luda en mayo 2026 son:
+— GMV YoY: aproximadamente -8% (mejorando desde -13% en abril)
+— Ventas netas: crecimiento del 81% interanual en marzo
+— EBITDA: -321k euros
+— Caja disponible: 323k euros
+— Runway: 1.5 meses
+— Clientes Trends: 230 farmacias activas
+— Churn mensual: aproximadamente 10 bajas en mayo`,
+      problems: ['"Aproximadamente -8%" — cifra inventada, el documento no da el % exacto de GMV YoY', '"Mejorando desde -13%" — también inferido, no citado', 'Sin referencias de slide para ninguna cifra', 'No puedes saber cuáles son reales y cuáles inferidas', 'Llevar esto al IC sin verificar es un riesgo real']
+    },
+    after: {
+      label: 'Con evidence discipline activada',
+      prompt: 'Dame los KPIs de Luda. REGLA: cada cifra lleva (slide N). Si no puedes citar, escribe [no localizado].',
+      output: `KPIs Luda — Mayo 2026:
+— GMV YoY: negativo, mejorando ~5pp vs mes anterior (slide 3) — porcentaje exacto no reportado [no localizado]
+— Ventas netas marzo: +81% YoY (slide 19)
+— Margen Bruto: 251k (slide 19)
+— EBITDA contable: -321k (slide 19)
+— Tesorería: 323k (slide 20)
+— Runway: 1.5 meses (slide 21)
+— Clientes Trends: 230 (145 mensuales / 29 trimestrales / 9 semestrales / 47 anuales) (slide 27)
+— Churn mayo: 10 bajas (slide 27)`,
+      improvements: ['Cada cifra tiene su fuente verificable', 'Distingue claramente lo que está vs lo que no está en el documento', 'El "~5pp" está citado aunque sea aproximado', 'Puedes verificar cualquier dato en 10 segundos', 'Esto sí es IC-ready — auditable por el socio']
+    }
+  }
+};
+
+// ═══════════════════════════════════════════════
+// DINÁMICA 2: SCAFFOLDING (VER → MODIFICAR → CONSTRUIR)
+// Skills: n3, n4, a1, a2, a3, a4, a5
+// ═══════════════════════════════════════════════
+const SCAFFOLDING = {
+  'n3': {
+    label: 'Primero ve cómo funciona, luego modifícalo, luego constrúyelo',
+    steps: [
+      {
+        step: 1,
+        title: 'VER — Importa este escenario de Make ya construido',
+        desc: 'Antes de construir nada, importa este escenario en tu cuenta de Make y ejecútalo con el comité de Luda. Entiende cada módulo antes de tocar nada.',
+        action: 'Importar escenario en Make',
+        detail: 'En Make: Create new scenario → Import blueprint → Pega el JSON de abajo. Conéctalo con tus credenciales de Gmail y Notion. Ejecútalo una vez en modo "Run once" con el comité de Luda.',
+        code: `{
+  "name": "PE Comités — Scaffold v1",
+  "flow": [
+    {"id": 1, "module": "gmail.watchEmails", "filter": "subject:comité"},
+    {"id": 2, "module": "gmail.getAttachment", "from": 1},
+    {"id": 3, "module": "http.makeRequest", 
+     "url": "https://api.anthropic.com/v1/messages",
+     "method": "POST",
+     "headers": {"x-api-key": "{{API_KEY}}", "anthropic-version": "2023-06-01"},
+     "body": {"model": "claude-sonnet-4-6", "max_tokens": 2000,
+              "messages": [{"role": "user", "content": "Analiza: {{2.text}}"}]}},
+    {"id": 4, "module": "notion.createPage", "from": 3}
+  ]
+}`
+      },
+      {
+        step: 2,
+        title: 'MODIFICAR — Cambia el prompt del módulo HTTP',
+        desc: 'El escenario funciona pero el prompt es básico. Reemplaza el prompt del módulo 3 (HTTP) por tu prompt IC-ready del ejercicio de la Fase 1. No toques los otros módulos.',
+        action: 'Editar solo el módulo HTTP',
+        detail: 'Abre el módulo 3 → cambia el campo "content" del body por tu prompt completo con SYSTEM + ROL + TASK + FORMAT. Ejecuta de nuevo y compara el output en Notion.'
+      },
+      {
+        step: 3,
+        title: 'CONSTRUIR — Ahora constrúyelo desde cero para otra participada',
+        desc: 'Con el escenario claro en tu cabeza, crea un escenario nuevo desde cero para otra participada de tu portfolio. Cambia el filtro de Gmail y la base de datos de Notion.',
+        action: 'Crear escenario nuevo',
+        detail: 'Nuevo scenario → añade los 4 módulos manualmente → conecta con las credenciales → prueba. Esta vez sin mirar el scaffold.'
+      }
+    ]
+  },
+  'n4': {
+    label: 'Primero entiende la llamada, luego modifícala, luego constrúyela',
+    steps: [
+      {
+        step: 1,
+        title: 'VER — Prueba esta llamada en Postman o en el navegador',
+        desc: 'Antes de configurar Make, entiende exactamente qué hace la API de Claude. Ejecuta esta llamada y ve la respuesta cruda.',
+        action: 'Probar la llamada HTTP',
+        detail: 'Abre una terminal o Postman y ejecuta esta llamada con tu API key real:',
+        code: `curl https://api.anthropic.com/v1/messages \\
+  -H "x-api-key: TU_API_KEY" \\
+  -H "anthropic-version: 2023-06-01" \\
+  -H "content-type: application/json" \\
+  -d '{"model":"claude-sonnet-4-6","max_tokens":200,
+       "messages":[{"role":"user","content":"Di hola en una línea"}]}'`
+      },
+      {
+        step: 2,
+        title: 'MODIFICAR — Cambia el prompt y observa el impacto en tokens',
+        desc: 'Cambia el content por tu prompt de comités (más largo). Compara el campo "usage" en la respuesta: cuántos input_tokens vs output_tokens. Eso determina el coste.',
+        action: 'Ver uso de tokens',
+        detail: 'La respuesta incluye: {"usage": {"input_tokens": X, "output_tokens": Y}}. Con un comité completo: ¿cuántos tokens? Multiplica por $0.000003 por input token y $0.000015 por output token para estimar el coste por análisis.'
+      },
+      {
+        step: 3,
+        title: 'CONSTRUIR — Configura el módulo HTTP en Make',
+        desc: 'Ahora que entiendes la llamada, configúrala en Make. Sabes exactamente qué va en cada campo porque ya lo viste funcionar.',
+        action: 'Configurar módulo HTTP en Make',
+        detail: 'Make → HTTP module → URL, headers, body. Los valores son exactamente los que usaste en el curl.'
+      }
+    ]
+  },
+  'a1': {
+    label: 'Ve el agente funcionando antes de construirlo',
+    steps: [
+      {
+        step: 1,
+        title: 'VER — Simula el agente manualmente primero',
+        desc: 'Antes de tocar Make, simula el agente completo a mano una vez: coge el comité de Luda, pásalo por Claude con el prompt de comités, y crea manualmente la entrada en Notion. Entiende exactamente qué tiene que hacer Make por ti.',
+        action: 'Simulación manual',
+        detail: 'Abre Claude.ai → adjunta el PDF del comité → usa tu prompt IC-ready → copia el output → crea una página en Notion con esos datos. Cronométrate. Eso es lo que el agente va a hacer automático.'
+      },
+      {
+        step: 2,
+        title: 'MODIFICAR — Construye el agente con el scaffold de n3',
+        desc: 'Importa el scaffold de la habilidad n3 y añade los campos de Notion específicos para comités: participada, fecha, KPIs, flags, recomendación. Solo modifica el módulo de Notion.',
+        action: 'Adaptar el scaffold al formato de comités',
+        detail: 'Abre el escenario del scaffold → módulo 4 (Notion) → añade estas propiedades: Participada (título), Fecha (date), Resumen (rich text), KPIs (rich text), Flags (multi-select), Recomendación (select: FOLLOW-ON/CONTINGENCY/HOLD).'
+      },
+      {
+        step: 3,
+        title: 'CONSTRUIR — Añade el manejo de errores y prueba con email real',
+        desc: 'El agente básico funciona. Ahora añade el error handler y pruébalo con un email real de participada. Si tarda más de 90 segundos en producir la entrada en Notion, hay algo mal.',
+        action: 'Prueba end-to-end con email real',
+        detail: 'Mándate a ti mismo un email con el comité de Luda como PDF adjunto → activa el escenario → verifica que en <90s aparece la entrada en Notion con todos los campos correctos.'
+      }
+    ]
+  },
+  'a2': {
+    label: 'Del agente de comités al agente de CIMs — reutiliza lo que ya sabes',
+    steps: [
+      {
+        step: 1,
+        title: 'VER — El agente de CIMs es el agente de comités con tres cambios',
+        desc: 'No construyes desde cero — reutilizas el agente de comités (a1) y cambias: el trigger (Drive en lugar de Gmail), el prompt (CIM-to-screen en lugar de comités), y el routing (si hay flags críticos → email al socio).',
+        action: 'Identificar las diferencias',
+        detail: 'Abre tu escenario del agente a1 → duplica el escenario → lista los 3 módulos que cambian vs los 2 que se quedan igual. Antes de modificar nada, escribe la lista.'
+      },
+      {
+        step: 2,
+        title: 'MODIFICAR — Cambia trigger y prompt',
+        desc: 'Reemplaza el módulo Gmail por Google Drive "Watch files in folder". Cambia el prompt por el CIM-to-screen loop de 4 pasos. Prueba con un PDF de prueba en Drive.',
+        action: 'Adaptar trigger y prompt',
+        detail: 'Módulo 1: Google Drive → Watch files → selecciona la carpeta "Nuevas oportunidades". Módulo 3: cambia el prompt. Ejecuta en modo "Run once" con un CIM de prueba.'
+      },
+      {
+        step: 3,
+        title: 'CONSTRUIR — Añade el router de flags críticos',
+        desc: 'El agente básico funciona. Añade la lógica de routing: si el output de Claude contiene "CRÍTICO" más de 2 veces → email inmediato al socio. Ese es el valor real de este agente.',
+        action: 'Añadir router condicional',
+        detail: 'Después del módulo HTTP → añade un Router → condición: {{3.content}} contains "CRÍTICO" → ruta 1: Notion + email socio / ruta 2: solo Notion.'
+      }
+    ]
+  },
+  'a3': {
+    label: 'Del agente reactivo al agente proactivo — monitoring vs análisis',
+    steps: [
+      {
+        step: 1,
+        title: 'VER — La diferencia con los agentes anteriores: aquí el trigger eres tú (el tiempo)',
+        desc: 'Los agentes a1 y a2 se activan cuando alguien hace algo (envía un email, sube un archivo). El agente de KPIs se activa solo, sin intervención humana. Entiende primero el schedule en Make antes de construir.',
+        action: 'Configurar un schedule de prueba',
+        detail: 'Crea un escenario nuevo en Make → módulo "Tools: Sleep" → configura un schedule para "el primer lunes de cada mes a las 8:00". Ejecútalo manualmente para verificar que funciona.'
+      },
+      {
+        step: 2,
+        title: 'MODIFICAR — Construye el Sheets template primero',
+        desc: 'El agente es inútil sin datos. Antes de configurar Make, crea el Google Sheets template con los KPIs de Luda: GMV, ARPU, revenue, EBITDA, caja, runway. Añade columnas de budget y mes anterior.',
+        action: 'Crear el Sheets template',
+        detail: 'Google Sheets → nueva hoja → columnas: KPI / Valor actual / Budget / Mes anterior / Varianza vs budget / Varianza vs anterior / Umbral alerta. Rellena con los datos de mayo 2026 de Luda.'
+      },
+      {
+        step: 3,
+        title: 'CONSTRUIR — Conecta el schedule → Sheets → Claude → email',
+        desc: 'Ahora tienes el schedule y los datos. Conecta los 4 módulos: trigger de fecha → leer Sheets → Claude analiza desviaciones → email con alertas al socio.',
+        action: 'Flujo completo de monitoring',
+        detail: 'Schedule → Google Sheets (Get rows) → HTTP Claude (prompt de análisis de KPIs) → Gmail (send email). Prueba activando el escenario manualmente con los datos de Luda.'
+      }
+    ]
+  },
+  'a4': {
+    label: 'Configura las fuentes antes de construir el agente',
+    steps: [
+      {
+        step: 1,
+        title: 'VER — Entiende cómo funciona un RSS feed antes de automatizarlo',
+        desc: 'Un RSS feed es una URL que devuelve las últimas noticias de una fuente en formato XML. Antes de conectar Make, verifica manualmente que las fuentes que eliges tienen contenido relevante.',
+        action: 'Probar feeds RSS manualmente',
+        detail: 'Abre estas URLs en el navegador y verifica que devuelven noticias relevantes para tu tesis:\n• https://www.expansion.com/rss/mercados/bolsa.xml\n• https://cincodias.elpais.com/rss/cincodias/economia.xml\n• https://www.eleconomista.es/rss/rss-empresas-finanzas.php\nSi la URL devuelve XML con artículos → es válida. Si da error → busca otra.'
+      },
+      {
+        step: 2,
+        title: 'MODIFICAR — Define el criterio de filtrado antes del agente',
+        desc: 'Antes de configurar el prompt de Claude, escribe en lenguaje natural el criterio de tu tesis: qué tipo de empresa, en qué sector, en qué estadio, con qué señales específicas. Ese texto es la base del prompt.',
+        action: 'Escribir el criterio de filtrado',
+        detail: 'Escribe 3-5 líneas describiendo vuestra tesis de inversión. Ejemplo: "Empresas B2B de software en España o LATAM, sectores regulados (salud, farmacia, finanzas), entre 2M€ y 20M€ de ARR, con señales de crecimiento acelerado o cambio de liderazgo." Ese texto va directamente en el prompt.'
+      },
+      {
+        step: 3,
+        title: 'CONSTRUIR — Conecta feeds → filtrado → email matutino',
+        desc: 'Con las fuentes verificadas y el criterio definido, el agente se construye en 20 minutos. RSS feeds → agregación → Claude filtra por tesis → email a las 7:00.',
+        action: 'Agente de deal sourcing completo',
+        detail: 'Schedule (7:00 daily) → RSS (Watch feed) × N fuentes → Iterator → HTTP Claude (scoring) → Filter (score >= 7) → Gmail (email resumen). Si no hay noticias relevantes ese día: no enviar email.'
+      }
+    ]
+  },
+  'a5': {
+    label: 'El más complejo — construye primero el template, luego el agente',
+    steps: [
+      {
+        step: 1,
+        title: 'VER — Genera el LP update de Luda manualmente una vez',
+        desc: 'Antes de automatizar, entiende qué calidad de output necesitas. Genera el bloque de LP update de Luda Q1 2026 manualmente en Claude. Ese output es tu estándar de calidad para evaluar el agente.',
+        action: 'Generar LP update manual de Luda',
+        detail: 'Usa el prompt de LP narrative del ejercicio de s33. Evalúa el output: ¿lo enviarías a un LP institucional sin editar? Si no, ajusta el prompt antes de automatizarlo. Nunca automatices un prompt que no funciona manualmente.'
+      },
+      {
+        step: 2,
+        title: 'MODIFICAR — Diseña el Sheets de input con los datos exactos que necesita Claude',
+        desc: 'El agente es tan bueno como sus datos de input. Diseña el Sheets con exactamente los campos que necesita tu prompt LP narrative para generar un output de calidad.',
+        action: 'Diseñar el template de input',
+        detail: 'Columnas mínimas por participada: nombre / período / revenue actual / revenue budget / revenue YoY / EBITDA actual / EBITDA budget / hito positivo 1 / hito positivo 2 / riesgo principal / plan de acción / outlook. Sin estos campos, el output será genérico.'
+      },
+      {
+        step: 3,
+        title: 'CONSTRUIR — Schedule → Sheets → Claude por participada → Google Docs borrador',
+        desc: 'El agente más complejo del curso. Itera sobre todas las participadas del Sheets, genera el commentary de cada una, y compila todo en un Google Doc que llega a tu email para revisión.',
+        action: 'Agente LP update completo',
+        detail: 'Schedule (inicio Q) → Sheets (get all rows) → Iterator (por participada) → HTTP Claude → Array aggregator → Google Docs (create document con todo el contenido) → Gmail (link al borrador).'
+      }
+    ]
+  }
+};
+
+// ═══════════════════════════════════════════════
+// DINÁMICA 3: ENCUENTRA EL ERROR
+// Skills: s6, s10, s18, s26, d2, d3
+// ═══════════════════════════════════════════════
+const FIND_THE_ERROR = {
+  's6': {
+    label: '¿Puedes encontrar los 3 errores de citations?',
+    intro: 'Claude generó este análisis de Luda con evidence discipline activada. Hay 3 errores deliberados. Encuéntralos antes de marcar la habilidad como completada.',
+    flawed_output: `KPIs Luda — Mayo 2026:
+— GMV YoY: -8.3% (slide 3)
+— Ventas netas Q1 2026: +81% YoY (slide 14)
+— Margen Bruto: 251k€ (slide 19)
+— EBITDA: -321k€ (slide 22)
+— Tesorería: 323k€ (slide 20)
+— Runway: 1.5 meses (slide 21)
+— Clientes Trends: 245 farmacias (slide 27)
+— Churn mensual: ~4.3% (slide 25)`,
+    errors: [
+      { location: 'GMV YoY: -8.3% (slide 3)', explanation: 'El documento dice que el GMV YoY es negativo y mejoró ~5pp, pero NO da el porcentaje exacto de -8.3%. Ese número está inventado. Debería decir "negativo, mejorando ~5pp vs mes anterior (slide 3) — porcentaje exacto no reportado".' },
+      { location: 'Clientes Trends: 245 farmacias (slide 27)', explanation: 'El documento dice 230 clientes Trends, no 245. Error de cifra. La cita del slide es correcta pero el número es incorrecto.' },
+      { location: 'Churn mensual: ~4.3% (slide 25)', explanation: 'El churn calculado (~4.3%) es una inferencia (10 bajas / 230 clientes), no un dato reportado. No existe en el slide 25 ni en ningún slide. Debería marcarse como [INFERIDO] y citar el cálculo.' },
+    ],
+    hint: 'Pista: uno es un número inventado, uno es un número incorrecto, uno es una inferencia no marcada.'
+  },
+  's10': {
+    label: '¿Puedes encontrar los 3 errores de QC en este análisis financiero?',
+    intro: 'Este análisis financiero de Luda tiene 3 errores que un QC prompt debería detectar. Encuéntralos.',
+    flawed_output: `ANÁLISIS FINANCIERO — LUDA PARTNERS — MAYO 2026
+
+KPIs principales:
+— Ventas netas marzo 2026: +81% YoY → Revenue anualizado estimado: ~4.8M€
+— Margen Bruto: 251k€ en marzo → Margen Bruto anualizado: ~3M€
+— EBITDA mensual: -321k€ → EBITDA anualizado: -3.85M€
+— Tesorería: 323k€
+— Runway: 1.5 meses
+
+Bridge de liquidez:
+EBITDA mensual: -321k€
++ Amortización estimada: +45k€
+= Cash burn operativo: -276k€/mes
+→ Runway con 323k€: 323k / 276k = 1.17 meses
+
+Comentario: El runway de 1.5 meses declarado por el management implica un burn de 215k€/mes, inconsistente con el EBITDA de -321k€.`,
+    errors: [
+      { location: 'Revenue anualizado ~4.8M€', explanation: 'Error de unidades: las ventas netas de marzo son un dato mensual, no trimestral. Anualizarlo (×12) puede ser razonable, pero el margen bruto de 251k es también mensual, no el mismo período. Mezcla períodos sin explicitar.' },
+      { location: 'Margen Bruto anualizado ~3M€', explanation: 'El cálculo 251k × 12 = 3.012M€, no ~3M€ redondeo aceptable — pero el documento no dice que el margen bruto de marzo sea representativo del año. Es una extrapolación no marcada como [SUPUESTO].' },
+      { location: 'Runway con 323k€: 323k / 276k = 1.17 meses', explanation: 'El análisis concluye 1.17 meses pero el documento dice 1.5 meses. En lugar de señalar la inconsistencia y pedir aclaración, recalcula por su cuenta asumiendo que el EBITDA = cash burn, lo cual no es correcto (EBITDA excluye cambios en working capital, capex, etc.).' },
+    ],
+    hint: 'Pista: un error de unidades mixtas, un supuesto no marcado, y una contradicción con el dato del documento.'
+  },
+  's18': {
+    label: '¿Puedes encontrar los 3 errores en este QA harness de add-backs?',
+    intro: 'Este QA harness de add-backs de Luda tiene 3 errores que comprometen la normalización del EBITDA. Identifícalos.',
+    flawed_output: `QA HARNESS — NORMALIZACIÓN EBITDA — LUDA PARTNERS
+
+EBITDA reportado: -321k€
+
+ADD-BACKS ANALIZADOS:
+
+1. Gastos de reestructuración equipo comercial
+   Importe: 45k€ | Clasificación: ONE-TIME ✓
+   Justificación: Contratación de 3 becarios de sales (slide 24)
+   Evidencia necesaria: Confirmación de que es gasto no recurrente
+
+2. Diferencia entre salario de mercado y salario actual del CEO
+   Importe: 120k€ | Clasificación: ONE-TIME ✓
+   Justificación: El CEO cobra por debajo de mercado, add-back estándar en PE
+   Evidencia necesaria: Benchmark salarial del sector
+
+3. Gastos de expansión OTC (apertura nuevas zonas)
+   Importe: 85k€ | Clasificación: ONE-TIME ✓
+   Justificación: Costes de apertura no recurrentes una vez establecidas las zonas
+
+EBITDA normalizado: -321k + 45k + 120k + 85k = -71k€
+Mejora vs reportado: +250k€ (+78%)`,
+    errors: [
+      { location: 'Add-back 1: Gastos de contratación de becarios como ONE-TIME', explanation: 'Contratar becarios de sales no es gasto de reestructuración — es gasto operativo recurrente si el plan es mantener ese equipo. Solo sería ONE-TIME si es un programa temporal. El documento no lo clasifica como reestructuración (slide 24 habla de refuerzo del equipo, no de restructuring).' },
+      { location: 'Add-back 2: Diferencia salarial del CEO como ONE-TIME', explanation: 'Este add-back está mal clasificado y mal razonado. La diferencia entre salario actual y salario de mercado es un add-back legítimo en PE (owner economics), pero se clasifica como AJUSTE ESTRUCTURAL, no ONE-TIME. Además, el documento de Luda no menciona en ningún momento el salario del CEO — este dato está inventado.' },
+      { location: 'Add-back 3: Gastos OTC como ONE-TIME con 85k€', explanation: 'El importe de 85k€ no aparece en ningún slide del documento — está inventado. Los costes de expansión OTC se mencionan cualitativamente pero sin cifra. Un add-back sin evidencia cuantitativa en el documento no puede incluirse en la normalización del EBITDA.' },
+    ],
+    hint: 'Pista: un add-back mal clasificado, un dato completamente inventado, y un add-back con importe sin respaldo documental.'
+  },
+  's26': {
+    label: '¿Puedes identificar las 3 violaciones de guardrails en este análisis?',
+    intro: 'Este análisis de inversión viola 3 guardrails que deberías tener activos. Encuéntralos.',
+    flawed_output: `INVESTMENT MEMO — LUDA PARTNERS — MAYO 2026
+
+TESIS DE INVERSIÓN:
+Luda es la plataforma líder en gestión farmacéutica digital en España, con una posición competitiva sólida y un equipo comprometido con el proyecto a largo plazo.
+
+PROYECCIONES:
+— Revenue 2026E: 5.8M€ (crecimiento del 35% sobre 2025)
+— EBITDA 2026E: +180k€ (primer año de rentabilidad)
+— GMV 2027E: positivo en todos los verticales
+
+VALORACIÓN:
+El mercado de software farmacéutico en España es de aproximadamente 450M€ y crece al 18% anual. Con un EV/Revenue de 4x sobre las proyecciones de 2026, la valoración implícita sería de 23.2M€.
+
+RIESGOS:
+Los riesgos principales son manejables dado el sólido track record del equipo directivo y la clara ventaja competitiva que Luda ha construido en los últimos años.
+
+RECOMENDACIÓN: FOLLOW-ON con valoración de 20-25M€`,
+    errors: [
+      { location: '"equipo comprometido con el proyecto a largo plazo" y "sólido track record"', explanation: 'Violación de forbidden claims: afirmaciones sobre el compromiso del equipo y el track record sin ninguna cita que las respalde. El documento no menciona en ningún momento el track record del equipo directivo. Son afirmaciones vacías que el guardrail debería bloquear.' },
+      { location: 'Revenue 2026E: 5.8M€ y EBITDA 2026E: +180k€', explanation: 'Proyecciones sin marcador [SUPUESTO]. El documento de mayo 2026 es un comité mensual, no contiene proyecciones anuales. Estas cifras están completamente inventadas por Claude y presentadas como si fueran datos del documento.' },
+      { location: '"mercado de software farmacéutico en España: 450M€, creciendo al 18%"', explanation: 'Dato de mercado sin fuente citada. El documento no contiene este dato — Claude lo generó de su conocimiento general (que puede estar desactualizado o ser incorrecto). Violación del guardrail de citations: debería decir "[dato no localizado en el documento — fuente externa no verificada]".' },
+    ],
+    hint: 'Pista: una afirmación sin respaldo sobre el equipo, proyecciones inventadas sin marcador, y un dato de mercado sin fuente.'
+  },
+  'd2': {
+    label: '¿Puedes encontrar las 2 contradicciones entre el CIM y el contrato?',
+    intro: 'El CIM de una empresa target afirma ciertas cosas. El contrato con su mayor cliente dice algo diferente. Encuentra las contradicciones antes de que lo haga el IC.',
+    flawed_output: `EXTRACTO DEL CIM:
+"La compañía tiene contratos de largo plazo con sus principales clientes, con una duración media de 3-5 años. El contrato con Glovo, que representa el 35% del GMV, se extiende hasta diciembre de 2028 y incluye cláusulas de exclusividad en el segmento de farmacias. El precio está indexado al IPC, garantizando la protección de márgenes frente a la inflación."
+
+EXTRACTO DEL CONTRATO CON GLOVO (cláusula 4.2 y 8.1):
+"El presente contrato tendrá una duración de 24 meses desde la fecha de firma (enero 2025), con opción de renovación por períodos iguales previo acuerdo de ambas partes. No se establece exclusividad en ningún segmento de mercado. El precio se revisará anualmente a discreción de Glovo dentro de un rango de ±15%.
+
+En caso de cambio de control en cualquiera de las partes, la contraparte podrá rescindir el contrato con 30 días de preaviso."`,
+    errors: [
+      { location: 'Duración del contrato: CIM dice "hasta diciembre 2028" vs contrato dice "24 meses desde enero 2025" = enero 2027', explanation: 'El CIM afirma que el contrato dura hasta 2028. El contrato real vence en enero 2027, casi 2 años antes. En un deal donde el closing se prevé para finales de 2026, el contrato con el mayor cliente (35% del GMV) vence apenas meses después de la adquisición. Deal killer potencial si no se renueva antes del cierre.' },
+      { location: 'Exclusividad: CIM dice "cláusulas de exclusividad en farmacias" vs contrato dice "no se establece exclusividad"', explanation: 'El CIM presenta la exclusividad como una ventaja competitiva clave. El contrato no la contempla en ninguna cláusula. Glovo puede trabajar con cualquier competidor de Luda en el segmento de farmacias. El moat competitivo está significativamente exagerado en el CIM.' },
+    ],
+    hint: 'Hay exactamente 2 contradicciones directas entre los documentos. Una afecta a la duración, otra a las condiciones comerciales.'
+  },
+  'd3': {
+    label: '¿Puedes identificar los 2 add-backs que no sobrevivirían un QofE real?',
+    intro: 'Este análisis de QofE tiene 2 add-backs que un auditor experimentado rechazaría. Identifícalos y explica por qué.',
+    flawed_output: `QUALITY OF EARNINGS — ANÁLISIS PRELIMINAR
+
+EBITDA reportado 2025: 3.2M€
+
+ADD-BACKS PROPUESTOS:
+
+1. Salarios fundadores por encima de mercado: +420k€
+   Clasificación: OWNER ECONOMICS — ONE-TIME
+   Justificación: Los tres fundadores cobran salarios superiores al mercado. En una adquisición, el nuevo propietario racionalizaría estos costes al nivel de mercado.
+
+2. Gastos de I+D para nuevo módulo de IA: +180k€
+   Clasificación: INVESTMENT — ONE-TIME
+   Justificación: Gasto extraordinario para desarrollar un módulo de IA diagnóstica. No forma parte del negocio core y no se repetirá una vez completado.
+
+3. Gastos de consultoría de venta del proceso M&A: +95k€
+   Clasificación: TRANSACTION COSTS — ONE-TIME
+   Justificación: Honorarios del banco de inversión y abogados para el proceso de venta. Claramente no recurrentes.
+
+EBITDA normalizado: 3.2M€ + 420k + 180k + 95k = 3.895M€`,
+    errors: [
+      { location: 'Add-back 1: Salarios fundadores +420k€ — dirección del ajuste incorrecta', explanation: 'En owner economics, el ajuste va en la dirección opuesta: si los fundadores cobran POR ENCIMA del mercado, es un add-back (reduce costes → sube EBITDA). Pero si cobran POR DEBAJO del mercado (común en empresas familiares donde los fundadores se pagan poco para mostrar EBITDA alto), hay que RESTAR el coste de mercado — lo que BAJA el EBITDA normalizado. El análisis no especifica en qué dirección van los salarios, y asume que suben el EBITDA cuando podrían bajarlo.' },
+      { location: 'Add-back 2: Gastos de I+D +180k€ — recurrencia cuestionable', explanation: 'Los gastos de I+D para productos en desarrollo son frecuentemente recurrentes en empresas tech — no son one-time a menos que el producto sea una iniciativa claramente acotada y finalizada. Si la empresa sigue invirtiendo en IA (lo cual es probable dado que es su diferencial competitivo), estos 180k€ se repetirán. Un QofE real exigiría el plan de I+D para los próximos 3 años antes de clasificarlo como one-time.' },
+    ],
+    hint: 'Un add-back va en la dirección equivocada. El otro tiene una clasificación de recurrencia cuestionable.'
+  }
+};
+
+// ═══════════════════════════════════════════════
+// RENDER DYNAMICS
+// ═══════════════════════════════════════════════
+
+function renderBeforeAfter(skillId) {
+  const data = BEFORE_AFTER[skillId];
+  if (!data) return '';
+  return `<div class="dynamics-section ba-section">
+    <div class="dynamics-label">👁 ${data.label}</div>
+    <div class="ba-intro">${data.intro}</div>
+    <div class="ba-grid">
+      <div class="ba-card ba-bad">
+        <div class="ba-card-label bad">✗ ${data.before.label}</div>
+        <div class="ba-prompt-box">${data.before.prompt}</div>
+        <div class="ba-output">${data.before.output}</div>
+        <div class="ba-issues">
+          ${data.before.problems.map(p=>`<div class="ba-issue bad-issue">✗ ${p}</div>`).join('')}
+        </div>
+      </div>
+      <div class="ba-card ba-good">
+        <div class="ba-card-label good">✓ ${data.after.label}</div>
+        <div class="ba-prompt-box">${data.after.prompt}</div>
+        <div class="ba-output">${data.after.output}</div>
+        <div class="ba-issues">
+          ${data.after.improvements.map(p=>`<div class="ba-issue good-issue">✓ ${p}</div>`).join('')}
+        </div>
+      </div>
+    </div>
+  </div>`;
+}
+
+function renderScaffolding(skillId) {
+  const data = SCAFFOLDING[skillId];
+  if (!data) return '';
+  return `<div class="dynamics-section sc-section">
+    <div class="dynamics-label">🧱 ${data.label}</div>
+    <div class="sc-steps">
+      ${data.steps.map(s => `
+        <div class="sc-step">
+          <div class="sc-step-num">${s.step}</div>
+          <div class="sc-step-body">
+            <div class="sc-step-title">${s.title}</div>
+            <div class="sc-step-desc">${s.desc}</div>
+            <div class="sc-step-detail">${s.detail}</div>
+            ${s.code ? `<div class="sc-code">${s.code}</div>` : ''}
+          </div>
+        </div>`).join('')}
+    </div>
+  </div>`;
+}
+
+function renderFindTheError(skillId) {
+  const data = FIND_THE_ERROR[skillId];
+  if (!data) return '';
+  const storageKey = `fte_revealed_${skillId}`;
+  const revealed = localStorage.getItem(storageKey) === 'true';
+  return `<div class="dynamics-section fte-section" id="fte-${skillId}">
+    <div class="dynamics-label">🔍 ${data.label}</div>
+    <div class="fte-intro">${data.intro}</div>
+    <div class="fte-output">${data.flawed_output}</div>
+    <div class="fte-hint">${data.hint}</div>
+    <button class="fte-reveal-btn" onclick="revealErrors('${skillId}')" id="fte-btn-${skillId}">${revealed ? 'Ver solución de nuevo' : 'Revelar errores'}</button>
+    <div class="fte-errors ${revealed ? 'visible' : ''}" id="fte-errors-${skillId}">
+      ${data.errors.map((e,i) => `
+        <div class="fte-error">
+          <div class="fte-error-num">${i+1}</div>
+          <div class="fte-error-body">
+            <div class="fte-error-loc">❌ ${e.location}</div>
+            <div class="fte-error-exp">${e.explanation}</div>
+          </div>
+        </div>`).join('')}
+    </div>
+  </div>`;
+}
+
+function revealErrors(skillId) {
+  localStorage.setItem(`fte_revealed_${skillId}`, 'true');
+  const errorsEl = document.getElementById(`fte-errors-${skillId}`);
+  const btn = document.getElementById(`fte-btn-${skillId}`);
+  if (errorsEl) errorsEl.classList.add('visible');
+  if (btn) btn.textContent = 'Ver solución de nuevo';
+}
 const SUBTASK_EXERCISES = {
   's1': [
     { case: 'Caso: Recibes el comité de Luda de mayo 2026. Runway de 1.5 meses, GMV YoY negativo mejorando, EBITDA -321k.', task: 'Escribe un prompt sin ninguna estructura y observa qué output obtienes. Luego escribe el mismo prompt SIN deliverable, sin decision context y sin format.', prompt: 'Analiza este informe de comité de dirección de Luda.' },
@@ -3944,6 +4638,7 @@ function showApp() {
   recordActivity();
   renderStreak();
   renderWeeklyChallenge();
+  initTheme();
 }
 
 function renderNav() {
@@ -4108,6 +4803,9 @@ function renderSkillCard(s, levelMap) {
         <div class="skill-desc">${s.desc}</div>
         ${getArchDiagram(s.id)}
       </div>
+      ${renderBeforeAfter(s.id)}
+      ${renderScaffolding(s.id)}
+      ${renderFindTheError(s.id)}
       <div class="skill-section">
         <div class="skill-section-title">Subtareas — con ejercicios prácticos</div>
         ${subtasksHtml}
@@ -4306,18 +5004,37 @@ function toast(msg, type='') {
 }
 
 // ═══════════════════════════════════════════════
+// THEME TOGGLE
+// ═══════════════════════════════════════════════
+function toggleTheme() {
+  const isLight = document.documentElement.classList.toggle('light');
+  localStorage.setItem('theme', isLight ? 'light' : 'dark');
+  const btn = document.getElementById('theme-btn');
+  if (btn) btn.textContent = isLight ? '☀️' : '🌙';
+}
+
+function initTheme() {
+  const saved = localStorage.getItem('theme');
+  const preferLight = window.matchMedia('(prefers-color-scheme: light)').matches;
+  if (saved === 'light' || (!saved && preferLight)) {
+    document.documentElement.classList.add('light');
+  }
+  const btn = document.getElementById('theme-btn');
+  if (btn) btn.textContent = document.documentElement.classList.contains('light') ? '☀️' : '🌙';
+}
+
+// ═══════════════════════════════════════════════
 // INIT
 // ═══════════════════════════════════════════════
 window.addEventListener('load', async () => {
-  const cfg = getConfig();
+  initTheme();
+  const SUPABASE_URL = 'https://zdtoltdhbktruxpexjld.supabase.co';
+  const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpkdG9sdGRoYmt0cnV4cGV4amxkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA0MDUyNjcsImV4cCI6MjA5NTk4MTI2N30.fuMuVMNVQRmlsCVpLa8x4B0vhitRTK7vCG36d_VT8dY';
+  localStorage.setItem('sb_url', SUPABASE_URL);
+  localStorage.setItem('sb_key', SUPABASE_KEY);
+  initSupabase(SUPABASE_URL, SUPABASE_KEY);
+  const cfg = { url: SUPABASE_URL, key: SUPABASE_KEY };
   const loading = document.getElementById('loading');
-  if (!cfg.url || !cfg.key) {
-    loading.style.opacity = '0';
-    setTimeout(() => loading.style.display = 'none', 300);
-    document.getElementById('setup-screen').classList.remove('hidden');
-    return;
-  }
-  initSupabase(cfg.url, cfg.key);
   try {
     const { data: { session } } = await sbClient.auth.getSession();
     if (session?.user) {
