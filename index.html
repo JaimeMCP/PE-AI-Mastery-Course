@@ -32,6 +32,16 @@
     --font-mono: 'DM Mono', monospace;
   }
   html.light {
+    --bg: #f8f7f4; --bg2: #ffffff; --bg3: #f0ede8; --bg4: #e8e4de;
+    --border: #ddd9d2; --border2: #c8c3ba;
+    --text: #1a1917; --text2: #5a5754; --text3: #9a9590;
+    --gold: #8a6d1e; --gold2: #a07d22; --gold-dim: rgba(138,109,30,0.10);
+    --green: #2d7a50; --green-dim: rgba(45,122,80,0.10);
+    --red: #a03030; --blue: #2a5f8a; --blue-dim: rgba(42,95,138,0.10);
+  }
+  .theme-toggle { background:none; border:1px solid var(--border2); border-radius:20px; padding:3px 10px; cursor:pointer; color:var(--text2); font-family:var(--font-body); font-size:11px; display:flex; align-items:center; gap:5px; transition:all .15s; }
+  .theme-toggle:hover { border-color:var(--gold); color:var(--gold); }
+  html.light {
     --bg: #f8f7f4;
     --bg2: #ffffff;
     --bg3: #f0ede8;
@@ -300,11 +310,11 @@
   }
   .user-name { flex: 1; font-size: 12px; color: var(--text); }
   .logout-btn {
-    background: none; border: none; cursor: pointer;
-    color: var(--text3); font-size: 12px; padding: 2px 4px;
-    transition: color .15s;
+    background: none; border: 1px solid var(--border2); border-radius: 6px;
+    cursor: pointer; color: var(--text3); font-size: 11px; font-weight: 500;
+    padding: 3px 9px; font-family: var(--font-body); transition: all .15s;
   }
-  .logout-btn:hover { color: var(--red); }
+  .logout-btn:hover { border-color: var(--red); color: var(--red); }
 
   /* Overall progress in sidebar */
   .sidebar-progress {
@@ -889,6 +899,29 @@
   .fte-error-body { flex:1; }
   .fte-error-loc { font-size:12px; font-weight:500; color:#c87a7a; margin-bottom:4px; font-family:var(--font-mono); }
   .fte-error-exp { font-size:12px; color:var(--text2); line-height:1.5; }
+
+  /* ── DOCUMENT PICKER ── */
+  .doc-picker { background:var(--bg2); border:1px solid rgba(201,168,76,0.4); border-radius:var(--radius-lg); padding:16px 20px; margin-bottom:24px; }
+  .doc-picker-header { display:flex; align-items:center; gap:10px; margin-bottom:12px; }
+  .doc-picker-icon { font-size:18px; }
+  .doc-picker-title { font-size:13px; font-weight:500; color:var(--text); }
+  .doc-picker-sub { font-size:11px; color:var(--text3); margin-top:2px; }
+  .doc-options { display:flex; flex-direction:column; gap:6px; }
+  .doc-opt { display:flex; align-items:center; gap:10px; padding:10px 12px; background:var(--bg3); border:1px solid var(--border); border-radius:var(--radius); cursor:pointer; transition:all .15s; }
+  .doc-opt:hover { border-color:var(--border2); }
+  .doc-opt.sel { border-color:var(--gold); background:var(--gold-dim); }
+  .doc-opt-name { font-size:13px; font-weight:500; color:var(--text); flex:1; }
+  .doc-opt-type { font-size:11px; color:var(--text3); margin-top:1px; }
+  .doc-check { width:16px; height:16px; border-radius:50%; border:1.5px solid var(--border2); flex-shrink:0; display:flex; align-items:center; justify-content:center; transition:all .15s; }
+  .doc-opt.sel .doc-check { background:var(--gold); border-color:var(--gold); }
+  .doc-upload-lbl { display:flex; align-items:center; gap:8px; padding:10px 12px; background:none; border:1px dashed var(--border2); border-radius:var(--radius); cursor:pointer; width:100%; font-family:var(--font-body); font-size:13px; color:var(--text3); transition:all .15s; margin-top:4px; box-sizing:border-box; }
+  .doc-upload-lbl:hover { border-color:var(--gold); color:var(--gold); }
+  .doc-active { display:flex; align-items:center; gap:8px; padding:8px 12px; background:var(--gold-dim); border:1px solid rgba(201,168,76,0.3); border-radius:var(--radius); margin-bottom:12px; font-size:12px; }
+  .doc-active-name { color:var(--gold); font-weight:500; flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .doc-change { background:none; border:none; color:var(--text3); font-size:11px; cursor:pointer; font-family:var(--font-body); }
+  .doc-change:hover { color:var(--text); }
+  .doc-expanded { margin-top:10px; display:flex; flex-direction:column; gap:6px; }
+
 </style>
 </head>
 <body>
@@ -981,7 +1014,8 @@
         <div class="user-avatar" id="user-avatar">—</div>
         <span class="user-name" id="user-display-name">—</span>
         <button class="theme-toggle" onclick="toggleTheme()" id="theme-btn" title="Cambiar tema">🌙</button>
-        <button class="logout-btn" onclick="logout()" title="Cerrar sesión">✕</button>
+        <button class="theme-toggle" onclick="toggleTheme()" id="theme-btn">🌙</button>
+        <button class="logout-btn" onclick="logout()">Logout</button>
       </div>
     </div>
     <div class="sidebar-progress">
@@ -1078,7 +1112,7 @@ const PHASES = [
   {
     id: 'p1',
     label: 'Fase 1 · Semanas 1–2',
-    title: 'Analyst / Associate',
+    title: 'Prompting profesional',
     subtitle: 'Los fundamentos del prompting profesional. Todo lo que necesitas para ser productivo desde el primer día.',
     color: '#4a9e6e',
     colorDim: 'rgba(74,158,110,0.12)',
@@ -1264,7 +1298,7 @@ Esta regla es absoluta. Un análisis sin citas no es IC-ready.
   {
     id: 'p2',
     label: 'Fase 2 · Semanas 3–5',
-    title: 'Associate Avanzado',
+    title: 'Análisis avanzado',
     subtitle: 'De los prompts individuales a flujos completos de análisis. El CIM to screen y el primer agente real.',
     color: '#9380d4',
     colorDim: 'rgba(147,128,212,0.12)',
@@ -1422,9 +1456,194 @@ Si no encuentras errores, escribe "QC PASSED" con la lista de lo verificado.`,
     ]
   },
   {
-    id: 'p3',
+    id: 'pM',
     label: 'Fase 3 · Meses 2–3',
-    title: 'Senior Associate / VP',
+    title: 'Modelos financieros con IA',
+    subtitle: 'Claude no construye el Excel. Pero hace el 60% del trabajo previo y posterior que más tiempo consume.',
+    color: '#4a9e6e',
+    colorDim: 'rgba(74,158,110,0.12)',
+    skills: [
+      {
+        id: 'm1',
+        title: 'Arquitectura de un modelo LBO asistido por IA',
+        level: 'L2', time: 'Mes 3', priority: 'Master',
+        desc: 'Antes de abrir Excel, Claude puede generar la estructura completa del modelo, los supuestos de partida con su justificación, y los rangos razonables para cada hipótesis. Esto te ahorra 2-3 horas en la primera versión y te obliga a pensar en los supuestos antes de construir, no mientras construyes.',
+        subtasks: [
+          'Usa Claude para generar la estructura completa de fuentes y usos de un LBO',
+          'Genera los supuestos operativos base con rangos upside/downside y justificación de cada uno',
+          'Construye la lógica de deuda: tramos, amortización, covenants y capacidad de servicio',
+          'Genera el checklist de verificación manual para cuando traslades el modelo a Excel',
+        ],
+        exercise: {
+          text: 'Con los datos de Luda (Revenue creciendo, EBITDA -321k, runway 1.5 meses), pide a Claude que genere la arquitectura de una ronda de equity de 2M€. ¿Qué supuestos propone? ¿Cuáles te parecen agresivos? ¿Cuáles conservadores?',
+          prompt: `Genera la arquitectura completa de un modelo de inversión para [EMPRESA].
+
+DATOS DISPONIBLES:
+[Pega los KPIs financieros clave]
+
+TIPO DE OPERACIÓN: [growth equity / LBO / bridge]
+IMPORTE A INVERTIR: [X]M€
+HORIZONTE: [N] años
+
+GENERA:
+
+1. ESTRUCTURA DE FUENTES Y USOS:
+   - Desglose de la inversión total
+   - Mezcla equity/deuda si aplica
+   - Costes transaccionales estimados
+
+2. SUPUESTOS OPERATIVOS (base / upside / downside):
+   Para cada supuesto: valor, justificación, fuente de datos, riesgo si está equivocado
+   - Crecimiento de revenue (YoY %): 
+   - Expansión de EBITDA margin:
+   - Capex como % revenue:
+   - Working capital needs:
+
+3. SUPUESTOS DE SALIDA:
+   - Múltiplo de salida EV/EBITDA o EV/Revenue
+   - Año de salida
+   - Proceso de salida esperado
+
+4. MÉTRICAS DE RETORNO:
+   - IRR en cada escenario
+   - MOIC en cada escenario
+   - Payback period
+
+5. CHECKLIST DE VERIFICACIÓN:
+   Los 5 supuestos más sensibles que debes verificar con el management antes de finalizar el modelo`,
+          claudeUrl: 'https://claude.ai/new'
+        }
+      },
+      {
+        id: 'm2',
+        title: 'Narrativo de hipótesis para LPs y IC',
+        level: 'L2', time: 'Mes 3', priority: 'Master',
+        desc: 'Tienes el modelo en Excel con tres escenarios. El trabajo que más tiempo consume no es construir el modelo — es explicar en lenguaje natural por qué cada hipótesis es razonable. Claude puede generar este narrativo en minutos: por qué el caso base asume X% de crecimiento, qué tendría que pasar para el upside, qué escenario refleja el downside conservador.',
+        subtasks: [
+          'Exporta los supuestos clave de tu modelo a un formato que Claude pueda leer (tabla de texto)',
+          'Genera el narrativo del caso base: justificación de cada supuesto con referencia a datos del mercado',
+          'Genera el narrativo del upside: qué catalizadores específicos lo harían posible',
+          'Genera el narrativo del downside: qué riesgos específicos lo materializarían',
+        ],
+        exercise: {
+          text: 'Coge un modelo real o usa los datos de Luda. Exporta los supuestos de los tres escenarios en formato tabla. Pide a Claude el narrativo completo. Evalúa: ¿suena como si lo hubiera escrito un analista de PE o se nota que es IA?',
+          prompt: `Genera el narrativo completo de hipótesis para el LP report de [EMPRESA].
+
+SUPUESTOS DEL MODELO:
+
+CASO BASE:
+- Revenue growth: [X]% anual
+- EBITDA margin: [Y]% en año 5
+- Múltiplo de salida: [Z]x EV/EBITDA
+- IRR: [N]%
+
+CASO UPSIDE:
+[Misma estructura]
+
+CASO DOWNSIDE:
+[Misma estructura]
+
+GENERA para cada escenario:
+
+NARRATIVO (máx 4 párrafos):
+- Párrafo 1: Descripción del escenario y sus características principales
+- Párrafo 2: Justificación de los supuestos de crecimiento (con benchmarks sectoriales)
+- Párrafo 3: Justificación de los supuestos de márgenes y rentabilidad
+- Párrafo 4: Condiciones que harían este escenario el más probable
+
+TONO: Institucional. Como lo escribiría un analista de KKR para su LP report.
+RESTRICCIÓN: No uses adjetivos vacíos. Cada afirmación va respaldada por un dato o benchmark.`,
+          claudeUrl: 'https://claude.ai/new'
+        }
+      },
+      {
+        id: 'm3',
+        title: 'Análisis de sensibilidades en lenguaje natural',
+        level: 'L2', time: 'Mes 4', priority: 'Master',
+        desc: 'Una tabla de sensibilidades en Excel muestra números. Claude puede convertirlos en insights: "si el crecimiento cae al 15% y el múltiplo de salida baja a 8x, el IRR cae por debajo del hurdle rate". Este análisis en lenguaje natural es lo que realmente necesitas para el IC y para los LPs — no la tabla cruda.',
+        subtasks: [
+          'Exporta tu tabla de sensibilidades a texto estructurado',
+          'Pide a Claude que identifique las 3 combinaciones de variables más destructivas para el retorno',
+          'Genera el análisis de punto de equilibrio: qué nivel mínimo de cada variable mantiene el IRR objetivo',
+          'Produce el resumen ejecutivo de sensibilidades para incluir en el IC memo',
+        ],
+        exercise: {
+          text: 'Con la tabla de sensibilidades de Luda (o una simulada), pide a Claude que identifique el "escenario de pesadilla": la combinación de variables que más daña el retorno. ¿Coincide con lo que tú habrías identificado intuitivamente?',
+          prompt: `Analiza esta tabla de sensibilidades y conviértela en insights para el IC.
+
+TABLA DE SENSIBILIDADES:
+[Pega tu tabla de sensibilidades: IRR según crecimiento revenue x múltiplo de salida]
+
+ANÁLISIS SOLICITADO:
+
+1. PUNTO DE EQUILIBRIO:
+   - ¿Cuál es el crecimiento mínimo de revenue que mantiene IRR >= [X]%?
+   - ¿Cuál es el múltiplo de salida mínimo con supuestos base?
+
+2. ESCENARIO DE PESADILLA:
+   - Combinación de variables que destruye más valor
+   - Probabilidad estimada de que ocurra (con justificación)
+   - Plan de mitigación si se materializa
+
+3. VARIABLES MÁS SENSIBLES:
+   - Ranking de variables por impacto en IRR
+   - La variable que más debemos monitorizar durante la tenencia
+
+4. RESUMEN PARA IC (máx 5 líneas):
+   - El análisis de sensibilidades que presentarías en el IC
+   - Sin jerga técnica, con el mensaje clave claro`,
+          claudeUrl: 'https://claude.ai/new'
+        }
+      },
+      {
+        id: 'm4',
+        title: 'Value creation plan asistido por IA',
+        level: 'L3', time: 'Mes 4', priority: 'Master',
+        desc: 'El value creation plan es el documento que define cómo vas a generar retorno más allá de la deuda. Claude puede ayudarte a generarlo partiendo de los KPIs actuales de la participada, los benchmarks del sector y las palancas identificadas en la diligencia. El output: iniciativas concretas con impacto estimado en EBITDA y EV.',
+        subtasks: [
+          'Define las palancas de valor principales identificadas en la diligencia de Luda',
+          'Pide a Claude que cuantifique el impacto en EBITDA de cada palanca con supuestos explícitos',
+          'Genera el roadmap de iniciativas: qué hacer en los primeros 100 días, 12 meses, 36 meses',
+          'Crea el KPI tracker: qué métricas demuestran que cada iniciativa está funcionando',
+        ],
+        exercise: {
+          text: 'Con la situación actual de Luda (GMV negativo mejorando, Glovo problema, OTC por debajo de plan), genera el value creation plan para los próximos 18 meses. Prioriza las iniciativas por impacto vs esfuerzo.',
+          prompt: `Genera el value creation plan para [EMPRESA] basándote en los datos del comité adjunto.
+
+SITUACIÓN ACTUAL: [Describe brevemente los KPIs y la situación]
+
+GENERA:
+
+1. DIAGNÓSTICO DE PALANCAS (máx 5):
+   Para cada palanca:
+   - Descripción de la iniciativa
+   - Impacto estimado en EBITDA (€ y %)
+   - Supuestos detrás del impacto
+   - Esfuerzo de implementación: ALTO/MEDIO/BAJO
+   - Tiempo hasta ver resultados
+
+2. MATRIZ IMPACTO vs ESFUERZO:
+   - Cuadrante 1 (alto impacto, bajo esfuerzo): hacer primero
+   - Cuadrante 2 (alto impacto, alto esfuerzo): planificar
+   - Cuadrante 3 (bajo impacto, bajo esfuerzo): si hay capacidad
+   - Cuadrante 4 (bajo impacto, alto esfuerzo): no hacer
+
+3. ROADMAP 100 DÍAS / 12 MESES / 36 MESES:
+   - Hitos específicos y medibles para cada horizonte
+
+4. KPI TRACKER:
+   - 5 métricas que demuestran que el plan está funcionando
+   - Frecuencia de medición
+   - Umbral de alerta si se desvía`,
+          claudeUrl: 'https://claude.ai/new'
+        }
+      },
+    ]
+  },
+  {
+    id: 'p3',
+    label: 'Fase 4 · Mes 3',
+    title: 'Workflows que escalan',
     subtitle: 'Automatizaciones y workflows que escalan a todo el equipo. De prompts individuales a sistemas.',
     color: '#c9a84c',
     colorDim: 'rgba(201,168,76,0.12)',
@@ -1713,8 +1932,728 @@ Al final:
     ]
   },
   {
+    id: 'pD',
+    label: 'Fase 5 · Mes 4',
+    title: 'Due diligence avanzada',
+    subtitle: 'Cuando tienes 300 documentos y 3 semanas. IA para procesar en paralelo lo que antes llevaba semanas.',
+    color: '#9380d4',
+    colorDim: 'rgba(147,128,212,0.12)',
+    skills: [
+      {
+        id: 'd1',
+        title: 'Procesar data rooms con múltiples llamadas paralelas',
+        level: 'L3', time: 'Mes 4', priority: 'Master',
+        desc: 'Un data room tiene 200-400 documentos. Claude no puede leerlos todos en una sola llamada. La solución: Make procesa cada documento por separado, genera un resumen estructurado de cada uno, y luego una segunda llamada a Claude fusiona todos los resúmenes en el análisis final. Lo que antes llevaba 2 semanas de lectura, en 2-3 horas.',
+        subtasks: [
+          'Diseña la arquitectura de procesamiento paralelo: un módulo Make por documento',
+          'Construye el prompt de extracción por documento: qué extraer de contratos, P&Ls, legales, etc.',
+          'Crea el prompt de síntesis final: de múltiples resúmenes a análisis unificado',
+          'Añade la lógica de deduplicación: evitar analizar el mismo dato dos veces desde documentos distintos',
+        ],
+        exercise: {
+          text: 'Simula un mini data room con 5 documentos: el comité de Luda, un contrato ficticio de cliente, un extracto de P&L, una nota legal, y un informe de mercado. Procésalos en paralelo con Make y genera el análisis consolidado. ¿Qué información nueva emerge de combinar los cinco?',
+          prompt: `Diseña la arquitectura para procesar un data room completo con Make y Claude.
+
+CONTEXTO: Data room con ~200 documentos de due diligence.
+Tipos: financieros, legales, comerciales, operativos, RRHH.
+
+ARQUITECTURA:
+
+1. FASE 1 — CLASIFICACIÓN:
+   - Cómo clasificar automáticamente cada documento por tipo
+   - Prompt de clasificación: dado este documento, ¿qué tipo es?
+   - Por qué la clasificación importa: el prompt de extracción es distinto por tipo
+
+2. FASE 2 — EXTRACCIÓN POR TIPO:
+   Genera el prompt de extracción para cada tipo de documento:
+   - Contrato de cliente: qué extraer (valor, duración, cláusulas especiales, riesgo)
+   - P&L/financiero: qué extraer (métricas clave, anomalías, tendencias)
+   - Documento legal: qué extraer (riesgos, contingencias, obligaciones)
+   - Documento comercial: qué extraer (pipeline, clientes, competencia)
+
+3. FASE 3 — SÍNTESIS:
+   - Prompt para fusionar 50-100 resúmenes en análisis unificado
+   - Cómo identificar contradicciones entre documentos
+   - Formato del output final para el IC memo
+
+4. MAKE WORKFLOW:
+   - Cómo iterar sobre todos los archivos de una carpeta de Drive
+   - Cómo gestionar el rate limit de la API de Claude
+   - Estimación de coste en tokens y tiempo total`,
+          claudeUrl: 'https://claude.ai/new'
+        }
+      },
+      {
+        id: 'd2',
+        title: 'Detección de contradicciones y red flags en documentos',
+        level: 'L3', time: 'Mes 4', priority: 'Master',
+        desc: 'El valor más alto de la IA en due diligence no es leer rápido — es encontrar lo que tú no encontrarías manualmente: cuando el CIM dice que el contrato A dura hasta 2027 pero el propio contrato dice 2025, o cuando el P&L reportado no cuadra con el P&L del auditor. Claude puede detectar estas contradicciones sistemáticamente en minutos.',
+        subtasks: [
+          'Construye el prompt de detección de contradicciones entre el CIM y los documentos del data room',
+          'Diseña el prompt de verificación de fechas: contratos, licencias, garantías que vencen durante la tenencia',
+          'Crea el prompt de análisis de concentración: clientes, proveedores, empleados clave con cláusulas de retención',
+          'Genera el red flag report consolidado para presentar al socio antes del IC',
+        ],
+        exercise: {
+          text: 'Crea un escenario con una contradicción deliberada: el CIM de Luda dice que tiene contrato con Glovo hasta 2028, pero el contrato real dice 2026 con opción de renovación. ¿Detecta Claude la contradicción cuando le das los dos documentos?',
+          prompt: `Analiza estos documentos de due diligence de [EMPRESA] y detecta contradicciones y red flags.
+
+DOCUMENTOS:
+Documento 1 (CIM): [PEGA EXTRACTO]
+Documento 2 (Contrato / Legal / Financiero): [PEGA EXTRACTO]
+
+BUSCA ESPECÍFICAMENTE:
+
+1. CONTRADICCIONES DIRECTAS:
+   - Cifras que no cuadran entre documentos
+   - Fechas inconsistentes
+   - Afirmaciones del CIM que los documentos desmienten
+
+2. OMISIONES RELEVANTES:
+   - Qué dice el CIM que debería estar en los documentos y no está
+   - Cláusulas inusuales que el CIM no menciona
+
+3. RED FLAGS LEGALES:
+   - Contratos que vencen en el período de tenencia previsto
+   - Cláusulas de change of control
+   - Litigios o contingencias no mencionadas en el CIM
+
+4. CONCENTRACIÓN DE RIESGOS:
+   - Clientes que representan >20% del revenue con contratos cortos
+   - Dependencia de personas clave sin acuerdos de retención
+
+5. PREGUNTAS DE VERIFICACIÓN:
+   Las 5 preguntas que debes hacer al management sobre estas inconsistencias`,
+          claudeUrl: 'https://claude.ai/new'
+        }
+      },
+      {
+        id: 'd3',
+        title: 'Quality of Earnings asistido por IA',
+        level: 'L3', time: 'Mes 5', priority: 'Master',
+        desc: 'El QofE es el análisis más crítico de cualquier proceso de PE: ¿son reales los márgenes? ¿Son sostenibles los ingresos? ¿Qué add-backs son legítimos? Claude puede procesar el P&L histórico, identificar partidas anómalas, sugerir ajustes al EBITDA normalizado y generar las preguntas específicas para el advisor de QofE.',
+        subtasks: [
+          'Construye el prompt de análisis de P&L histórico: identificación de one-timers y anomalías',
+          'Genera la lista de add-backs potenciales con clasificación y evidencia necesaria para cada uno',
+          'Diseña las preguntas para el advisor de QofE basadas en los gaps identificados',
+          'Crea el bridge completo de EBITDA reportado a EBITDA normalizado con supuestos explícitos',
+        ],
+        exercise: {
+          text: 'Con el P&L de Luda (ventas netas +81% YoY, margen bruto 251k, EBITDA -321k), genera el análisis de QofE preliminar. ¿Qué add-backs potenciales identificas? ¿Qué preguntas harías al advisor antes de normalizar el EBITDA?',
+          prompt: `Realiza el análisis preliminar de Quality of Earnings para [EMPRESA].
+
+P&L HISTÓRICO:
+[Pega el P&L de los últimos 2-3 años si disponible]
+
+ANÁLISIS SOLICITADO:
+
+1. CALIDAD DE LOS INGRESOS:
+   - ¿Qué % de los ingresos son recurrentes vs one-time?
+   - ¿Hay ingresos que no se repetirán después de la transacción?
+   - ¿Hay diferimientos de ingresos que inflan el año actual?
+
+2. ANÁLISIS DE COSTES:
+   - Partidas que podrían ser one-time (reestructuración, litigios, etc.)
+   - Costes del propietario que no existirían con un nuevo dueño
+   - Costes infrarrepresentados que aumentarán post-transacción
+
+3. ADD-BACKS POTENCIALES:
+   Para cada add-back: importe estimado / clasificación / evidencia necesaria / riesgo si no se confirma
+
+4. BRIDGE EBITDA:
+   EBITDA reportado: [X]k
+   + Add-back 1: [importe] ([justificación])
+   + Add-back 2: [importe] ([justificación])
+   = EBITDA normalizado: [Y]k
+
+5. PREGUNTAS PARA EL ADVISOR DE QofE:
+   Las 10 preguntas más importantes para confirmar o refutar estos ajustes`,
+          claudeUrl: 'https://claude.ai/new'
+        }
+      },
+    ]
+  },
+  {
+    id: 'pN',
+    label: 'Fase 6 · Meses 4–5',
+    title: 'Orquestación con Make',
+    subtitle: 'De prompts manuales a flujos automáticos. Aquí es donde Claude deja de ser una herramienta y se convierte en un sistema.',
+    color: '#c9a84c',
+    colorDim: 'rgba(201,168,76,0.12)',
+    skills: [
+      {
+        id: 'n1',
+        title: 'Qué es un orquestador y cuándo usarlo',
+        level: 'L2', time: 'Semana 5', priority: 'Master',
+        desc: 'Un orquestador es una herramienta que conecta aplicaciones y ejecuta acciones automáticamente cuando ocurre algo. Make y N8N son los dos más usados. La diferencia con Claude solo: Claude razona, el orquestador actúa. Claude analiza el comité de Luda; Make lo recibe por email, se lo manda a Claude, y guarda el resultado en Notion — sin que tú toques nada.',
+        subtasks: [
+          'Entiende el concepto de trigger → acción → output con un ejemplo cotidiano',
+          'Distingue qué hace Claude (razonar) vs qué hace Make (conectar y ejecutar)',
+          'Identifica los 5 flujos de tu trabajo que más se beneficiarían de automatización',
+          'Crea una cuenta gratuita en Make.com y explora la interfaz 15 minutos',
+        ],
+        exercise: {
+          text: 'Sin construir nada todavía: dibuja en papel (o en Notion) el flujo del agente de comités mensuales. Trigger → qué datos entran → qué hace Claude → dónde va el resultado. Este diseño previo es el 50% del trabajo.',
+          prompt: `Ayúdame a diseñar el flujo de mi primer agente antes de construirlo.
+
+AGENTE: Análisis automático de comités de dirección de participadas
+
+Describe el flujo completo respondiendo estas preguntas:
+1. TRIGGER: ¿qué evento arranca el flujo? (email, archivo nuevo, fecha fija...)
+2. INPUT: ¿qué datos/archivos necesita Claude para hacer el análisis?
+3. PROCESAMIENTO: ¿qué prompt exacto se manda a Claude?
+4. OUTPUT: ¿qué genera Claude? ¿en qué formato?
+5. DESTINO: ¿dónde se guarda el resultado? (Notion, Sheets, email...)
+6. NOTIFICACIÓN: ¿quién recibe un aviso y cómo?
+
+Genera el diseño del flujo en formato de diagrama de texto con flechas.`,
+          claudeUrl: 'https://claude.ai/new'
+        }
+      },
+      {
+        id: 'n2',
+        title: 'Make vs N8N: cuándo elegir cada uno',
+        level: 'L2', time: 'Semana 5', priority: 'Master',
+        desc: 'Make es visual, intuitivo y tiene más integraciones nativas (5000+). N8N es más técnico, más flexible, y puede auto-hospedarse (importante si vuestra política de seguridad no permite datos en la nube de terceros). Para un equipo de PE que empieza: Make. Para un equipo con datos muy sensibles o necesidades técnicas avanzadas: N8N self-hosted.',
+        subtasks: [
+          'Compara los planes gratuitos: Make (1000 operaciones/mes) vs N8N (5000 ejecuciones/mes self-hosted)',
+          'Verifica si vuestras herramientas principales tienen conector nativo en Make (Gmail, Drive, Notion, Slack)',
+          'Decide cuál usar basándote en la política de datos de tu fondo',
+          'Configura el workspace de Make con el nombre de tu fondo y añade los conectores principales',
+        ],
+        exercise: {
+          text: 'Entra en Make.com → crea un escenario nuevo → conecta tu cuenta de Gmail. Solo conectar, sin construir nada más. Verifica que Make puede leer tus emails. Ese es el primer paso de todos los agentes.',
+          prompt: `Tengo que decidir entre Make y N8N para automatizar flujos de trabajo en un fondo de private equity.
+
+Nuestro contexto:
+- Equipo de 6 personas
+- Usamos: Gmail, Google Drive, Notion, Google Sheets
+- Manejamos información confidencial de participadas y LPs
+- Nadie en el equipo sabe programar
+- Presupuesto: preferiblemente <100€/mes
+
+Ayúdame a tomar la decisión con una comparativa específica para nuestro caso:
+1. Qué puede hacer Make que N8N no puede (y viceversa) para PE
+2. Implicaciones de seguridad de datos para cada uno
+3. Estimación de operaciones/mes que necesitaríamos con los 5 agentes core
+4. Recomendación final con justificación
+
+Sé directo. No quiero una comparativa genérica.`,
+          claudeUrl: 'https://claude.ai/new'
+        }
+      },
+      {
+        id: 'n3',
+        title: 'Tu primer flujo: Gmail → Claude → Notion',
+        level: 'L3', time: 'Semana 6', priority: 'Master',
+        desc: 'Este es el flujo más importante del curso. Una vez que lo tienes funcionando, todos los demás agentes son variaciones del mismo patrón. El flujo completo: Make vigila tu Gmail, cuando llega un email con PDF adjunto lo detecta, manda el contenido a Claude API, Claude lo analiza, Make guarda el resultado estructurado en Notion. Automático, sin que toques nada.',
+        subtasks: [
+          'Paso 1 — Trigger: configura el módulo "Watch emails" en Make con el filtro correcto (remitente o asunto con "comité")',
+          'Paso 2 — Extracción: añade el módulo de descarga del adjunto PDF',
+          'Paso 3 — Claude API: configura el módulo HTTP con la API de Anthropic, el modelo y el prompt',
+          'Paso 4 — Notion: crea la base de datos de comités en Notion y conecta Make para que cree una entrada nueva con el análisis',
+        ],
+        exercise: {
+          text: 'Construye el flujo completo paso a paso. Usa el comité de Luda como documento de prueba. Mándate un email a ti mismo con el PDF adjunto, activa el escenario en Make, y verifica que el análisis aparece en Notion en menos de 2 minutos.',
+          prompt: `Necesito el prompt exacto para el módulo HTTP de Make que llama a la API de Claude.
+
+El flujo es:
+- Trigger: email de Gmail con PDF adjunto
+- Make extrae el texto del PDF
+- Se manda a Claude API con este prompt
+- Claude devuelve análisis estructurado
+- Make lo guarda en Notion
+
+Genera:
+1. El JSON exacto para el body del módulo HTTP en Make
+2. El system prompt para el análisis de comités
+3. El prompt de usuario con el placeholder del texto del PDF
+4. Las instrucciones para parsear el JSON de respuesta de Claude en Make
+5. Los campos de Notion que debes crear y cómo mapearlos desde la respuesta
+
+Usa claude-sonnet-4-6 como modelo. Max tokens: 2000.`,
+          claudeUrl: 'https://claude.ai/new'
+        }
+      },
+      {
+        id: 'n4',
+        title: 'Conectar la API de Claude desde Make',
+        level: 'L3', time: 'Semana 6', priority: 'Master',
+        desc: 'La API de Claude es la pieza central de todos tus agentes. Necesitas entender cómo hacer la llamada HTTP desde Make, cómo pasar el texto del documento, cómo recibir la respuesta y extraer el contenido. Este conocimiento se reutiliza en los 5 agentes core — aprenderlo bien una vez es multiplicar por 5.',
+        subtasks: [
+          'Obtén tu API key de Anthropic en console.anthropic.com',
+          'Configura el módulo HTTP en Make: URL, headers con Authorization, body con model y messages',
+          'Prueba la llamada con un texto simple y verifica que recibes respuesta de Claude',
+          'Aprende a parsear el JSON de respuesta: data.content[0].text es donde está el output',
+        ],
+        exercise: {
+          text: 'Construye el módulo HTTP en Make que llama a Claude con este JSON exacto. Pruébalo con el texto "Analiza este KPI: Revenue Q1 2026 = 450k, vs budget 500k, vs Q1 2025 = 320k." Verifica que Claude responde correctamente antes de conectarlo al resto del flujo.',
+          prompt: `Genera el JSON exacto para configurar el módulo HTTP de Make que llama a la API de Anthropic.
+
+Incluye:
+1. URL: https://api.anthropic.com/v1/messages
+2. Method: POST
+3. Headers necesarios (con placeholders para la API key)
+4. Body JSON completo con:
+   - model: claude-sonnet-4-6
+   - max_tokens: 2000
+   - system: [prompt de analista PE]
+   - messages con el contenido del documento
+
+También explica:
+- Dónde en Make pego la API key de forma segura (sin que aparezca en el escenario)
+- Cómo extraer data.content[0].text de la respuesta en Make
+- Qué hacer si Claude devuelve un error (429, 500, etc.)`,
+          claudeUrl: 'https://claude.ai/new'
+        }
+      },
+      {
+        id: 'n5',
+        title: 'Manejo de errores, reintentos y logs',
+        level: 'L3', time: 'Semana 6', priority: 'Master',
+        desc: 'Un agente sin manejo de errores es un agente que falla en silencio. Necesitas saber qué hacer cuando Claude devuelve un error, cuando el PDF no se puede leer, o cuando Notion no responde. Make tiene módulos específicos para esto: rutas de error, reintentos automáticos, y notificaciones por email cuando algo falla.',
+        subtasks: [
+          'Añade un módulo de manejo de errores al flujo principal: si Claude falla, envía email de aviso',
+          'Configura reintentos automáticos: 3 intentos con 5 minutos de espera entre cada uno',
+          'Crea un log en Google Sheets de cada ejecución: fecha, participada, éxito/fallo, tiempo',
+          'Prueba el flujo de error mandando un PDF corrupto y verifica que recibes la notificación',
+        ],
+        exercise: {
+          text: 'Añade el manejo de errores a tu flujo de comités. Cuando algo falle, debes recibir un email con: qué falló, en qué paso, y qué documento estaba procesando. Sin esto el agente no es fiable para uso profesional.',
+          prompt: `Diseña la estrategia completa de manejo de errores para mi agente de comités en Make.
+
+El flujo tiene estos pasos que pueden fallar:
+1. Lectura del email (Gmail)
+2. Descarga del PDF adjunto
+3. Llamada a Claude API
+4. Escritura en Notion
+
+Para cada paso, dame:
+- Tipos de error más comunes
+- Cómo detectarlo en Make
+- Acción a tomar (reintentar / notificar / guardar en log)
+- Mensaje de email de aviso con la información relevante
+
+También: ¿cómo configuro Make para que me avise si el escenario lleva más de 24h sin ejecutarse (señal de que algo está roto)?`,
+          claudeUrl: 'https://claude.ai/new'
+        }
+      },
+      {
+        id: 'n6',
+        title: 'Webhooks y triggers automáticos',
+        level: 'L3', time: 'Semana 7', priority: 'Master',
+        desc: 'Hasta ahora tus flujos se activan revisando Gmail cada X minutos (polling). Los webhooks son más potentes: el trigger ocurre en el instante que pasa algo, sin espera. Útil para alertas urgentes de KPIs o cuando un LP responde un email importante. También aprenderás a ejecutar flujos en schedule: el agente de monitoring de KPIs corre el día 5 de cada mes automáticamente.',
+        subtasks: [
+          'Configura un webhook en Make y conéctalo a un formulario de Google Forms como prueba',
+          'Cambia el trigger del agente de comités de polling a webhook instantáneo',
+          'Crea un schedule mensual: el día 5 de cada mes, Make ejecuta el agente de KPIs',
+          'Prueba que el webhook dispara en menos de 10 segundos desde el evento',
+        ],
+        exercise: {
+          text: 'Configura el agente de comités con webhook instantáneo: en lugar de que Make revise Gmail cada 15 minutos, Google crea una alerta que dispara Make en el momento que llega un email con "comité" en el asunto. Mide la diferencia de tiempo entre los dos sistemas.',
+          prompt: `Explícame cómo configurar un webhook instantáneo en Make para el agente de comités de dirección.
+
+El objetivo: cuando llega un email a Gmail con "comité" en el asunto, Make se activa en menos de 30 segundos.
+
+Explica paso a paso:
+1. Cómo crear el webhook en Make y obtener su URL
+2. Cómo configurar Gmail para que notifique a ese webhook (Google Apps Script o Gmail Add-on)
+3. Qué datos llegan al webhook y cómo parsearlos en Make
+4. Diferencias de coste en operaciones Make vs polling cada 15 min
+5. Cuándo usar webhook vs schedule vs polling para cada tipo de agente
+
+Dame también el código de Google Apps Script si es necesario.`,
+          claudeUrl: 'https://claude.ai/new'
+        }
+      },
+    ]
+  },
+  {
+    id: 'pS',
+    label: 'Fase 7 · Mes 5',
+    title: 'Seguridad y gobierno',
+    subtitle: 'Lo que ningún curso cubre y que en PE no es opcional. Un error aquí tiene consecuencias legales.',
+    color: '#c25a5a',
+    colorDim: 'rgba(194,90,90,0.12)',
+    skills: [
+      {
+        id: 'sec1',
+        title: 'Qué datos puedes meter en Claude y cuáles no',
+        level: 'L1', time: 'Mes 5', priority: 'Master',
+        desc: 'En PE manejas información material no pública (MNPI): datos de participadas antes de publicar resultados, información de deals en proceso, datos de LPs. Meter esta información en Claude.ai (el producto de consumo) puede tener implicaciones legales. Necesitas entender la diferencia entre Claude.ai, la API de Anthropic, y cómo Anthropic usa los datos según el plan contratado.',
+        subtasks: [
+          'Lee la política de datos de Anthropic para Claude.ai Pro vs API (son distintas)',
+          'Define con tu equipo qué categorías de información son MNPI en vuestro contexto',
+          'Establece la regla del fondo: qué puede entrar en Claude.ai vs qué solo puede entrar en la API',
+          'Documenta la política en una nota interna de 1 página que todos firmen haber leído',
+        ],
+        exercise: {
+          text: 'Clasifica estas situaciones como PERMITIDO, REVISAR CON LEGAL, o NO PERMITIDO para Claude.ai Pro: (1) analizar el comité mensual de una participada, (2) generar el borrador de una LOI con el precio de compra real, (3) procesar el P&L de una empresa en proceso de venta, (4) redactar un email a un LP institucional.',
+          prompt: `Ayúdame a crear la política de uso de IA para un fondo de private equity.
+
+CONTEXTO:
+- Fondo con 6 personas y ~[X]M€ bajo gestión
+- Participadas en sectores regulados
+- LPs institucionales (fondos de fondos, family offices)
+- Jurisdicción: España / UE
+
+GENERA LA POLÍTICA EN ESTOS APARTADOS:
+
+1. CLASIFICACIÓN DE DATOS:
+   - Qué es MNPI en nuestro contexto y ejemplos concretos
+   - Datos de participadas: qué puede y no puede usarse con IA
+   - Datos de LPs: restricciones específicas
+   - Datos de deals en proceso: protocolo
+
+2. HERRAMIENTAS PERMITIDAS:
+   - Claude.ai Pro: casos de uso permitidos y prohibidos
+   - API de Anthropic: casos de uso permitidos
+   - Herramientas de terceros (Make, N8N): qué datos pueden pasar por ellas
+
+3. PROTOCOLO PRÁCTICO:
+   - Antes de usar IA con un documento: checklist de 3 preguntas
+   - Qué hacer si accidentalmente introduces datos prohibidos
+   - A quién escalar una duda
+
+4. MARCO LEGAL:
+   - GDPR: implicaciones para datos de empleados de participadas
+   - NDA: qué cubren típicamente los NDAs de PE en relación a IA
+   - Recomendación: cuándo consultar con el abogado del fondo`,
+          claudeUrl: 'https://claude.ai/new'
+        }
+      },
+      {
+        id: 'sec2',
+        title: 'Configuración segura de agentes con datos confidenciales',
+        level: 'L3', time: 'Mes 5', priority: 'Master',
+        desc: 'Cuando tus agentes procesan información de participadas automáticamente, necesitas garantizar que esos datos no van a ningún sitio no autorizado, que están encriptados en tránsito, y que tienes logs de qué información procesó cada ejecución del agente. Esto no es paranoia — es el mínimo exigible en PE.',
+        subtasks: [
+          'Configura Make para que las credenciales de API nunca aparezcan en los logs de ejecución',
+          'Activa el cifrado en tránsito en todas las conexiones de Make (HTTPS obligatorio)',
+          'Crea el log de auditoría: qué documentos procesó cada agente, cuándo, y qué output generó',
+          'Establece la política de retención: cuánto tiempo guarda Make los datos de cada ejecución',
+        ],
+        exercise: {
+          text: 'Audita la configuración de seguridad de tu agente de comités: ¿aparece el texto del PDF en los logs de Make? ¿La API key de Anthropic está expuesta en algún módulo? ¿Tienes registro de qué documentos han sido procesados en los últimos 30 días?',
+          prompt: `Diseña la configuración de seguridad completa para los agentes de PE en Make.
+
+CHECKLIST DE SEGURIDAD A VERIFICAR:
+
+1. CREDENCIALES:
+   - Cómo almacenar API keys en Make sin que aparezcan en el código del escenario
+   - Rotación de credenciales: con qué frecuencia cambiar las API keys
+   - Qué hacer si una API key se compromete
+
+2. DATOS EN TRÁNSITO:
+   - Verificar que todas las conexiones usan HTTPS
+   - Qué datos de participadas pasan por Make y durante cuánto tiempo los retiene
+   - Cómo minimizar la exposición de datos (procesar lo mínimo necesario)
+
+3. LOGS Y AUDITORÍA:
+   - Configurar Make para que los logs no guarden el contenido de los documentos (solo metadata)
+   - Cómo crear un log de auditoría externo en Google Sheets
+   - Qué registrar: fecha, participada, tipo de documento, output summary (sin datos brutos)
+
+4. ACCESO Y PERMISOS:
+   - Quién en el equipo puede ver y modificar los escenarios de Make
+   - Cómo configurar roles en Make para limitar accesos
+   - Política de offboarding: qué hacer cuando alguien sale del equipo
+
+5. INCIDENTES:
+   - Plan de respuesta si un agente procesa datos que no debería
+   - A quién notificar y en qué plazo bajo GDPR`,
+          claudeUrl: 'https://claude.ai/new'
+        }
+      },
+      {
+        id: 'sec3',
+        title: 'Política de IA del fondo: documento oficial',
+        level: 'L3', time: 'Mes 5', priority: 'Master',
+        desc: 'Antes de usar IA de forma sistemática en el fondo, necesitas un documento oficial que defina las reglas, lo que los LPs pueden preguntar en una due diligence de gestora, y que proteja al fondo ante cualquier incidente. Claude puede ayudarte a redactar este documento — con la ironía de usar IA para definir la política de uso de IA.',
+        subtasks: [
+          'Define el alcance de la política: qué herramientas cubre y qué no',
+          'Redacta las reglas de uso aceptable para cada rol del equipo',
+          'Incluye el protocolo de incidentes y el proceso de actualización anual',
+          'Revisa la política con el abogado del fondo antes de distribuirla',
+        ],
+        exercise: {
+          text: 'Genera el borrador de la política de IA de tu fondo usando Claude. Cuando lo tengas, reflexiona sobre la ironía: estás usando IA para definir cómo usar IA. ¿Hay algo en el borrador que te genere incomodidad? Eso probablemente necesita revisión legal.',
+          prompt: `Redacta el borrador de la Política de Uso de Inteligencia Artificial de [NOMBRE FONDO].
+
+ESTRUCTURA DEL DOCUMENTO:
+
+1. INTRODUCCIÓN Y ALCANCE (1 página)
+   - Por qué el fondo adopta una política de IA
+   - Qué herramientas cubre (Claude, Make, N8N, otros)
+   - A quién aplica
+
+2. PRINCIPIOS GENERALES (1 página)
+   - Responsabilidad humana: la IA asiste, el humano decide
+   - Confidencialidad: tratamiento de MNPI y datos de LPs
+   - Calidad: verificación obligatoria de outputs de IA antes de usar en decisiones
+
+3. USOS PERMITIDOS Y PROHIBIDOS (2 páginas)
+   - Tabla: caso de uso / herramienta / permitido / condiciones
+   - Casos de uso explícitamente prohibidos con ejemplos
+
+4. PROTOCOLO DE INCIDENTES (1 página)
+   - Qué es un incidente de IA en el contexto del fondo
+   - Pasos a seguir si ocurre
+   - Responsable de gestión
+
+5. GOBIERNO Y ACTUALIZACIÓN
+   - Quién aprueba cambios a la política
+   - Frecuencia de revisión (recomendado: anual)
+   - Cómo se forma al equipo sobre la política
+
+TONO: Profesional pero práctico. Que sea un documento que la gente lea, no archive.`,
+          claudeUrl: 'https://claude.ai/new'
+        }
+      },
+    ]
+  },
+  {
+    id: 'pA',
+    label: 'Fase 8 · Meses 5–6',
+    title: 'Los 5 agentes core',
+    subtitle: 'Los agentes que cambian tu día a día. Cada uno resuelve un problema real y recurrente del trabajo en private equity.',
+    color: '#4a7fb5',
+    colorDim: 'rgba(74,127,181,0.12)',
+    skills: [
+      {
+        id: 'a1',
+        title: 'Agente 1 — Comités mensuales: email → análisis → Notion',
+        level: 'L3', time: 'Mes 2', priority: 'Master',
+        desc: 'El agente más importante. Cuando el equipo directivo de una participada manda el comité mensual por email, Make lo detecta, Claude lo analiza con tu prompt IC-ready, y el resultado aparece en Notion automáticamente: KPIs, flags, preguntas para el comité, recomendación. Sin que tú hagas nada. Multiplica por el número de participadas que sigues al mes.',
+        subtasks: [
+          'Configura el trigger: Gmail filter para emails de participadas con PDF adjunto',
+          'Construye el prompt del sistema específico para comités mensuales de PE',
+          'Crea la base de datos en Notion con los campos: participada, fecha, KPIs, flags, recomendación',
+          'Conecta Make → Claude API → Notion y prueba con el comité de Luda',
+        ],
+        exercise: {
+          text: 'Monta el agente completo y pruébalo con el comité de Luda de mayo 2026. El resultado en Notion debe tener exactamente estos campos: nombre participada, fecha comité, resumen 5 bullets, tabla KPIs, top 3 alertas, 5 preguntas para el comité, recomendación. Tiempo objetivo desde email hasta Notion: menos de 90 segundos.',
+          prompt: `Genera la configuración completa del Agente 1 — Comités mensuales.
+
+ARQUITECTURA:
+Trigger: Gmail (email con PDF de participada)
+Procesamiento: Claude API
+Output: Notion database
+
+Dame:
+
+1. FILTRO DE GMAIL en Make:
+   - Criterios para identificar emails de comités (no otros emails)
+   - Cómo extraer el nombre de la participada del asunto o remitente
+
+2. SYSTEM PROMPT completo para análisis de comités:
+   - Identidad del analista
+   - Instrucciones de formato
+   - Guardrails
+
+3. ESTRUCTURA DE NOTION:
+   - Lista de propiedades con su tipo (texto, número, select, fecha)
+   - Cómo mapear cada campo del output de Claude a cada propiedad de Notion
+
+4. MÓDULOS DE MAKE en orden:
+   - Módulo 1: Watch Gmail
+   - Módulo 2: Download attachment
+   - Módulo 3: HTTP → Claude API
+   - Módulo 4: Parse response
+   - Módulo 5: Create Notion page
+   - Módulo 6: Send confirmation email
+
+5. PROMPT DE USUARIO con placeholders de Make:
+   {{texto_del_pdf}} → cómo referenciarlo en Make`,
+          claudeUrl: 'https://claude.ai/new'
+        }
+      },
+      {
+        id: 'a2',
+        title: 'Agente 2 — Análisis de CIMs: Drive → investment memo',
+        level: 'L3', time: 'Mes 2', priority: 'Master',
+        desc: 'Cuando recibes un CIM o teaser de una nueva oportunidad, lo subes a una carpeta específica de Google Drive y el agente lo analiza automáticamente: genera el investment memo con tesis, KPIs, red flags, preguntas de diligencia y recomendación de si avanzar o no. El memo aparece en Notion listo para revisar. Lo que antes tomaba 3 horas, en 5 minutos.',
+        subtasks: [
+          'Crea la carpeta "Nuevas oportunidades" en Google Drive y conecta el trigger en Make',
+          'Construye el prompt de CIM-to-screen con los 4 pasos: summary, red flags, key questions, workplan',
+          'Diseña la estructura del investment memo en Notion con todos los campos necesarios para el IC',
+          'Añade lógica de routing: si el memo tiene más de 2 flags CRÍTICO, notifica al socio inmediatamente',
+        ],
+        exercise: {
+          text: 'Sube un CIM real o ficticio a la carpeta de Drive y verifica que el agente genera el investment memo completo en Notion en menos de 3 minutos. Evalúa la calidad: ¿lo llevarías a un IC preliminar sin editar?',
+          prompt: `Genera la arquitectura completa del Agente 2 — Análisis de CIMs.
+
+FLUJO:
+Google Drive (nuevo archivo) → Make → Claude API → Notion (investment memo)
+
+Dame:
+
+1. TRIGGER DE GOOGLE DRIVE:
+   - Cómo configurar "Watch files" en Make para una carpeta específica
+   - Cómo manejar PDFs grandes (+50 páginas) que superan el límite de texto
+
+2. SYSTEM PROMPT para análisis de CIM:
+   - Rol: analista de PE evaluando nueva oportunidad
+   - Los 4 pasos del CIM-to-screen loop
+   - Instrucción de output estructurado en JSON para facilitar el parsing
+
+3. LÓGICA DE ROUTING en Make:
+   - Cómo extraer el número de flags CRÍTICO del output de Claude
+   - Router module: si flags_críticos >= 2 → notificar al socio por email
+
+4. ESTRUCTURA DEL INVESTMENT MEMO en Notion:
+   - Propiedades del database
+   - Secciones del contenido del memo
+
+5. MANEJO DE ARCHIVOS GRANDES:
+   - Qué hacer si el PDF tiene más texto del que cabe en el contexto de Claude
+   - Estrategia de chunking para CIMs largos`,
+          claudeUrl: 'https://claude.ai/new'
+        }
+      },
+      {
+        id: 'a3',
+        title: 'Agente 3 — Monitor de KPIs: Sheets → alertas automáticas',
+        level: 'L3', time: 'Mes 2', priority: 'Master',
+        desc: 'El día 5 de cada mes, Make lee automáticamente los KPIs de cada participada desde Google Sheets, los compara contra el presupuesto y el mes anterior, Claude identifica las desviaciones relevantes y sus posibles causas, y envías un email de resumen al socio con los flags más importantes. Nunca más te enterarás tarde de un problema en una participada.',
+        subtasks: [
+          'Diseña el template de Google Sheets para el reporte mensual de KPIs de participadas',
+          'Configura el schedule en Make: día 5 de cada mes a las 8:00',
+          'Construye el prompt de análisis de desviaciones con umbrales configurables por participada',
+          'Crea el email de resumen para el socio con formato ejecutivo y links a los detalles en Notion',
+        ],
+        exercise: {
+          text: 'Crea el Sheets template para Luda con sus KPIs principales (GMV, ARPU, churn, revenue, EBITDA, caja) e introduce los datos de mayo 2026. Activa el agente manualmente y verifica que el email de resumen identifica correctamente el runway crítico de 1.5 meses como flag CRÍTICO.',
+          prompt: `Diseña el sistema completo del Agente 3 — Monitor de KPIs.
+
+FLUJO:
+Schedule (día 5/mes) → Google Sheets → Make → Claude API → Email al socio + Notion
+
+Dame:
+
+1. TEMPLATE DE GOOGLE SHEETS:
+   - Estructura de las columnas (KPI, valor actual, budget, mes anterior, umbral de alerta)
+   - Una pestaña por participada o todas en la misma hoja
+   - Fórmulas para calcular varianzas automáticamente
+
+2. UMBRALES DE ALERTA configurables:
+   - CRÍTICO: desviación >20% vs budget O runway <2 meses
+   - ALTO: desviación 10-20% vs budget
+   - MEDIO: desviación 5-10%
+   - Cómo hacer estos umbrales configurables por participada en Sheets
+
+3. SYSTEM PROMPT para análisis de KPIs:
+   - Cómo presentar los datos de Sheets a Claude
+   - Instrucción para identificar causas probables de cada desviación
+   - Formato del output para el email
+
+4. TEMPLATE DEL EMAIL EJECUTIVO:
+   - Asunto dinámico con nombre participada y número de flags
+   - Formato del cuerpo: resumen + tabla de KPIs con semáforos
+   - Links a Notion para ver el detalle
+
+5. LÓGICA MULTI-PARTICIPADA:
+   - Cómo iterar sobre múltiples participadas en el mismo escenario de Make`,
+          claudeUrl: 'https://claude.ai/new'
+        }
+      },
+      {
+        id: 'a4',
+        title: 'Agente 4 — Deal sourcing: noticias → oportunidades filtradas',
+        level: 'L3', time: 'Mes 3', priority: 'Master',
+        desc: 'Cada mañana a las 7:00, Make recopila noticias de fuentes sectoriales (RSS feeds, Google Alerts, LinkedIn), Claude las filtra según tu tesis de inversión y descarta el ruido, y recibes un email con las 3-5 oportunidades más relevantes del día con un análisis de por qué encajan con vuestra tesis. Llegas antes que el resto a las oportunidades.',
+        subtasks: [
+          'Define las fuentes de noticias relevantes para tu tesis: RSS feeds, Google Alerts configurados',
+          'Construye el prompt de filtrado: la tesis del fondo como criterio de relevancia',
+          'Configura el schedule diario a las 7:00 y el módulo de agregación de feeds RSS en Make',
+          'Diseña el formato del email matutino: conciso, accionable, con link a la fuente original',
+        ],
+        exercise: {
+          text: 'Configura el agente para el sector de Luda (software farmacéutico / marketplace). Define 5 fuentes de noticias relevantes, el criterio de filtrado, y actívalo manualmente para ver qué noticias de hoy pasarían el filtro de vuestra tesis.',
+          prompt: `Diseña el Agente 4 — Deal Sourcing diario.
+
+FLUJO:
+Schedule (7:00 diario) → RSS/Alerts → Make → Claude API → Email matutino
+
+Dame:
+
+1. FUENTES RECOMENDADAS para PE en España/Europa:
+   - RSS feeds de medios especializados en PE y M&A
+   - Google Alerts queries óptimas para deal flow
+   - LinkedIn Sales Navigator alternativa vía RSS
+
+2. MÓDULO RSS EN MAKE:
+   - Cómo agregar múltiples feeds en un solo escenario
+   - Cómo evitar duplicados (misma noticia en varios feeds)
+   - Cómo filtrar por fecha (solo noticias de las últimas 24h)
+
+3. PROMPT DE FILTRADO con tesis:
+   - Cómo describir la tesis de inversión para que Claude la use como filtro
+   - Instrucción de scoring: 1-10 de relevancia con justificación
+   - Umbral: solo incluir noticias con score >= 7
+
+4. FORMATO DEL EMAIL MATUTINO:
+   - Asunto: "3 oportunidades nuevas — [fecha]"
+   - Por cada noticia: titular, por qué encaja, link, acción sugerida
+   - Si no hay nada relevante: email vacío o no enviar
+
+5. ANTI-SPAM:
+   - Cómo evitar recibir 50 emails si hay un día con mucho ruido`,
+          claudeUrl: 'https://claude.ai/new'
+        }
+      },
+      {
+        id: 'a5',
+        title: 'Agente 5 — LP updates: datos → borrador trimestral automático',
+        level: 'L4', time: 'Mes 3', priority: 'Master',
+        desc: 'El agente más complejo y el de mayor impacto en la relación con LPs. Al inicio de cada trimestre, Make recopila los datos de performance de todas las participadas, Claude genera el narrativo de atribución y el commentary para cada una, y produce el borrador completo del LP report. Tú revisas y ajustas el 20% — Claude hace el 80% del trabajo.',
+        subtasks: [
+          'Diseña el template de datos de input: qué KPIs por participada necesita Claude para generar el commentary',
+          'Construye el prompt de LP narrative: tono institucional, honesto sobre gaps, constructivo sobre planes',
+          'Crea el flujo de Google Sheets → Make → Claude → Google Docs (borrador del report)',
+          'Añade la lógica de revisión: el borrador llega a tu email con un link para editarlo en Docs antes de enviarlo',
+        ],
+        exercise: {
+          text: 'Usa los datos de Luda del Q1 2026 para generar el bloque de LP update de esa participada. El output en Google Docs debe incluir: performance del trimestre, atribución, commentary y outlook. Evalúa si el tono es apropiado para un LP institucional y qué cambiarías.',
+          prompt: `Diseña el Agente 5 — LP Updates trimestrales.
+
+FLUJO:
+Schedule (inicio Q) → Google Sheets (datos portfolio) → Make → Claude API → Google Docs (borrador) → Email de revisión
+
+Dame:
+
+1. TEMPLATE DE DATOS DE INPUT en Sheets:
+   - Columnas necesarias por participada para generar commentary de calidad
+   - Cómo estructurar datos para múltiples participadas en un solo sheet
+   - Qué datos cuantitativos vs cualitativos necesita Claude
+
+2. SYSTEM PROMPT para LP narrative:
+   - Tono institucional (ejemplos de frases que SÍ y que NO)
+   - Instrucciones para ser honesto sobre underperformance sin alarmar
+   - Guardrails: qué nunca debe aparecer en un LP report
+
+3. ESTRUCTURA DEL LP UPDATE por participada:
+   - Performance (3 líneas)
+   - Atribución (3 líneas)
+   - Commentary (4 líneas)
+   - Outlook (2 líneas)
+   - Acción del fondo (si aplica)
+
+4. CREACIÓN EN GOOGLE DOCS:
+   - Cómo Make crea un Google Doc con el borrador
+   - Cómo dar formato básico (headers, secciones por participada)
+
+5. FLUJO DE APROBACIÓN:
+   - Email al asociado con link al borrador
+   - Instrucciones para revisar antes de enviar a LPs`,
+          claudeUrl: 'https://claude.ai/new'
+        }
+      },
+    ]
+  },
+  {
     id: 'p4',
-    label: 'Fase 4 · Meses 3–5',
+    label: 'Fase 9 · Meses 6–7',
     title: 'Principal / Director',
     subtitle: 'Pensamiento de nivel IC y sistemas de decisión. Las habilidades que distinguen a los mejores.',
     color: '#c97a5a',
@@ -2036,8 +2975,8 @@ NUNCA escribas estas afirmaciones sin evidencia directa:
   },
   {
     id: 'p5',
-    label: 'Fase 5 · Meses 5–8',
-    title: 'Partner / Managing Partner',
+    label: 'Fase 10 · Meses 7–9',
+    title: 'Partner / Firma',
     subtitle: 'Sistemas a nivel de firma. LP communications, fundraising y knowledge base institucional.',
     color: '#a05a9e',
     colorDim: 'rgba(160,90,158,0.12)',
@@ -2364,922 +3303,6 @@ EMAIL DE FOLLOW-UP (enviar en 24h):
       },
     ]
   }
-,
-  // ═══════════════════ FASE N: ORQUESTACIÓN ═══════════════════
-  {
-    id: 'pN',
-    label: 'Fase N · Semanas 5–7',
-    title: 'Orquestación con Make',
-    subtitle: 'De prompts manuales a flujos automáticos. Aquí es donde Claude deja de ser una herramienta y se convierte en un sistema.',
-    color: '#c9a84c',
-    colorDim: 'rgba(201,168,76,0.12)',
-    skills: [
-      {
-        id: 'n1',
-        title: 'Qué es un orquestador y cuándo usarlo',
-        level: 'L2', time: 'Semana 5', priority: 'Master',
-        desc: 'Un orquestador es una herramienta que conecta aplicaciones y ejecuta acciones automáticamente cuando ocurre algo. Make y N8N son los dos más usados. La diferencia con Claude solo: Claude razona, el orquestador actúa. Claude analiza el comité de Luda; Make lo recibe por email, se lo manda a Claude, y guarda el resultado en Notion — sin que tú toques nada.',
-        subtasks: [
-          'Entiende el concepto de trigger → acción → output con un ejemplo cotidiano',
-          'Distingue qué hace Claude (razonar) vs qué hace Make (conectar y ejecutar)',
-          'Identifica los 5 flujos de tu trabajo que más se beneficiarían de automatización',
-          'Crea una cuenta gratuita en Make.com y explora la interfaz 15 minutos',
-        ],
-        exercise: {
-          text: 'Sin construir nada todavía: dibuja en papel (o en Notion) el flujo del agente de comités mensuales. Trigger → qué datos entran → qué hace Claude → dónde va el resultado. Este diseño previo es el 50% del trabajo.',
-          prompt: `Ayúdame a diseñar el flujo de mi primer agente antes de construirlo.
-
-AGENTE: Análisis automático de comités de dirección de participadas
-
-Describe el flujo completo respondiendo estas preguntas:
-1. TRIGGER: ¿qué evento arranca el flujo? (email, archivo nuevo, fecha fija...)
-2. INPUT: ¿qué datos/archivos necesita Claude para hacer el análisis?
-3. PROCESAMIENTO: ¿qué prompt exacto se manda a Claude?
-4. OUTPUT: ¿qué genera Claude? ¿en qué formato?
-5. DESTINO: ¿dónde se guarda el resultado? (Notion, Sheets, email...)
-6. NOTIFICACIÓN: ¿quién recibe un aviso y cómo?
-
-Genera el diseño del flujo en formato de diagrama de texto con flechas.`,
-          claudeUrl: 'https://claude.ai/new'
-        }
-      },
-      {
-        id: 'n2',
-        title: 'Make vs N8N: cuándo elegir cada uno',
-        level: 'L2', time: 'Semana 5', priority: 'Master',
-        desc: 'Make es visual, intuitivo y tiene más integraciones nativas (5000+). N8N es más técnico, más flexible, y puede auto-hospedarse (importante si vuestra política de seguridad no permite datos en la nube de terceros). Para un equipo de PE que empieza: Make. Para un equipo con datos muy sensibles o necesidades técnicas avanzadas: N8N self-hosted.',
-        subtasks: [
-          'Compara los planes gratuitos: Make (1000 operaciones/mes) vs N8N (5000 ejecuciones/mes self-hosted)',
-          'Verifica si vuestras herramientas principales tienen conector nativo en Make (Gmail, Drive, Notion, Slack)',
-          'Decide cuál usar basándote en la política de datos de tu fondo',
-          'Configura el workspace de Make con el nombre de tu fondo y añade los conectores principales',
-        ],
-        exercise: {
-          text: 'Entra en Make.com → crea un escenario nuevo → conecta tu cuenta de Gmail. Solo conectar, sin construir nada más. Verifica que Make puede leer tus emails. Ese es el primer paso de todos los agentes.',
-          prompt: `Tengo que decidir entre Make y N8N para automatizar flujos de trabajo en un fondo de private equity.
-
-Nuestro contexto:
-- Equipo de 6 personas
-- Usamos: Gmail, Google Drive, Notion, Google Sheets
-- Manejamos información confidencial de participadas y LPs
-- Nadie en el equipo sabe programar
-- Presupuesto: preferiblemente <100€/mes
-
-Ayúdame a tomar la decisión con una comparativa específica para nuestro caso:
-1. Qué puede hacer Make que N8N no puede (y viceversa) para PE
-2. Implicaciones de seguridad de datos para cada uno
-3. Estimación de operaciones/mes que necesitaríamos con los 5 agentes core
-4. Recomendación final con justificación
-
-Sé directo. No quiero una comparativa genérica.`,
-          claudeUrl: 'https://claude.ai/new'
-        }
-      },
-      {
-        id: 'n3',
-        title: 'Tu primer flujo: Gmail → Claude → Notion',
-        level: 'L3', time: 'Semana 6', priority: 'Master',
-        desc: 'Este es el flujo más importante del curso. Una vez que lo tienes funcionando, todos los demás agentes son variaciones del mismo patrón. El flujo completo: Make vigila tu Gmail, cuando llega un email con PDF adjunto lo detecta, manda el contenido a Claude API, Claude lo analiza, Make guarda el resultado estructurado en Notion. Automático, sin que toques nada.',
-        subtasks: [
-          'Paso 1 — Trigger: configura el módulo "Watch emails" en Make con el filtro correcto (remitente o asunto con "comité")',
-          'Paso 2 — Extracción: añade el módulo de descarga del adjunto PDF',
-          'Paso 3 — Claude API: configura el módulo HTTP con la API de Anthropic, el modelo y el prompt',
-          'Paso 4 — Notion: crea la base de datos de comités en Notion y conecta Make para que cree una entrada nueva con el análisis',
-        ],
-        exercise: {
-          text: 'Construye el flujo completo paso a paso. Usa el comité de Luda como documento de prueba. Mándate un email a ti mismo con el PDF adjunto, activa el escenario en Make, y verifica que el análisis aparece en Notion en menos de 2 minutos.',
-          prompt: `Necesito el prompt exacto para el módulo HTTP de Make que llama a la API de Claude.
-
-El flujo es:
-- Trigger: email de Gmail con PDF adjunto
-- Make extrae el texto del PDF
-- Se manda a Claude API con este prompt
-- Claude devuelve análisis estructurado
-- Make lo guarda en Notion
-
-Genera:
-1. El JSON exacto para el body del módulo HTTP en Make
-2. El system prompt para el análisis de comités
-3. El prompt de usuario con el placeholder del texto del PDF
-4. Las instrucciones para parsear el JSON de respuesta de Claude en Make
-5. Los campos de Notion que debes crear y cómo mapearlos desde la respuesta
-
-Usa claude-sonnet-4-6 como modelo. Max tokens: 2000.`,
-          claudeUrl: 'https://claude.ai/new'
-        }
-      },
-      {
-        id: 'n4',
-        title: 'Conectar la API de Claude desde Make',
-        level: 'L3', time: 'Semana 6', priority: 'Master',
-        desc: 'La API de Claude es la pieza central de todos tus agentes. Necesitas entender cómo hacer la llamada HTTP desde Make, cómo pasar el texto del documento, cómo recibir la respuesta y extraer el contenido. Este conocimiento se reutiliza en los 5 agentes core — aprenderlo bien una vez es multiplicar por 5.',
-        subtasks: [
-          'Obtén tu API key de Anthropic en console.anthropic.com',
-          'Configura el módulo HTTP en Make: URL, headers con Authorization, body con model y messages',
-          'Prueba la llamada con un texto simple y verifica que recibes respuesta de Claude',
-          'Aprende a parsear el JSON de respuesta: data.content[0].text es donde está el output',
-        ],
-        exercise: {
-          text: 'Construye el módulo HTTP en Make que llama a Claude con este JSON exacto. Pruébalo con el texto "Analiza este KPI: Revenue Q1 2026 = 450k, vs budget 500k, vs Q1 2025 = 320k." Verifica que Claude responde correctamente antes de conectarlo al resto del flujo.',
-          prompt: `Genera el JSON exacto para configurar el módulo HTTP de Make que llama a la API de Anthropic.
-
-Incluye:
-1. URL: https://api.anthropic.com/v1/messages
-2. Method: POST
-3. Headers necesarios (con placeholders para la API key)
-4. Body JSON completo con:
-   - model: claude-sonnet-4-6
-   - max_tokens: 2000
-   - system: [prompt de analista PE]
-   - messages con el contenido del documento
-
-También explica:
-- Dónde en Make pego la API key de forma segura (sin que aparezca en el escenario)
-- Cómo extraer data.content[0].text de la respuesta en Make
-- Qué hacer si Claude devuelve un error (429, 500, etc.)`,
-          claudeUrl: 'https://claude.ai/new'
-        }
-      },
-      {
-        id: 'n5',
-        title: 'Manejo de errores, reintentos y logs',
-        level: 'L3', time: 'Semana 6', priority: 'Master',
-        desc: 'Un agente sin manejo de errores es un agente que falla en silencio. Necesitas saber qué hacer cuando Claude devuelve un error, cuando el PDF no se puede leer, o cuando Notion no responde. Make tiene módulos específicos para esto: rutas de error, reintentos automáticos, y notificaciones por email cuando algo falla.',
-        subtasks: [
-          'Añade un módulo de manejo de errores al flujo principal: si Claude falla, envía email de aviso',
-          'Configura reintentos automáticos: 3 intentos con 5 minutos de espera entre cada uno',
-          'Crea un log en Google Sheets de cada ejecución: fecha, participada, éxito/fallo, tiempo',
-          'Prueba el flujo de error mandando un PDF corrupto y verifica que recibes la notificación',
-        ],
-        exercise: {
-          text: 'Añade el manejo de errores a tu flujo de comités. Cuando algo falle, debes recibir un email con: qué falló, en qué paso, y qué documento estaba procesando. Sin esto el agente no es fiable para uso profesional.',
-          prompt: `Diseña la estrategia completa de manejo de errores para mi agente de comités en Make.
-
-El flujo tiene estos pasos que pueden fallar:
-1. Lectura del email (Gmail)
-2. Descarga del PDF adjunto
-3. Llamada a Claude API
-4. Escritura en Notion
-
-Para cada paso, dame:
-- Tipos de error más comunes
-- Cómo detectarlo en Make
-- Acción a tomar (reintentar / notificar / guardar en log)
-- Mensaje de email de aviso con la información relevante
-
-También: ¿cómo configuro Make para que me avise si el escenario lleva más de 24h sin ejecutarse (señal de que algo está roto)?`,
-          claudeUrl: 'https://claude.ai/new'
-        }
-      },
-      {
-        id: 'n6',
-        title: 'Webhooks y triggers automáticos',
-        level: 'L3', time: 'Semana 7', priority: 'Master',
-        desc: 'Hasta ahora tus flujos se activan revisando Gmail cada X minutos (polling). Los webhooks son más potentes: el trigger ocurre en el instante que pasa algo, sin espera. Útil para alertas urgentes de KPIs o cuando un LP responde un email importante. También aprenderás a ejecutar flujos en schedule: el agente de monitoring de KPIs corre el día 5 de cada mes automáticamente.',
-        subtasks: [
-          'Configura un webhook en Make y conéctalo a un formulario de Google Forms como prueba',
-          'Cambia el trigger del agente de comités de polling a webhook instantáneo',
-          'Crea un schedule mensual: el día 5 de cada mes, Make ejecuta el agente de KPIs',
-          'Prueba que el webhook dispara en menos de 10 segundos desde el evento',
-        ],
-        exercise: {
-          text: 'Configura el agente de comités con webhook instantáneo: en lugar de que Make revise Gmail cada 15 minutos, Google crea una alerta que dispara Make en el momento que llega un email con "comité" en el asunto. Mide la diferencia de tiempo entre los dos sistemas.',
-          prompt: `Explícame cómo configurar un webhook instantáneo en Make para el agente de comités de dirección.
-
-El objetivo: cuando llega un email a Gmail con "comité" en el asunto, Make se activa en menos de 30 segundos.
-
-Explica paso a paso:
-1. Cómo crear el webhook en Make y obtener su URL
-2. Cómo configurar Gmail para que notifique a ese webhook (Google Apps Script o Gmail Add-on)
-3. Qué datos llegan al webhook y cómo parsearlos en Make
-4. Diferencias de coste en operaciones Make vs polling cada 15 min
-5. Cuándo usar webhook vs schedule vs polling para cada tipo de agente
-
-Dame también el código de Google Apps Script si es necesario.`,
-          claudeUrl: 'https://claude.ai/new'
-        }
-      },
-    ]
-  },
-
-  // ═══════════════════ FASE A: AGENTES CORE ═══════════════════
-  {
-    id: 'pA',
-    label: 'Fase A · Meses 2–3',
-    title: 'Los 5 agentes core de PE',
-    subtitle: 'Los agentes que cambian tu día a día. Cada uno resuelve un problema real y recurrente del trabajo en private equity.',
-    color: '#4a7fb5',
-    colorDim: 'rgba(74,127,181,0.12)',
-    skills: [
-      {
-        id: 'a1',
-        title: 'Agente 1 — Comités mensuales: email → análisis → Notion',
-        level: 'L3', time: 'Mes 2', priority: 'Master',
-        desc: 'El agente más importante. Cuando el equipo directivo de una participada manda el comité mensual por email, Make lo detecta, Claude lo analiza con tu prompt IC-ready, y el resultado aparece en Notion automáticamente: KPIs, flags, preguntas para el comité, recomendación. Sin que tú hagas nada. Multiplica por el número de participadas que sigues al mes.',
-        subtasks: [
-          'Configura el trigger: Gmail filter para emails de participadas con PDF adjunto',
-          'Construye el prompt del sistema específico para comités mensuales de PE',
-          'Crea la base de datos en Notion con los campos: participada, fecha, KPIs, flags, recomendación',
-          'Conecta Make → Claude API → Notion y prueba con el comité de Luda',
-        ],
-        exercise: {
-          text: 'Monta el agente completo y pruébalo con el comité de Luda de mayo 2026. El resultado en Notion debe tener exactamente estos campos: nombre participada, fecha comité, resumen 5 bullets, tabla KPIs, top 3 alertas, 5 preguntas para el comité, recomendación. Tiempo objetivo desde email hasta Notion: menos de 90 segundos.',
-          prompt: `Genera la configuración completa del Agente 1 — Comités mensuales.
-
-ARQUITECTURA:
-Trigger: Gmail (email con PDF de participada)
-Procesamiento: Claude API
-Output: Notion database
-
-Dame:
-
-1. FILTRO DE GMAIL en Make:
-   - Criterios para identificar emails de comités (no otros emails)
-   - Cómo extraer el nombre de la participada del asunto o remitente
-
-2. SYSTEM PROMPT completo para análisis de comités:
-   - Identidad del analista
-   - Instrucciones de formato
-   - Guardrails
-
-3. ESTRUCTURA DE NOTION:
-   - Lista de propiedades con su tipo (texto, número, select, fecha)
-   - Cómo mapear cada campo del output de Claude a cada propiedad de Notion
-
-4. MÓDULOS DE MAKE en orden:
-   - Módulo 1: Watch Gmail
-   - Módulo 2: Download attachment
-   - Módulo 3: HTTP → Claude API
-   - Módulo 4: Parse response
-   - Módulo 5: Create Notion page
-   - Módulo 6: Send confirmation email
-
-5. PROMPT DE USUARIO con placeholders de Make:
-   {{texto_del_pdf}} → cómo referenciarlo en Make`,
-          claudeUrl: 'https://claude.ai/new'
-        }
-      },
-      {
-        id: 'a2',
-        title: 'Agente 2 — Análisis de CIMs: Drive → investment memo',
-        level: 'L3', time: 'Mes 2', priority: 'Master',
-        desc: 'Cuando recibes un CIM o teaser de una nueva oportunidad, lo subes a una carpeta específica de Google Drive y el agente lo analiza automáticamente: genera el investment memo con tesis, KPIs, red flags, preguntas de diligencia y recomendación de si avanzar o no. El memo aparece en Notion listo para revisar. Lo que antes tomaba 3 horas, en 5 minutos.',
-        subtasks: [
-          'Crea la carpeta "Nuevas oportunidades" en Google Drive y conecta el trigger en Make',
-          'Construye el prompt de CIM-to-screen con los 4 pasos: summary, red flags, key questions, workplan',
-          'Diseña la estructura del investment memo en Notion con todos los campos necesarios para el IC',
-          'Añade lógica de routing: si el memo tiene más de 2 flags CRÍTICO, notifica al socio inmediatamente',
-        ],
-        exercise: {
-          text: 'Sube un CIM real o ficticio a la carpeta de Drive y verifica que el agente genera el investment memo completo en Notion en menos de 3 minutos. Evalúa la calidad: ¿lo llevarías a un IC preliminar sin editar?',
-          prompt: `Genera la arquitectura completa del Agente 2 — Análisis de CIMs.
-
-FLUJO:
-Google Drive (nuevo archivo) → Make → Claude API → Notion (investment memo)
-
-Dame:
-
-1. TRIGGER DE GOOGLE DRIVE:
-   - Cómo configurar "Watch files" en Make para una carpeta específica
-   - Cómo manejar PDFs grandes (+50 páginas) que superan el límite de texto
-
-2. SYSTEM PROMPT para análisis de CIM:
-   - Rol: analista de PE evaluando nueva oportunidad
-   - Los 4 pasos del CIM-to-screen loop
-   - Instrucción de output estructurado en JSON para facilitar el parsing
-
-3. LÓGICA DE ROUTING en Make:
-   - Cómo extraer el número de flags CRÍTICO del output de Claude
-   - Router module: si flags_críticos >= 2 → notificar al socio por email
-
-4. ESTRUCTURA DEL INVESTMENT MEMO en Notion:
-   - Propiedades del database
-   - Secciones del contenido del memo
-
-5. MANEJO DE ARCHIVOS GRANDES:
-   - Qué hacer si el PDF tiene más texto del que cabe en el contexto de Claude
-   - Estrategia de chunking para CIMs largos`,
-          claudeUrl: 'https://claude.ai/new'
-        }
-      },
-      {
-        id: 'a3',
-        title: 'Agente 3 — Monitor de KPIs: Sheets → alertas automáticas',
-        level: 'L3', time: 'Mes 2', priority: 'Master',
-        desc: 'El día 5 de cada mes, Make lee automáticamente los KPIs de cada participada desde Google Sheets, los compara contra el presupuesto y el mes anterior, Claude identifica las desviaciones relevantes y sus posibles causas, y envías un email de resumen al socio con los flags más importantes. Nunca más te enterarás tarde de un problema en una participada.',
-        subtasks: [
-          'Diseña el template de Google Sheets para el reporte mensual de KPIs de participadas',
-          'Configura el schedule en Make: día 5 de cada mes a las 8:00',
-          'Construye el prompt de análisis de desviaciones con umbrales configurables por participada',
-          'Crea el email de resumen para el socio con formato ejecutivo y links a los detalles en Notion',
-        ],
-        exercise: {
-          text: 'Crea el Sheets template para Luda con sus KPIs principales (GMV, ARPU, churn, revenue, EBITDA, caja) e introduce los datos de mayo 2026. Activa el agente manualmente y verifica que el email de resumen identifica correctamente el runway crítico de 1.5 meses como flag CRÍTICO.',
-          prompt: `Diseña el sistema completo del Agente 3 — Monitor de KPIs.
-
-FLUJO:
-Schedule (día 5/mes) → Google Sheets → Make → Claude API → Email al socio + Notion
-
-Dame:
-
-1. TEMPLATE DE GOOGLE SHEETS:
-   - Estructura de las columnas (KPI, valor actual, budget, mes anterior, umbral de alerta)
-   - Una pestaña por participada o todas en la misma hoja
-   - Fórmulas para calcular varianzas automáticamente
-
-2. UMBRALES DE ALERTA configurables:
-   - CRÍTICO: desviación >20% vs budget O runway <2 meses
-   - ALTO: desviación 10-20% vs budget
-   - MEDIO: desviación 5-10%
-   - Cómo hacer estos umbrales configurables por participada en Sheets
-
-3. SYSTEM PROMPT para análisis de KPIs:
-   - Cómo presentar los datos de Sheets a Claude
-   - Instrucción para identificar causas probables de cada desviación
-   - Formato del output para el email
-
-4. TEMPLATE DEL EMAIL EJECUTIVO:
-   - Asunto dinámico con nombre participada y número de flags
-   - Formato del cuerpo: resumen + tabla de KPIs con semáforos
-   - Links a Notion para ver el detalle
-
-5. LÓGICA MULTI-PARTICIPADA:
-   - Cómo iterar sobre múltiples participadas en el mismo escenario de Make`,
-          claudeUrl: 'https://claude.ai/new'
-        }
-      },
-      {
-        id: 'a4',
-        title: 'Agente 4 — Deal sourcing: noticias → oportunidades filtradas',
-        level: 'L3', time: 'Mes 3', priority: 'Master',
-        desc: 'Cada mañana a las 7:00, Make recopila noticias de fuentes sectoriales (RSS feeds, Google Alerts, LinkedIn), Claude las filtra según tu tesis de inversión y descarta el ruido, y recibes un email con las 3-5 oportunidades más relevantes del día con un análisis de por qué encajan con vuestra tesis. Llegas antes que el resto a las oportunidades.',
-        subtasks: [
-          'Define las fuentes de noticias relevantes para tu tesis: RSS feeds, Google Alerts configurados',
-          'Construye el prompt de filtrado: la tesis del fondo como criterio de relevancia',
-          'Configura el schedule diario a las 7:00 y el módulo de agregación de feeds RSS en Make',
-          'Diseña el formato del email matutino: conciso, accionable, con link a la fuente original',
-        ],
-        exercise: {
-          text: 'Configura el agente para el sector de Luda (software farmacéutico / marketplace). Define 5 fuentes de noticias relevantes, el criterio de filtrado, y actívalo manualmente para ver qué noticias de hoy pasarían el filtro de vuestra tesis.',
-          prompt: `Diseña el Agente 4 — Deal Sourcing diario.
-
-FLUJO:
-Schedule (7:00 diario) → RSS/Alerts → Make → Claude API → Email matutino
-
-Dame:
-
-1. FUENTES RECOMENDADAS para PE en España/Europa:
-   - RSS feeds de medios especializados en PE y M&A
-   - Google Alerts queries óptimas para deal flow
-   - LinkedIn Sales Navigator alternativa vía RSS
-
-2. MÓDULO RSS EN MAKE:
-   - Cómo agregar múltiples feeds en un solo escenario
-   - Cómo evitar duplicados (misma noticia en varios feeds)
-   - Cómo filtrar por fecha (solo noticias de las últimas 24h)
-
-3. PROMPT DE FILTRADO con tesis:
-   - Cómo describir la tesis de inversión para que Claude la use como filtro
-   - Instrucción de scoring: 1-10 de relevancia con justificación
-   - Umbral: solo incluir noticias con score >= 7
-
-4. FORMATO DEL EMAIL MATUTINO:
-   - Asunto: "3 oportunidades nuevas — [fecha]"
-   - Por cada noticia: titular, por qué encaja, link, acción sugerida
-   - Si no hay nada relevante: email vacío o no enviar
-
-5. ANTI-SPAM:
-   - Cómo evitar recibir 50 emails si hay un día con mucho ruido`,
-          claudeUrl: 'https://claude.ai/new'
-        }
-      },
-      {
-        id: 'a5',
-        title: 'Agente 5 — LP updates: datos → borrador trimestral automático',
-        level: 'L4', time: 'Mes 3', priority: 'Master',
-        desc: 'El agente más complejo y el de mayor impacto en la relación con LPs. Al inicio de cada trimestre, Make recopila los datos de performance de todas las participadas, Claude genera el narrativo de atribución y el commentary para cada una, y produce el borrador completo del LP report. Tú revisas y ajustas el 20% — Claude hace el 80% del trabajo.',
-        subtasks: [
-          'Diseña el template de datos de input: qué KPIs por participada necesita Claude para generar el commentary',
-          'Construye el prompt de LP narrative: tono institucional, honesto sobre gaps, constructivo sobre planes',
-          'Crea el flujo de Google Sheets → Make → Claude → Google Docs (borrador del report)',
-          'Añade la lógica de revisión: el borrador llega a tu email con un link para editarlo en Docs antes de enviarlo',
-        ],
-        exercise: {
-          text: 'Usa los datos de Luda del Q1 2026 para generar el bloque de LP update de esa participada. El output en Google Docs debe incluir: performance del trimestre, atribución, commentary y outlook. Evalúa si el tono es apropiado para un LP institucional y qué cambiarías.',
-          prompt: `Diseña el Agente 5 — LP Updates trimestrales.
-
-FLUJO:
-Schedule (inicio Q) → Google Sheets (datos portfolio) → Make → Claude API → Google Docs (borrador) → Email de revisión
-
-Dame:
-
-1. TEMPLATE DE DATOS DE INPUT en Sheets:
-   - Columnas necesarias por participada para generar commentary de calidad
-   - Cómo estructurar datos para múltiples participadas en un solo sheet
-   - Qué datos cuantitativos vs cualitativos necesita Claude
-
-2. SYSTEM PROMPT para LP narrative:
-   - Tono institucional (ejemplos de frases que SÍ y que NO)
-   - Instrucciones para ser honesto sobre underperformance sin alarmar
-   - Guardrails: qué nunca debe aparecer en un LP report
-
-3. ESTRUCTURA DEL LP UPDATE por participada:
-   - Performance (3 líneas)
-   - Atribución (3 líneas)
-   - Commentary (4 líneas)
-   - Outlook (2 líneas)
-   - Acción del fondo (si aplica)
-
-4. CREACIÓN EN GOOGLE DOCS:
-   - Cómo Make crea un Google Doc con el borrador
-   - Cómo dar formato básico (headers, secciones por participada)
-
-5. FLUJO DE APROBACIÓN:
-   - Email al asociado con link al borrador
-   - Instrucciones para revisar antes de enviar a LPs`,
-          claudeUrl: 'https://claude.ai/new'
-        }
-      },
-    ]
-  },
-
-  // ═══════════════════ FASE M: MODELOS FINANCIEROS ═══════════════════
-  {
-    id: 'pM',
-    label: 'Fase M · Meses 3–4',
-    title: 'Modelos financieros con IA',
-    subtitle: 'Claude no construye el Excel. Pero hace el 60% del trabajo previo y posterior que más tiempo consume.',
-    color: '#4a9e6e',
-    colorDim: 'rgba(74,158,110,0.12)',
-    skills: [
-      {
-        id: 'm1',
-        title: 'Arquitectura de un modelo LBO asistido por IA',
-        level: 'L2', time: 'Mes 3', priority: 'Master',
-        desc: 'Antes de abrir Excel, Claude puede generar la estructura completa del modelo, los supuestos de partida con su justificación, y los rangos razonables para cada hipótesis. Esto te ahorra 2-3 horas en la primera versión y te obliga a pensar en los supuestos antes de construir, no mientras construyes.',
-        subtasks: [
-          'Usa Claude para generar la estructura completa de fuentes y usos de un LBO',
-          'Genera los supuestos operativos base con rangos upside/downside y justificación de cada uno',
-          'Construye la lógica de deuda: tramos, amortización, covenants y capacidad de servicio',
-          'Genera el checklist de verificación manual para cuando traslades el modelo a Excel',
-        ],
-        exercise: {
-          text: 'Con los datos de Luda (Revenue creciendo, EBITDA -321k, runway 1.5 meses), pide a Claude que genere la arquitectura de una ronda de equity de 2M€. ¿Qué supuestos propone? ¿Cuáles te parecen agresivos? ¿Cuáles conservadores?',
-          prompt: `Genera la arquitectura completa de un modelo de inversión para [EMPRESA].
-
-DATOS DISPONIBLES:
-[Pega los KPIs financieros clave]
-
-TIPO DE OPERACIÓN: [growth equity / LBO / bridge]
-IMPORTE A INVERTIR: [X]M€
-HORIZONTE: [N] años
-
-GENERA:
-
-1. ESTRUCTURA DE FUENTES Y USOS:
-   - Desglose de la inversión total
-   - Mezcla equity/deuda si aplica
-   - Costes transaccionales estimados
-
-2. SUPUESTOS OPERATIVOS (base / upside / downside):
-   Para cada supuesto: valor, justificación, fuente de datos, riesgo si está equivocado
-   - Crecimiento de revenue (YoY %): 
-   - Expansión de EBITDA margin:
-   - Capex como % revenue:
-   - Working capital needs:
-
-3. SUPUESTOS DE SALIDA:
-   - Múltiplo de salida EV/EBITDA o EV/Revenue
-   - Año de salida
-   - Proceso de salida esperado
-
-4. MÉTRICAS DE RETORNO:
-   - IRR en cada escenario
-   - MOIC en cada escenario
-   - Payback period
-
-5. CHECKLIST DE VERIFICACIÓN:
-   Los 5 supuestos más sensibles que debes verificar con el management antes de finalizar el modelo`,
-          claudeUrl: 'https://claude.ai/new'
-        }
-      },
-      {
-        id: 'm2',
-        title: 'Narrativo de hipótesis para LPs y IC',
-        level: 'L2', time: 'Mes 3', priority: 'Master',
-        desc: 'Tienes el modelo en Excel con tres escenarios. El trabajo que más tiempo consume no es construir el modelo — es explicar en lenguaje natural por qué cada hipótesis es razonable. Claude puede generar este narrativo en minutos: por qué el caso base asume X% de crecimiento, qué tendría que pasar para el upside, qué escenario refleja el downside conservador.',
-        subtasks: [
-          'Exporta los supuestos clave de tu modelo a un formato que Claude pueda leer (tabla de texto)',
-          'Genera el narrativo del caso base: justificación de cada supuesto con referencia a datos del mercado',
-          'Genera el narrativo del upside: qué catalizadores específicos lo harían posible',
-          'Genera el narrativo del downside: qué riesgos específicos lo materializarían',
-        ],
-        exercise: {
-          text: 'Coge un modelo real o usa los datos de Luda. Exporta los supuestos de los tres escenarios en formato tabla. Pide a Claude el narrativo completo. Evalúa: ¿suena como si lo hubiera escrito un analista de PE o se nota que es IA?',
-          prompt: `Genera el narrativo completo de hipótesis para el LP report de [EMPRESA].
-
-SUPUESTOS DEL MODELO:
-
-CASO BASE:
-- Revenue growth: [X]% anual
-- EBITDA margin: [Y]% en año 5
-- Múltiplo de salida: [Z]x EV/EBITDA
-- IRR: [N]%
-
-CASO UPSIDE:
-[Misma estructura]
-
-CASO DOWNSIDE:
-[Misma estructura]
-
-GENERA para cada escenario:
-
-NARRATIVO (máx 4 párrafos):
-- Párrafo 1: Descripción del escenario y sus características principales
-- Párrafo 2: Justificación de los supuestos de crecimiento (con benchmarks sectoriales)
-- Párrafo 3: Justificación de los supuestos de márgenes y rentabilidad
-- Párrafo 4: Condiciones que harían este escenario el más probable
-
-TONO: Institucional. Como lo escribiría un analista de KKR para su LP report.
-RESTRICCIÓN: No uses adjetivos vacíos. Cada afirmación va respaldada por un dato o benchmark.`,
-          claudeUrl: 'https://claude.ai/new'
-        }
-      },
-      {
-        id: 'm3',
-        title: 'Análisis de sensibilidades en lenguaje natural',
-        level: 'L2', time: 'Mes 4', priority: 'Master',
-        desc: 'Una tabla de sensibilidades en Excel muestra números. Claude puede convertirlos en insights: "si el crecimiento cae al 15% y el múltiplo de salida baja a 8x, el IRR cae por debajo del hurdle rate". Este análisis en lenguaje natural es lo que realmente necesitas para el IC y para los LPs — no la tabla cruda.',
-        subtasks: [
-          'Exporta tu tabla de sensibilidades a texto estructurado',
-          'Pide a Claude que identifique las 3 combinaciones de variables más destructivas para el retorno',
-          'Genera el análisis de punto de equilibrio: qué nivel mínimo de cada variable mantiene el IRR objetivo',
-          'Produce el resumen ejecutivo de sensibilidades para incluir en el IC memo',
-        ],
-        exercise: {
-          text: 'Con la tabla de sensibilidades de Luda (o una simulada), pide a Claude que identifique el "escenario de pesadilla": la combinación de variables que más daña el retorno. ¿Coincide con lo que tú habrías identificado intuitivamente?',
-          prompt: `Analiza esta tabla de sensibilidades y conviértela en insights para el IC.
-
-TABLA DE SENSIBILIDADES:
-[Pega tu tabla de sensibilidades: IRR según crecimiento revenue x múltiplo de salida]
-
-ANÁLISIS SOLICITADO:
-
-1. PUNTO DE EQUILIBRIO:
-   - ¿Cuál es el crecimiento mínimo de revenue que mantiene IRR >= [X]%?
-   - ¿Cuál es el múltiplo de salida mínimo con supuestos base?
-
-2. ESCENARIO DE PESADILLA:
-   - Combinación de variables que destruye más valor
-   - Probabilidad estimada de que ocurra (con justificación)
-   - Plan de mitigación si se materializa
-
-3. VARIABLES MÁS SENSIBLES:
-   - Ranking de variables por impacto en IRR
-   - La variable que más debemos monitorizar durante la tenencia
-
-4. RESUMEN PARA IC (máx 5 líneas):
-   - El análisis de sensibilidades que presentarías en el IC
-   - Sin jerga técnica, con el mensaje clave claro`,
-          claudeUrl: 'https://claude.ai/new'
-        }
-      },
-      {
-        id: 'm4',
-        title: 'Value creation plan asistido por IA',
-        level: 'L3', time: 'Mes 4', priority: 'Master',
-        desc: 'El value creation plan es el documento que define cómo vas a generar retorno más allá de la deuda. Claude puede ayudarte a generarlo partiendo de los KPIs actuales de la participada, los benchmarks del sector y las palancas identificadas en la diligencia. El output: iniciativas concretas con impacto estimado en EBITDA y EV.',
-        subtasks: [
-          'Define las palancas de valor principales identificadas en la diligencia de Luda',
-          'Pide a Claude que cuantifique el impacto en EBITDA de cada palanca con supuestos explícitos',
-          'Genera el roadmap de iniciativas: qué hacer en los primeros 100 días, 12 meses, 36 meses',
-          'Crea el KPI tracker: qué métricas demuestran que cada iniciativa está funcionando',
-        ],
-        exercise: {
-          text: 'Con la situación actual de Luda (GMV negativo mejorando, Glovo problema, OTC por debajo de plan), genera el value creation plan para los próximos 18 meses. Prioriza las iniciativas por impacto vs esfuerzo.',
-          prompt: `Genera el value creation plan para [EMPRESA] basándote en los datos del comité adjunto.
-
-SITUACIÓN ACTUAL: [Describe brevemente los KPIs y la situación]
-
-GENERA:
-
-1. DIAGNÓSTICO DE PALANCAS (máx 5):
-   Para cada palanca:
-   - Descripción de la iniciativa
-   - Impacto estimado en EBITDA (€ y %)
-   - Supuestos detrás del impacto
-   - Esfuerzo de implementación: ALTO/MEDIO/BAJO
-   - Tiempo hasta ver resultados
-
-2. MATRIZ IMPACTO vs ESFUERZO:
-   - Cuadrante 1 (alto impacto, bajo esfuerzo): hacer primero
-   - Cuadrante 2 (alto impacto, alto esfuerzo): planificar
-   - Cuadrante 3 (bajo impacto, bajo esfuerzo): si hay capacidad
-   - Cuadrante 4 (bajo impacto, alto esfuerzo): no hacer
-
-3. ROADMAP 100 DÍAS / 12 MESES / 36 MESES:
-   - Hitos específicos y medibles para cada horizonte
-
-4. KPI TRACKER:
-   - 5 métricas que demuestran que el plan está funcionando
-   - Frecuencia de medición
-   - Umbral de alerta si se desvía`,
-          claudeUrl: 'https://claude.ai/new'
-        }
-      },
-    ]
-  },
-
-  // ═══════════════════ FASE D: DUE DILIGENCE AVANZADA ═══════════════════
-  {
-    id: 'pD',
-    label: 'Fase D · Meses 4–5',
-    title: 'Due diligence con data rooms',
-    subtitle: 'Cuando tienes 300 documentos y 3 semanas. IA para procesar en paralelo lo que antes llevaba semanas.',
-    color: '#9380d4',
-    colorDim: 'rgba(147,128,212,0.12)',
-    skills: [
-      {
-        id: 'd1',
-        title: 'Procesar data rooms con múltiples llamadas paralelas',
-        level: 'L3', time: 'Mes 4', priority: 'Master',
-        desc: 'Un data room tiene 200-400 documentos. Claude no puede leerlos todos en una sola llamada. La solución: Make procesa cada documento por separado, genera un resumen estructurado de cada uno, y luego una segunda llamada a Claude fusiona todos los resúmenes en el análisis final. Lo que antes llevaba 2 semanas de lectura, en 2-3 horas.',
-        subtasks: [
-          'Diseña la arquitectura de procesamiento paralelo: un módulo Make por documento',
-          'Construye el prompt de extracción por documento: qué extraer de contratos, P&Ls, legales, etc.',
-          'Crea el prompt de síntesis final: de múltiples resúmenes a análisis unificado',
-          'Añade la lógica de deduplicación: evitar analizar el mismo dato dos veces desde documentos distintos',
-        ],
-        exercise: {
-          text: 'Simula un mini data room con 5 documentos: el comité de Luda, un contrato ficticio de cliente, un extracto de P&L, una nota legal, y un informe de mercado. Procésalos en paralelo con Make y genera el análisis consolidado. ¿Qué información nueva emerge de combinar los cinco?',
-          prompt: `Diseña la arquitectura para procesar un data room completo con Make y Claude.
-
-CONTEXTO: Data room con ~200 documentos de due diligence.
-Tipos: financieros, legales, comerciales, operativos, RRHH.
-
-ARQUITECTURA:
-
-1. FASE 1 — CLASIFICACIÓN:
-   - Cómo clasificar automáticamente cada documento por tipo
-   - Prompt de clasificación: dado este documento, ¿qué tipo es?
-   - Por qué la clasificación importa: el prompt de extracción es distinto por tipo
-
-2. FASE 2 — EXTRACCIÓN POR TIPO:
-   Genera el prompt de extracción para cada tipo de documento:
-   - Contrato de cliente: qué extraer (valor, duración, cláusulas especiales, riesgo)
-   - P&L/financiero: qué extraer (métricas clave, anomalías, tendencias)
-   - Documento legal: qué extraer (riesgos, contingencias, obligaciones)
-   - Documento comercial: qué extraer (pipeline, clientes, competencia)
-
-3. FASE 3 — SÍNTESIS:
-   - Prompt para fusionar 50-100 resúmenes en análisis unificado
-   - Cómo identificar contradicciones entre documentos
-   - Formato del output final para el IC memo
-
-4. MAKE WORKFLOW:
-   - Cómo iterar sobre todos los archivos de una carpeta de Drive
-   - Cómo gestionar el rate limit de la API de Claude
-   - Estimación de coste en tokens y tiempo total`,
-          claudeUrl: 'https://claude.ai/new'
-        }
-      },
-      {
-        id: 'd2',
-        title: 'Detección de contradicciones y red flags en documentos',
-        level: 'L3', time: 'Mes 4', priority: 'Master',
-        desc: 'El valor más alto de la IA en due diligence no es leer rápido — es encontrar lo que tú no encontrarías manualmente: cuando el CIM dice que el contrato A dura hasta 2027 pero el propio contrato dice 2025, o cuando el P&L reportado no cuadra con el P&L del auditor. Claude puede detectar estas contradicciones sistemáticamente en minutos.',
-        subtasks: [
-          'Construye el prompt de detección de contradicciones entre el CIM y los documentos del data room',
-          'Diseña el prompt de verificación de fechas: contratos, licencias, garantías que vencen durante la tenencia',
-          'Crea el prompt de análisis de concentración: clientes, proveedores, empleados clave con cláusulas de retención',
-          'Genera el red flag report consolidado para presentar al socio antes del IC',
-        ],
-        exercise: {
-          text: 'Crea un escenario con una contradicción deliberada: el CIM de Luda dice que tiene contrato con Glovo hasta 2028, pero el contrato real dice 2026 con opción de renovación. ¿Detecta Claude la contradicción cuando le das los dos documentos?',
-          prompt: `Analiza estos documentos de due diligence de [EMPRESA] y detecta contradicciones y red flags.
-
-DOCUMENTOS:
-Documento 1 (CIM): [PEGA EXTRACTO]
-Documento 2 (Contrato / Legal / Financiero): [PEGA EXTRACTO]
-
-BUSCA ESPECÍFICAMENTE:
-
-1. CONTRADICCIONES DIRECTAS:
-   - Cifras que no cuadran entre documentos
-   - Fechas inconsistentes
-   - Afirmaciones del CIM que los documentos desmienten
-
-2. OMISIONES RELEVANTES:
-   - Qué dice el CIM que debería estar en los documentos y no está
-   - Cláusulas inusuales que el CIM no menciona
-
-3. RED FLAGS LEGALES:
-   - Contratos que vencen en el período de tenencia previsto
-   - Cláusulas de change of control
-   - Litigios o contingencias no mencionadas en el CIM
-
-4. CONCENTRACIÓN DE RIESGOS:
-   - Clientes que representan >20% del revenue con contratos cortos
-   - Dependencia de personas clave sin acuerdos de retención
-
-5. PREGUNTAS DE VERIFICACIÓN:
-   Las 5 preguntas que debes hacer al management sobre estas inconsistencias`,
-          claudeUrl: 'https://claude.ai/new'
-        }
-      },
-      {
-        id: 'd3',
-        title: 'Quality of Earnings asistido por IA',
-        level: 'L3', time: 'Mes 5', priority: 'Master',
-        desc: 'El QofE es el análisis más crítico de cualquier proceso de PE: ¿son reales los márgenes? ¿Son sostenibles los ingresos? ¿Qué add-backs son legítimos? Claude puede procesar el P&L histórico, identificar partidas anómalas, sugerir ajustes al EBITDA normalizado y generar las preguntas específicas para el advisor de QofE.',
-        subtasks: [
-          'Construye el prompt de análisis de P&L histórico: identificación de one-timers y anomalías',
-          'Genera la lista de add-backs potenciales con clasificación y evidencia necesaria para cada uno',
-          'Diseña las preguntas para el advisor de QofE basadas en los gaps identificados',
-          'Crea el bridge completo de EBITDA reportado a EBITDA normalizado con supuestos explícitos',
-        ],
-        exercise: {
-          text: 'Con el P&L de Luda (ventas netas +81% YoY, margen bruto 251k, EBITDA -321k), genera el análisis de QofE preliminar. ¿Qué add-backs potenciales identificas? ¿Qué preguntas harías al advisor antes de normalizar el EBITDA?',
-          prompt: `Realiza el análisis preliminar de Quality of Earnings para [EMPRESA].
-
-P&L HISTÓRICO:
-[Pega el P&L de los últimos 2-3 años si disponible]
-
-ANÁLISIS SOLICITADO:
-
-1. CALIDAD DE LOS INGRESOS:
-   - ¿Qué % de los ingresos son recurrentes vs one-time?
-   - ¿Hay ingresos que no se repetirán después de la transacción?
-   - ¿Hay diferimientos de ingresos que inflan el año actual?
-
-2. ANÁLISIS DE COSTES:
-   - Partidas que podrían ser one-time (reestructuración, litigios, etc.)
-   - Costes del propietario que no existirían con un nuevo dueño
-   - Costes infrarrepresentados que aumentarán post-transacción
-
-3. ADD-BACKS POTENCIALES:
-   Para cada add-back: importe estimado / clasificación / evidencia necesaria / riesgo si no se confirma
-
-4. BRIDGE EBITDA:
-   EBITDA reportado: [X]k
-   + Add-back 1: [importe] ([justificación])
-   + Add-back 2: [importe] ([justificación])
-   = EBITDA normalizado: [Y]k
-
-5. PREGUNTAS PARA EL ADVISOR DE QofE:
-   Las 10 preguntas más importantes para confirmar o refutar estos ajustes`,
-          claudeUrl: 'https://claude.ai/new'
-        }
-      },
-    ]
-  },
-
-  // ═══════════════════ FASE S: SEGURIDAD Y GOBIERNO ═══════════════════
-  {
-    id: 'pS',
-    label: 'Fase S · Mes 5',
-    title: 'Seguridad y gobierno de IA',
-    subtitle: 'Lo que ningún curso cubre y que en PE no es opcional. Un error aquí tiene consecuencias legales.',
-    color: '#c25a5a',
-    colorDim: 'rgba(194,90,90,0.12)',
-    skills: [
-      {
-        id: 'sec1',
-        title: 'Qué datos puedes meter en Claude y cuáles no',
-        level: 'L1', time: 'Mes 5', priority: 'Master',
-        desc: 'En PE manejas información material no pública (MNPI): datos de participadas antes de publicar resultados, información de deals en proceso, datos de LPs. Meter esta información en Claude.ai (el producto de consumo) puede tener implicaciones legales. Necesitas entender la diferencia entre Claude.ai, la API de Anthropic, y cómo Anthropic usa los datos según el plan contratado.',
-        subtasks: [
-          'Lee la política de datos de Anthropic para Claude.ai Pro vs API (son distintas)',
-          'Define con tu equipo qué categorías de información son MNPI en vuestro contexto',
-          'Establece la regla del fondo: qué puede entrar en Claude.ai vs qué solo puede entrar en la API',
-          'Documenta la política en una nota interna de 1 página que todos firmen haber leído',
-        ],
-        exercise: {
-          text: 'Clasifica estas situaciones como PERMITIDO, REVISAR CON LEGAL, o NO PERMITIDO para Claude.ai Pro: (1) analizar el comité mensual de una participada, (2) generar el borrador de una LOI con el precio de compra real, (3) procesar el P&L de una empresa en proceso de venta, (4) redactar un email a un LP institucional.',
-          prompt: `Ayúdame a crear la política de uso de IA para un fondo de private equity.
-
-CONTEXTO:
-- Fondo con 6 personas y ~[X]M€ bajo gestión
-- Participadas en sectores regulados
-- LPs institucionales (fondos de fondos, family offices)
-- Jurisdicción: España / UE
-
-GENERA LA POLÍTICA EN ESTOS APARTADOS:
-
-1. CLASIFICACIÓN DE DATOS:
-   - Qué es MNPI en nuestro contexto y ejemplos concretos
-   - Datos de participadas: qué puede y no puede usarse con IA
-   - Datos de LPs: restricciones específicas
-   - Datos de deals en proceso: protocolo
-
-2. HERRAMIENTAS PERMITIDAS:
-   - Claude.ai Pro: casos de uso permitidos y prohibidos
-   - API de Anthropic: casos de uso permitidos
-   - Herramientas de terceros (Make, N8N): qué datos pueden pasar por ellas
-
-3. PROTOCOLO PRÁCTICO:
-   - Antes de usar IA con un documento: checklist de 3 preguntas
-   - Qué hacer si accidentalmente introduces datos prohibidos
-   - A quién escalar una duda
-
-4. MARCO LEGAL:
-   - GDPR: implicaciones para datos de empleados de participadas
-   - NDA: qué cubren típicamente los NDAs de PE en relación a IA
-   - Recomendación: cuándo consultar con el abogado del fondo`,
-          claudeUrl: 'https://claude.ai/new'
-        }
-      },
-      {
-        id: 'sec2',
-        title: 'Configuración segura de agentes con datos confidenciales',
-        level: 'L3', time: 'Mes 5', priority: 'Master',
-        desc: 'Cuando tus agentes procesan información de participadas automáticamente, necesitas garantizar que esos datos no van a ningún sitio no autorizado, que están encriptados en tránsito, y que tienes logs de qué información procesó cada ejecución del agente. Esto no es paranoia — es el mínimo exigible en PE.',
-        subtasks: [
-          'Configura Make para que las credenciales de API nunca aparezcan en los logs de ejecución',
-          'Activa el cifrado en tránsito en todas las conexiones de Make (HTTPS obligatorio)',
-          'Crea el log de auditoría: qué documentos procesó cada agente, cuándo, y qué output generó',
-          'Establece la política de retención: cuánto tiempo guarda Make los datos de cada ejecución',
-        ],
-        exercise: {
-          text: 'Audita la configuración de seguridad de tu agente de comités: ¿aparece el texto del PDF en los logs de Make? ¿La API key de Anthropic está expuesta en algún módulo? ¿Tienes registro de qué documentos han sido procesados en los últimos 30 días?',
-          prompt: `Diseña la configuración de seguridad completa para los agentes de PE en Make.
-
-CHECKLIST DE SEGURIDAD A VERIFICAR:
-
-1. CREDENCIALES:
-   - Cómo almacenar API keys en Make sin que aparezcan en el código del escenario
-   - Rotación de credenciales: con qué frecuencia cambiar las API keys
-   - Qué hacer si una API key se compromete
-
-2. DATOS EN TRÁNSITO:
-   - Verificar que todas las conexiones usan HTTPS
-   - Qué datos de participadas pasan por Make y durante cuánto tiempo los retiene
-   - Cómo minimizar la exposición de datos (procesar lo mínimo necesario)
-
-3. LOGS Y AUDITORÍA:
-   - Configurar Make para que los logs no guarden el contenido de los documentos (solo metadata)
-   - Cómo crear un log de auditoría externo en Google Sheets
-   - Qué registrar: fecha, participada, tipo de documento, output summary (sin datos brutos)
-
-4. ACCESO Y PERMISOS:
-   - Quién en el equipo puede ver y modificar los escenarios de Make
-   - Cómo configurar roles en Make para limitar accesos
-   - Política de offboarding: qué hacer cuando alguien sale del equipo
-
-5. INCIDENTES:
-   - Plan de respuesta si un agente procesa datos que no debería
-   - A quién notificar y en qué plazo bajo GDPR`,
-          claudeUrl: 'https://claude.ai/new'
-        }
-      },
-      {
-        id: 'sec3',
-        title: 'Política de IA del fondo: documento oficial',
-        level: 'L3', time: 'Mes 5', priority: 'Master',
-        desc: 'Antes de usar IA de forma sistemática en el fondo, necesitas un documento oficial que defina las reglas, lo que los LPs pueden preguntar en una due diligence de gestora, y que proteja al fondo ante cualquier incidente. Claude puede ayudarte a redactar este documento — con la ironía de usar IA para definir la política de uso de IA.',
-        subtasks: [
-          'Define el alcance de la política: qué herramientas cubre y qué no',
-          'Redacta las reglas de uso aceptable para cada rol del equipo',
-          'Incluye el protocolo de incidentes y el proceso de actualización anual',
-          'Revisa la política con el abogado del fondo antes de distribuirla',
-        ],
-        exercise: {
-          text: 'Genera el borrador de la política de IA de tu fondo usando Claude. Cuando lo tengas, reflexiona sobre la ironía: estás usando IA para definir cómo usar IA. ¿Hay algo en el borrador que te genere incomodidad? Eso probablemente necesita revisión legal.',
-          prompt: `Redacta el borrador de la Política de Uso de Inteligencia Artificial de [NOMBRE FONDO].
-
-ESTRUCTURA DEL DOCUMENTO:
-
-1. INTRODUCCIÓN Y ALCANCE (1 página)
-   - Por qué el fondo adopta una política de IA
-   - Qué herramientas cubre (Claude, Make, N8N, otros)
-   - A quién aplica
-
-2. PRINCIPIOS GENERALES (1 página)
-   - Responsabilidad humana: la IA asiste, el humano decide
-   - Confidencialidad: tratamiento de MNPI y datos de LPs
-   - Calidad: verificación obligatoria de outputs de IA antes de usar en decisiones
-
-3. USOS PERMITIDOS Y PROHIBIDOS (2 páginas)
-   - Tabla: caso de uso / herramienta / permitido / condiciones
-   - Casos de uso explícitamente prohibidos con ejemplos
-
-4. PROTOCOLO DE INCIDENTES (1 página)
-   - Qué es un incidente de IA en el contexto del fondo
-   - Pasos a seguir si ocurre
-   - Responsable de gestión
-
-5. GOBIERNO Y ACTUALIZACIÓN
-   - Quién aprueba cambios a la política
-   - Frecuencia de revisión (recomendado: anual)
-   - Cómo se forma al equipo sobre la política
-
-TONO: Profesional pero práctico. Que sea un documento que la gente lea, no archive.`,
-          claudeUrl: 'https://claude.ai/new'
-        }
-      },
-    ]
-  }
-
 ];
 
 
@@ -4483,6 +4506,149 @@ const SUBTASK_EXERCISES = {
   ],
 };
 
+
+// ═══════════════════════════════════════════════
+// DOCUMENT SYSTEM
+// ═══════════════════════════════════════════════
+const PHASE_DOC_HINTS = {
+  'p1': { hint: 'Sube el último comité mensual de una participada tuya' },
+  'p2': { hint: 'Sube un CIM o teaser de una oportunidad real o pasada' },
+  'pM': { hint: 'Sube el P&L o datos financieros de una participada' },
+  'p3': { hint: 'El documento más relevante para los workflows que quieres automatizar' },
+  'pD': { hint: 'Un contrato, QofE report, o documento legal de un deal' },
+  'pN': { hint: 'Este será el documento que procese tu primer agente de Make' },
+  'pS': { hint: 'Usa un documento real pero anonimiza los datos confidenciales' },
+  'pA': { hint: 'El mismo tipo de documento que procesarán tus agentes' },
+  'p4': { hint: 'Un deal real con toda la documentación disponible' },
+  'p5': { hint: 'Un LP report, pitch deck o comunicación a inversores' },
+};
+
+const CASE_DOCS = [
+  { id: 'case_luda', name: 'Luda Partners — Comité Mayo 2026', type: 'Comité de dirección', isCase: true },
+  { id: 'case_medsoft', name: 'MedSoft Solutions — CIM ficticio', type: 'CIM', isCase: true },
+  { id: 'case_tmi', name: 'Técnicas Metálicas Ibéricas — P&L', type: 'P&L', isCase: true },
+];
+
+function getUserDocs() {
+  try { return JSON.parse(localStorage.getItem('user_docs') || '[]'); } catch(e) { return []; }
+}
+function saveUserDoc(doc) {
+  const docs = getUserDocs();
+  if (!docs.find(d => d.id === doc.id)) { docs.unshift(doc); if (docs.length > 20) docs.splice(20); }
+  localStorage.setItem('user_docs', JSON.stringify(docs));
+}
+function getPhaseDoc(phaseId) {
+  try { return JSON.parse(localStorage.getItem('pdoc_' + phaseId) || 'null'); } catch(e) { return null; }
+}
+function setPhaseDoc(phaseId, doc) {
+  localStorage.setItem('pdoc_' + phaseId, JSON.stringify(doc));
+}
+function detectType(name) {
+  const n = name.toLowerCase();
+  if (n.includes('cim') || n.includes('memorandum')) return 'CIM';
+  if (n.includes('teaser')) return 'Teaser';
+  if (n.includes('comit') || n.includes('board')) return 'Comité';
+  if (n.includes('p&l') || n.includes('financ')) return 'P&L';
+  if (n.includes('contrat') || n.includes('legal')) return 'Legal';
+  if (n.includes('lp') || n.includes('investor')) return 'LP report';
+  return 'Documento';
+}
+
+function renderDocPicker(phaseId) {
+  const hint = PHASE_DOC_HINTS[phaseId];
+  if (!hint) return '';
+  const selected = getPhaseDoc(phaseId);
+  const allDocs = [...CASE_DOCS, ...getUserDocs()];
+  const optionsHtml = allDocs.map(function(d) {
+    var isSel = selected && selected.id === d.id;
+    var checkSvg = isSel ? '<svg width="10" height="10" viewBox="0 0 10 10"><polyline points="1.5,5 4,7.5 8.5,2" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>' : '';
+    return '<div class="doc-opt ' + (isSel?'sel':'') + '" onclick="selectDoc(\'' + phaseId + '\',\'' + d.id + '\')">'
+      + '<div style="font-size:15px">' + (d.isCase?'📋':'📄') + '</div>'
+      + '<div style="flex:1;min-width:0"><div class="doc-opt-name">' + d.name + '</div>'
+      + '<div class="doc-opt-type">' + d.type + ' · ' + (d.isCase?'Banco de casos':'Subido por ti') + '</div></div>'
+      + '<div class="doc-check">' + checkSvg + '</div>'
+      + '</div>';
+  }).join('');
+  var uploadHtml = '<label class="doc-upload-lbl"><span style="font-size:14px">➕</span> Subir mi propio documento'
+    + '<input type="file" accept=".pdf,.pptx,.ppt,.docx" style="display:none" onchange="handleUpload(event,\'' + phaseId + '\')">'
+    + '</label>';
+  if (selected) {
+    return '<div class="doc-picker" id="dp-' + phaseId + '">'
+      + '<div class="doc-active"><span style="font-size:14px">📄</span>'
+      + '<span class="doc-active-name">Practicando con: <strong>' + selected.name + '</strong></span>'
+      + '<button class="doc-change" onclick="toggleDocExpand(\'' + phaseId + '\')">Cambiar →</button></div>'
+      + '<div class="doc-expanded" id="dpe-' + phaseId + '" style="display:none">'
+      + '<div class="doc-options">' + optionsHtml + uploadHtml + '</div></div></div>';
+  }
+  return '<div class="doc-picker" id="dp-' + phaseId + '">'
+    + '<div class="doc-picker-header"><span class="doc-picker-icon">📂</span>'
+    + '<div><div class="doc-picker-title">¿Con qué documento quieres practicar esta fase?</div>'
+    + '<div class="doc-picker-sub">' + hint.hint + '</div></div></div>'
+    + '<div class="doc-options">' + optionsHtml + uploadHtml + '</div></div>';
+}
+
+function toggleDocExpand(phaseId) {
+  var el = document.getElementById('dpe-' + phaseId);
+  if (el) el.style.display = el.style.display === 'none' ? 'flex' : 'none';
+}
+
+function selectDoc(phaseId, docId) {
+  var all = [...CASE_DOCS, ...getUserDocs()];
+  var doc = all.find(function(d) { return d.id === docId; });
+  if (!doc) return;
+  setPhaseDoc(phaseId, doc);
+  renderPhase(currentPhase);
+  toast('Documento seleccionado: ' + doc.name, 'success');
+}
+
+function handleUpload(event, phaseId) {
+  var file = event.target.files[0];
+  if (!file) return;
+  var doc = { id: 'udoc_' + Date.now(), name: file.name.replace(/\.[^/.]+$/, ''), type: detectType(file.name), isCase: false };
+  saveUserDoc(doc);
+  setPhaseDoc(phaseId, doc);
+  renderPhase(currentPhase);
+  toast('"' + doc.name + '" guardado', 'success');
+}
+
+function getDocLabel(phaseId) {
+  var doc = getPhaseDoc(phaseId);
+  if (!doc) return '[selecciona un documento arriba para personalizar este ejercicio]';
+  if (doc.id === 'case_luda') return 'el comité de Luda de mayo 2026 (PDF adjunto)';
+  if (doc.id === 'case_medsoft') return 'el CIM de MedSoft (usa el banco de casos)';
+  if (doc.id === 'case_tmi') return 'el P&L de TMI (usa el banco de casos)';
+  return '"' + doc.name + '" (' + doc.type + ')';
+}
+
+function personalizePrompt(prompt, phaseId) {
+  var label = getDocLabel(phaseId);
+  var docName = (getPhaseDoc(phaseId) || {}).name || '[EMPRESA]';
+  docName = docName.split('—')[0].trim();
+  return prompt
+    .replace(/el comité de Luda adjunto/g, label)
+    .replace(/el documento adjunto/g, label)
+    .replace(/\[PEGA EL PDF[^\]]*\]/g, label)
+    .replace(/\[EMPRESA\]/g, docName);
+}
+
+// ═══════════════════════════════════════════════
+// THEME TOGGLE
+// ═══════════════════════════════════════════════
+function toggleTheme() {
+  var light = document.documentElement.classList.toggle('light');
+  localStorage.setItem('theme', light ? 'light' : 'dark');
+  var btn = document.getElementById('theme-btn');
+  if (btn) btn.textContent = light ? '☀️' : '🌙';
+}
+function initTheme() {
+  var saved = localStorage.getItem('theme');
+  var preferLight = window.matchMedia('(prefers-color-scheme: light)').matches;
+  if (saved === 'light' || (!saved && preferLight)) document.documentElement.classList.add('light');
+  var btn = document.getElementById('theme-btn');
+  if (btn) btn.textContent = document.documentElement.classList.contains('light') ? '☀️' : '🌙';
+}
+
+
 // ═══════════════════════════════════════════════
 // SUPABASE CONFIG
 // ═══════════════════════════════════════════════
@@ -4723,6 +4889,7 @@ function renderPhase(idx) {
   const levelMap = { L1: 'badge-l1', L2: 'badge-l2', L3: 'badge-l3', L4: 'badge-l4' };
   const html = `
     ${renderNextBanner()}
+    ${renderDocPicker(p.id)}
     <div class="phase-header-bar">
       <span class="phase-tag" style="background:${p.colorDim};color:${p.color}">${p.label}</span>
       <h1>${p.title}</h1>
@@ -4815,7 +4982,7 @@ function renderSkillCard(s, levelMap) {
         <div class="exercise-box">
           <div class="exercise-label">✦ Ejercicio integrador</div>
           <div class="exercise-text">${s.exercise.text}</div>
-          <div class="exercise-prompt">${s.exercise.prompt}</div>
+          <div class="exercise-prompt">${personalizePrompt(s.exercise.prompt, PHASES[currentPhase].id)}</div>
           <div class="exercise-actions">
             <button class="btn-outline" onclick="copyPrompt('${s.id}')">Copiar prompt</button>
             <a class="btn-gold" href="${s.exercise.claudeUrl}" target="_blank">Abrir en Claude ↗</a>
@@ -5027,6 +5194,7 @@ function initTheme() {
 // INIT
 // ═══════════════════════════════════════════════
 window.addEventListener('load', async () => {
+  initTheme();
   initTheme();
   const SUPABASE_URL = 'https://zdtoltdhbktruxpexjld.supabase.co';
   const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpkdG9sdGRoYmt0cnV4cGV4amxkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA0MDUyNjcsImV4cCI6MjA5NTk4MTI2N30.fuMuVMNVQRmlsCVpLa8x4B0vhitRTK7vCG36d_VT8dY';
