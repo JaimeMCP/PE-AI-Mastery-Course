@@ -676,6 +676,67 @@
   .hidden { display: none !important; }
   .text-gold { color: var(--gold); }
   .text-green { color: var(--green); }
+
+  /* ── LEADERBOARD ── */
+  .lb-screen { padding: 40px 48px; max-width: 960px; }
+  .lb-card { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; margin-bottom: 16px; }
+  .lb-header { padding: 16px 20px; border-bottom: 1px solid var(--border); display:flex; align-items:center; justify-content:space-between; }
+  .lb-title { font-family: var(--font-display); font-size: 16px; font-weight: 600; }
+  .lb-subtitle { font-size: 12px; color: var(--text3); }
+  .lb-row { display:flex; align-items:center; gap:14px; padding:12px 20px; border-bottom:1px solid var(--border); transition: background .1s; }
+  .lb-row:last-child { border-bottom: none; }
+  .lb-row:hover { background: var(--bg3); }
+  .lb-rank { font-family: var(--font-mono); font-size: 13px; color: var(--text3); width: 24px; text-align:center; flex-shrink:0; }
+  .lb-rank.r1 { color: #c9a84c; font-weight:600; }
+  .lb-rank.r2 { color: #9a9690; font-weight:600; }
+  .lb-rank.r3 { color: #8b6914; font-weight:600; }
+  .lb-avatar { width:32px; height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:600; flex-shrink:0; }
+  .lb-info { flex:1; min-width:0; }
+  .lb-name { font-size:14px; font-weight:500; }
+  .lb-detail { font-size:11px; color:var(--text3); margin-top:2px; }
+  .lb-bar-wrap { width:100px; flex-shrink:0; }
+  .lb-bar-bg { height:4px; background:var(--bg4); border-radius:2px; overflow:hidden; }
+  .lb-bar-fg { height:100%; border-radius:2px; background:var(--gold); transition:width .4s; }
+  .lb-pct { font-size:12px; color:var(--text2); text-align:right; margin-top:3px; }
+  .lb-you { font-size:10px; background:var(--gold-dim); color:var(--gold); padding:1px 6px; border-radius:8px; margin-left:6px; }
+  /* ── NEXT SKILL BANNER ── */
+  .next-banner { background: var(--bg2); border: 1px solid var(--border); border-left: 3px solid var(--gold); border-radius: var(--radius-lg); padding: 16px 20px; margin-bottom: 24px; display:flex; align-items:center; gap:14px; cursor:pointer; transition: border-color .15s; }
+  .next-banner:hover { border-left-color: var(--gold2); }
+  .next-banner-icon { font-size: 20px; flex-shrink:0; }
+  .next-banner-label { font-size:10px; text-transform:uppercase; letter-spacing:.1em; color:var(--gold); margin-bottom:3px; }
+  .next-banner-title { font-size:14px; font-weight:500; color:var(--text); }
+  .next-banner-phase { font-size:12px; color:var(--text3); margin-top:2px; }
+  .next-banner-arrow { margin-left:auto; color:var(--text3); flex-shrink:0; }
+  /* ── SUBTASK EXERCISES ── */
+  .subtask-exercise { display:none; background:var(--bg3); border:1px solid var(--border); border-left:2px solid var(--gold); border-radius:var(--radius); padding:14px; margin-top:8px; }
+  .subtask-exercise.visible { display:block; animation: fadeIn .2s ease; }
+  @keyframes fadeIn { from{opacity:0;transform:translateY(-4px)} to{opacity:1;transform:translateY(0)} }
+  .se-label { font-size:10px; text-transform:uppercase; letter-spacing:.08em; color:var(--gold); margin-bottom:8px; font-weight:500; }
+  .se-case { font-size:12px; color:var(--text2); line-height:1.6; margin-bottom:10px; padding:10px; background:var(--bg4); border-radius:var(--radius); border-left:2px solid var(--border2); }
+  .se-task { font-size:13px; color:var(--text); line-height:1.5; margin-bottom:10px; font-weight:500; }
+  .se-prompt { font-family:var(--font-mono); font-size:11px; background:var(--bg4); border:1px solid var(--border2); border-radius:var(--radius); padding:10px; color:var(--text2); white-space:pre-wrap; word-break:break-word; margin-bottom:10px; line-height:1.6; max-height:160px; overflow-y:auto; }
+  .se-actions { display:flex; gap:8px; flex-wrap:wrap; }
+  .se-btn { font-size:12px; padding:6px 12px; border-radius:var(--radius); cursor:pointer; font-family:var(--font-body); transition:all .15s; }
+  .se-copy { background:none; border:1px solid var(--border2); color:var(--text2); }
+  .se-copy:hover { border-color:var(--gold); color:var(--gold); }
+  .se-open { background:var(--gold-dim); border:1px solid var(--gold); color:var(--gold); text-decoration:none; display:inline-block; }
+  .se-open:hover { background:rgba(201,168,76,0.2); }
+  /* ── MOBILE ── */
+  .mobile-nav { display:none; position:fixed; bottom:0; left:0; right:0; background:var(--bg2); border-top:1px solid var(--border); z-index:200; padding:8px 0 12px; }
+  .mobile-nav-inner { display:flex; justify-content:space-around; }
+  .mobile-nav-btn { display:flex; flex-direction:column; align-items:center; gap:3px; padding:6px 16px; cursor:pointer; background:none; border:none; color:var(--text3); font-family:var(--font-body); font-size:10px; transition:color .15s; }
+  .mobile-nav-btn.active { color:var(--gold); }
+  .mobile-hamburger { display:none; position:fixed; top:12px; left:12px; z-index:300; background:var(--bg2); border:1px solid var(--border); border-radius:var(--radius); padding:8px; cursor:pointer; color:var(--text2); }
+  .sidebar-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,.6); z-index:99; }
+  @media(max-width:768px){
+    .sidebar { transform:translateX(-100%); transition:transform .25s; z-index:100; }
+    .sidebar.open { transform:translateX(0); }
+    .sidebar-overlay.visible { display:block; }
+    .main { margin-left:0 !important; padding:16px; padding-bottom:80px; padding-top:56px; }
+    .mobile-nav { display:block; }
+    .mobile-hamburger { display:block; }
+    .lb-screen { padding:16px; padding-bottom:80px; padding-top:56px; }
+  }
 </style>
 </head>
 <body>
@@ -780,10 +841,46 @@
       </div>
     </div>
     <nav class="phase-nav" id="phase-nav"></nav>
+    <div style="padding:8px 12px 16px; border-top:1px solid var(--border); margin-top:auto;">
+      <div class="phase-nav-item" id="lb-nav-item" onclick="showLeaderboard()" style="border-radius:var(--radius); padding:10px 12px; display:flex; gap:8px; align-items:center;">
+        <span style="font-size:14px;">🏆</span>
+        <div>
+          <div class="phase-nav-label">Equipo</div>
+          <div class="phase-nav-title">Leaderboard</div>
+        </div>
+      </div>
+    </div>
   </nav>
+
+  <div class="sidebar-overlay" id="sidebar-overlay" onclick="closeSidebar()"></div>
+
+  <button class="mobile-hamburger" onclick="toggleSidebar()" aria-label="Abrir menú">
+    <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+      <line x1="2" y1="4" x2="16" y2="4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+      <line x1="2" y1="9" x2="16" y2="9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+      <line x1="2" y1="14" x2="16" y2="14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+    </svg>
+  </button>
 
   <main class="main" id="main-content"></main>
 </div>
+
+<nav class="mobile-nav">
+  <div class="mobile-nav-inner">
+    <button class="mobile-nav-btn active" id="mnav-curso" onclick="renderPhase(currentPhase); setMobileNav('curso'); closeSidebar();">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="3" y="3" width="6" height="6" rx="1.5" stroke="currentColor" stroke-width="1.5"/><rect x="11" y="3" width="6" height="6" rx="1.5" stroke="currentColor" stroke-width="1.5"/><rect x="3" y="11" width="6" height="6" rx="1.5" stroke="currentColor" stroke-width="1.5"/><rect x="11" y="11" width="6" height="6" rx="1.5" stroke="currentColor" stroke-width="1.5"/></svg>
+      Curso
+    </button>
+    <button class="mobile-nav-btn" id="mnav-lb" onclick="showLeaderboard(); setMobileNav('lb'); closeSidebar();">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 2.5L12.2 8H18L13.4 11.2L15.2 17L10 13.8L4.8 17L6.6 11.2L2 8H7.8L10 2.5Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
+      Ranking
+    </button>
+    <button class="mobile-nav-btn" id="mnav-fases" onclick="toggleSidebar(); setMobileNav('fases');">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><line x1="3" y1="5" x2="17" y2="5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="10" x2="17" y2="10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="15" x2="17" y2="15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+      Fases
+    </button>
+  </div>
+</nav>
 
 <div class="toast" id="toast"></div>
 
@@ -2083,19 +2180,60 @@ EMAIL DE FOLLOW-UP (enviar en 24h):
   }
 ];
 
+
+// ═══════════════════════════════════════════════
+// SUBTASK EXERCISES DATA
+// ═══════════════════════════════════════════════
+const SUBTASK_EXERCISES = {
+  's1': [
+    { case: 'Caso: Recibes el comité de Luda de mayo 2026. Runway de 1.5 meses, GMV YoY negativo mejorando, EBITDA -321k.', task: 'Escribe un prompt sin ninguna estructura y observa qué output obtienes. Luego escribe el mismo prompt SIN deliverable, sin decision context y sin format.', prompt: 'Analiza este informe de comité de dirección de Luda.' },
+    { case: 'Mismo caso: comité de Luda, mayo 2026.', task: 'Añade SOLO el deliverable: qué output exacto quieres. Sin decision context ni format todavía. Compara con el ejercicio anterior.', prompt: 'Analiza este informe de comité de dirección de Luda.\n\nDELIVERABLE: Resumen ejecutivo en exactamente 5 bullets con cifras concretas, sin adjetivos.' },
+    { case: 'Mismo caso: comité de Luda, mayo 2026.', task: 'Añade ahora el DECISION CONTEXT: para qué sirve este análisis. Compara la diferencia en el foco del output.', prompt: 'Analiza este informe de comité de dirección de Luda.\n\nDELIVERABLE: Resumen ejecutivo en 5 bullets con cifras.\nDECISION CONTEXT: En 30 días decidimos si inyectar liquidez de emergencia o activar plan de contingencia.' },
+    { case: 'Mismo caso: comité de Luda, mayo 2026.', task: 'Añade el FORMAT completo: tabla de KPIs, señales, alertas, preguntas, recomendación. Este es el prompt completo IC-ready. Compara los 4 outputs.', prompt: 'DELIVERABLE: Análisis IC-ready del comité adjunto.\nDECISION CONTEXT: Decidir en 30 días entre inyección de liquidez o plan de contingencia.\n\nFORMAT:\n## Resumen (5 bullets, solo cifras)\n## KPIs: tabla valor / vs anterior / vs budget / tendencia\n## Señales positivas (máx 3)\n## Alertas (máx 3, por urgencia: CRÍTICO/ALTO/MEDIO)\n## 5 preguntas para el comité\n## Recomendación: FOLLOW-ON / CONTINGENCY / HOLD + 2 líneas' },
+  ],
+  's2': [
+    { case: 'Quieres configurar Claude como analista permanente de tu fondo.', task: 'Escribe el bloque SYSTEM completo con la identidad del analista de tu fondo. Incluye: nombre del fondo, estilo de análisis, audiencia, y dos reglas absolutas.', prompt: 'SYSTEM\nEres un analista senior de private equity integrado en [NOMBRE FONDO].\nTu trabajo: análisis IC-ready, precisos, cuantitativos, accionables.\nRegla 1: nunca inventas datos — si no está en el documento, escribes "No reportado".\nRegla 2: si detectas un riesgo crítico, va al inicio del output, nunca al final.\nAudiencia: socios con 20+ años que no toleran ambigüedades.' },
+    { case: 'Tienes el comité de Luda. Vas a analizar la situación del portfolio.', task: 'Escribe el bloque ROL específico para portfolio monitoring. Debe diferenciarse de cómo escribirías el ROL para deal screening.', prompt: 'ROL: Analista de portfolio monitoring.\nEvalúas la ejecución del plan de negocio con el mismo nivel de exigencia que usarías para decidir si ampliar posición.\nConoces el plan original de la compañía y tienes contexto del mes anterior.' },
+    { case: 'Tienes el comité de Luda. La decisión es sobre el runway.', task: 'Escribe el bloque TASK con decision context específico para la situación de Luda: runway 1.5 meses, decisión sobre liquidez.', prompt: 'TAREA: Analiza el comité de dirección adjunto de Luda Partners.\nCONTEXTO DE DECISIÓN: En las próximas 3 semanas decidimos si activar una extensión de runway mediante deuda bridge o preparar un plan de contingencia de reducción de costes.\nRESTRICCIÓN: Solo usa datos del documento. Marca supuestos con [SUPUESTO].' },
+    { case: 'Ya tienes los tres bloques anteriores. Ahora el FORMAT.', task: 'Combina SYSTEM + ROL + TASK + FORMAT en un único prompt. Pégalo en Claude con el PDF de Luda y evalúa si el output es directamente presentable al socio.', prompt: 'SYSTEM\nEres analista senior de PE en [NOMBRE FONDO]. Outputs IC-ready. Nunca inventas datos.\n\nROL: Portfolio monitoring. Criterio: ¿ampliarías posición?\n\nTAREA: Analiza el comité de Luda. Contexto: decisión bridge/contingencia en 3 semanas.\n\nFORMAT:\n## ⚠ Flags críticos (si los hay)\n## Resumen (5 bullets, solo cifras)\n## KPIs: tabla\n## Positivos (3) / Alertas (3)\n## 5 preguntas IC\n## → FOLLOW-ON / CONTINGENCY / HOLD + 2 líneas' },
+  ],
+  's3': [
+    { case: 'Tienes un memo anterior que tu socio valoró muy positivamente.', task: 'Extrae las 5 características clave de ese memo: estructura, tono, nivel de detalle, terminología, longitud de cada sección.', prompt: 'Analiza el siguiente memo y extrae sus características de estilo:\n[PEGA TU MEJOR MEMO ANTERIOR]\n\nExtrae:\n1. Estructura de secciones (en qué orden, cuántas)\n2. Tono (formal/directo/técnico)\n3. Nivel de detalle (cuántos datos por afirmación)\n4. Terminología específica (palabras que se repiten)\n5. Longitud media de cada sección\n6. Qué NO incluye (qué deja fuera)\n\nUsaré esto como few-shot example.' },
+    { case: 'Tienes el análisis de características del ejercicio anterior.', task: 'Construye el prompt few-shot completo con tu memo como ejemplo. Pruébalo con un documento diferente.', prompt: 'EJEMPLO DE OUTPUT QUE QUIERO REPLICAR:\n[PEGA TU MEJOR MEMO]\n\n---\nAnaliza el documento adjunto replicando EXACTAMENTE:\n— Misma estructura de secciones en el mismo orden\n— Mismo tono y nivel de formalidad\n— Mismo nivel de detalle cuantitativo\n— Misma terminología sectorial\n— Mismo umbral: qué merece mención y qué no\n\nNo resumas. Analiza con el mismo criterio del ejemplo.' },
+    { case: 'Tienes el prompt few-shot del ejercicio anterior.', task: 'Pruébalo con tres documentos distintos: el comité de Luda, un CIM ficticio y un email de management. ¿El estilo se mantiene en los tres?', prompt: 'Usa exactamente el mismo few-shot prompt del ejercicio anterior pero aplicado a este nuevo documento:\n[PEGA EL NUEVO DOCUMENTO]\n\nDespués de generar el output, evalúa tú mismo:\n— ¿El tono es idéntico al ejemplo?\n— ¿La estructura es la misma?\n— ¿El nivel de detalle es comparable?\nSi hay diferencias, explica por qué y cómo corregirlas.' },
+    { case: 'Ya tienes el few-shot funcionando con tres documentos.', task: 'Guarda el prompt few-shot en tu playbook (Notion, Drive) con versión v1.0, owner y fecha. Documenta cuándo usarlo vs cuándo no.', prompt: 'Ayúdame a documentar este few-shot prompt para el playbook del fondo:\n\nPROMPT FEW-SHOT v1.0:\n[PEGA EL PROMPT]\n\nGenera la ficha de documentación:\n— Nombre: [nombre descriptivo]\n— Versión: v1.0 — Fecha: [fecha] — Owner: [nombre]\n— Cuándo usar: [2-3 casos concretos]\n— Cuándo NO usar: [casos donde no aplica]\n— Inputs necesarios: [qué necesitas tener antes de usarlo]\n— Output esperado: [descripción del resultado]\n— Tiempo estimado de setup: [minutos]' },
+  ],
+  's4': [
+    { case: 'Quieres analizar el modelo de negocio de Luda con un schema estructurado.', task: 'Construye el schema de business model para Luda: modelo de ingresos, unit economics, palancas de crecimiento. Define qué campos son obligatorios.', prompt: 'Genera el schema de business model para una empresa de software B2B en el sector farmacéutico con modelo marketplace.\n\nSchema con campos OBLIGATORIOS (siempre presentes aunque sea "No reportado"):\n1. Fuentes de ingreso (lista)\n2. % recurrente vs transaccional\n3. Pricing model\n4. CAC estimado\n5. LTV o proxy\n6. Churn rate\n7. Principales palancas de crecimiento (3 máx)\n8. Riesgos estructurales (3 máx)' },
+    { case: 'Luda tiene un EBITDA reportado de -321k. Hay que normalizarlo.', task: 'Construye el schema de EBITDA bridge para Luda: de EBITDA reportado a EBITDA ajustado. Define los campos de cada add-back.', prompt: 'Construye el schema de EBITDA bridge para [EMPRESA].\n\nEBITDA reportado: -321k\n\nPara cada potencial add-back, rellena el schema:\n— Nombre del ajuste:\n— Importe (€):\n— Clasificación: ONE-TIME / RECURRING / DISCUTIBLE\n— Justificación:\n— Evidencia necesaria para confirmar:\n\nAl final: EBITDA ajustado = EBITDA reportado + suma de add-backs justificados' },
+    { case: 'Tienes información del comité de Luda sobre sus riesgos.', task: 'Construye el schema de risk matrix para Luda con los riesgos identificados en el comité. Cada riesgo necesita probabilidad, impacto y mitigación.', prompt: 'Construye la risk matrix de [EMPRESA] basándote en el documento adjunto.\n\nPara CADA riesgo identificado, rellena el schema:\n— Riesgo:\n— Categoría: OPERACIONAL / FINANCIERO / MERCADO / REGULATORIO\n— Probabilidad: ALTA / MEDIA / BAJA\n— Impacto en valoración si se materializa: €[X] o [X]%\n— Señal de alerta temprana (leading indicator):\n— Mitigación propuesta:\n— Owner de la mitigación:\n\nAl final: top 3 riesgos por severidad (probabilidad × impacto)' },
+    { case: 'Decides avanzar con Luda y necesitas organizar la due diligence.', task: 'Construye el schema de diligence plan de 4 semanas con workstreams, preguntas clave y responsables.', prompt: 'Construye el diligence plan de 4 semanas para [EMPRESA].\n\nPara cada workstream, rellena el schema:\n— WORKSTREAM: [nombre]\n— Responsable: [cargo interno + advisor externo si aplica]\n— Semana 1 — Kick-off y primeras preguntas:\n— Semana 2 — Análisis en profundidad:\n— Semana 3 — Verificación y red flags:\n— Semana 4 — Síntesis para IC:\n— Must-have para avanzar al IC: [condición específica]\n— Deal killer que detendría el proceso: [condición específica]' },
+  ],
+  's5': [
+    { case: 'Tienes el análisis inicial (Pass 1) del comité de Luda con recomendación CONTINGENCY PLAN.', task: 'Aplica el Pass 1 al comité de Luda. Genera el análisis inicial completo con tu prompt IC-ready.', prompt: 'PASS 1 — DRAFT\n\nSYSTEM: Eres analista senior de PE. Análisis IC-ready.\n\nTAREA: Analiza el comité de Luda de mayo 2026 adjunto.\nCONTEXTO: Decisión sobre inyección de liquidez en 3 semanas.\n\nFORMAT: Resumen 5 bullets / KPIs tabla / Positivos 3 / Alertas 3 / 5 preguntas IC / Recomendación con 2 líneas de justificación.' },
+    { case: 'Tienes el análisis del Pass 1 de Luda con recomendación CONTINGENCY PLAN.', task: 'Aplica el Pass 2 (Skeptic). Claude debe encontrar los 3 argumentos más fuertes contra la recomendación CONTINGENCY PLAN.', prompt: 'PASS 2 — SKEPTIC\n\nTienes este análisis de Luda:\n[PEGA EL OUTPUT DEL PASS 1]\n\nActúa como el socio más escéptico del IC. Destruye este análisis:\n1. Los 3 argumentos más fuertes CONTRA la recomendación CONTINGENCY PLAN\n2. Los 2 datos interpretados de forma demasiado pesimista\n3. Las 2 preguntas que este análisis no puede responder\n4. Veredicto: ¿listo para IC o necesita más trabajo?\n\nSé implacable. Sin cortesías.' },
+    { case: 'Tienes el Pass 1 y el Pass 2 de Luda.', task: 'Identifica las 3 críticas del Pass 2 que no puedes refutar con evidencia del documento. Esas son las que DEBES incorporar.', prompt: 'EVALUACIÓN DEL PASS 2\n\nCríticas del socio escéptico:\n[PEGA LAS CRÍTICAS DEL PASS 2]\n\nPara cada crítica, clasifica:\n— REFUTABLE con evidencia del documento: [qué cita lo refuta]\n— VÁLIDA pero manejable: [cómo mitigarla]\n— VÁLIDA y cambia la recomendación: [qué implica]\n\nAl final: ¿cuántas críticas válidas hay? ¿Alguna cambia la recomendación de CONTINGENCY a algo distinto?' },
+    { case: 'Tienes Pass 1, Pass 2 y la evaluación de críticas.', task: 'Aplica el Pass 3 (Revise). Genera el análisis final incorporando las críticas válidas y refutando las injustas con evidencia.', prompt: 'PASS 3 — REVISE\n\nAnálisis original (Pass 1):\n[PEGA EL PASS 1]\n\nCríticas válidas a incorporar:\n[PEGA LAS CRÍTICAS VÁLIDAS DEL PASS 2]\n\nGenera la versión final:\n— Mantén el formato del Pass 1\n— Incorpora las críticas válidas como matices o cambios\n— Para las críticas injustas: añade una línea de refutación con evidencia del documento\n— Marca con [REVISADO] las secciones que cambiaron\n— Si la recomendación cambia, explica por qué en 2 líneas' },
+  ],
+  's6': [
+    { case: 'Vas a analizar el comité de Luda con evidence discipline activada.', task: 'Añade la regla de citations a tu system prompt y aplícala al comité de Luda. Cada cifra debe tener (slide N).', prompt: 'Analiza el documento adjunto con EVIDENCE DISCIPLINE obligatoria.\n\nREGLA ABSOLUTA: Cada cifra o dato factual va seguido de su fuente:\n(slide N) — si está en una diapositiva\n(p. N) — si está en texto\n(sección: nombre) — si está en una sección específica\n\nSi no puedes citar la fuente exacta → escribe [dato no localizado]\nSi el dato es cualitativo sin cifra → escribe [cualitativo — slide N]\n\nUn análisis sin citas no es IC-ready. Aplica esta regla a cada afirmación del output.' },
+    { case: 'Tienes el análisis de Luda con citations. Ahora vas a verificarlas.', task: 'Verifica manualmente 5 citas al azar del output anterior. ¿Cuántas son correctas? ¿Cuántas imprecisas? ¿Cuántas incorrectas?', prompt: 'Tengo este análisis con citations de Luda:\n[PEGA EL ANÁLISIS CON CITAS]\n\nVoy a verificar 5 citas manualmente. Ayúdame a crear el checklist:\n\nPara cada cita verificada:\n— Cita en el análisis: "[texto] (slide N)"\n— ¿Está ese dato en ese slide?: SÍ / NO / APROXIMADAMENTE\n— Si NO: ¿dónde está realmente el dato?\n— Clasificación: CORRECTA / IMPRECISA / INCORRECTA\n\nAl final: % de precisión de las citations en este análisis.' },
+    { case: 'Has verificado las citas. Algunas son incorrectas.', task: 'Entiende por qué Claude cita incorrectamente. Añade instrucciones al prompt para reducir el error.', prompt: 'En el análisis de Luda, encontré estas citas incorrectas:\n[LISTA DE CITAS INCORRECTAS]\n\nAnaliza el patrón: ¿por qué cita incorrectamente?\n— ¿Confunde slides similares?\n— ¿Infiere datos que no están explícitos?\n— ¿Mezcla datos de distintas secciones?\n\nPropón 2-3 instrucciones adicionales en el prompt que reducirían este tipo de error específico.' },
+    { case: 'Ya entiendes el patrón de errores en las citations.', task: 'Integra los tres guardrails (citations + confidence tags + forbidden claims) en tu system prompt base permanente.', prompt: 'Integra estos tres guardrails en mi system prompt permanente de PE:\n\nGUARDRAIL 1 — CITATIONS: [tu regla de citations mejorada]\nGUARDRAIL 2 — CONFIDENCE TAGS:\n[CITADO] = extracción directa\n[INFERIDO] = deducción lógica\n[SUPUESTO] = hipótesis no en el documento\n[NO VERIFICADO] = requiere confirmación externa\n\nGUARDRAIL 3 — FORBIDDEN CLAIMS (nunca sin evidencia directa):\n— "La compañía está en track para..."\n— "El management está comprometido con..."\n— "Los márgenes mejorarán por..."\n— Cualquier proyección sin [SUPUESTO]\n\nGenera el system prompt completo con los tres guardrails integrados.' },
+  ],
+};
+
 // ═══════════════════════════════════════════════
 // SUPABASE CONFIG
 // ═══════════════════════════════════════════════
 let sbClient = null;
 let currentUser = null;
-let userProgress = {}; // { skillId: { skill: bool, subtasks: {idx: bool} } }
+let userProgress = {};
 let currentPhase = 0;
+let currentView = 'course'; // 'course' | 'leaderboard'
 
 function getConfig() {
-  return {
-    url: localStorage.getItem('sb_url'),
-    key: localStorage.getItem('sb_key')
-  };
+  return { url: localStorage.getItem('sb_url'), key: localStorage.getItem('sb_key') };
 }
 
 function initSupabase(url, key) {
@@ -2105,18 +2243,12 @@ function initSupabase(url, key) {
 async function loadProgress() {
   if (!sbClient || !currentUser) return;
   try {
-    const { data } = await sbClient
-      .from('progress')
-      .select('*')
-      .eq('user_id', currentUser.id);
+    const { data } = await sbClient.from('progress').select('*').eq('user_id', currentUser.id);
     userProgress = {};
     (data || []).forEach(row => {
       if (!userProgress[row.skill_id]) userProgress[row.skill_id] = { skill: false, subtasks: {} };
-      if (row.subtask_id === '__skill__') {
-        userProgress[row.skill_id].skill = row.completed;
-      } else {
-        userProgress[row.skill_id].subtasks[row.subtask_id] = row.completed;
-      }
+      if (row.subtask_id === '__skill__') userProgress[row.skill_id].skill = row.completed;
+      else userProgress[row.skill_id].subtasks[row.subtask_id] = row.completed;
     });
   } catch(e) { console.error('loadProgress error', e); }
 }
@@ -2125,11 +2257,8 @@ async function saveProgress(skillId, subtaskId, completed) {
   if (!sbClient || !currentUser) return;
   try {
     await sbClient.from('progress').upsert({
-      user_id: currentUser.id,
-      skill_id: skillId,
-      subtask_id: subtaskId,
-      completed,
-      updated_at: new Date().toISOString()
+      user_id: currentUser.id, skill_id: skillId, subtask_id: subtaskId,
+      completed, updated_at: new Date().toISOString()
     }, { onConflict: 'user_id,skill_id,subtask_id' });
   } catch(e) { console.error('saveProgress error', e); }
 }
@@ -2142,7 +2271,7 @@ let authMode = 'login';
 function toggleAuthMode() {
   authMode = authMode === 'login' ? 'register' : 'login';
   document.getElementById('auth-title').textContent = authMode === 'login' ? 'Accede al curso' : 'Crea tu cuenta';
-  document.getElementById('auth-subtitle').textContent = authMode === 'login' ? 'Domina la IA en Private Equity con tu equipo.' : 'Únete al equipo en el curso de IA para PE.';
+  document.getElementById('auth-subtitle').textContent = authMode === 'login' ? 'Domina la IA en Private Equity con tu equipo.' : 'Únete al equipo.';
   document.getElementById('auth-btn').textContent = authMode === 'login' ? 'Entrar' : 'Crear cuenta';
   document.getElementById('auth-toggle-text').textContent = authMode === 'login' ? '¿Primera vez?' : '¿Ya tienes cuenta?';
   document.getElementById('auth-toggle-link').textContent = authMode === 'login' ? 'Crear cuenta' : 'Inicia sesión';
@@ -2156,9 +2285,8 @@ async function handleAuth() {
   const btn = document.getElementById('auth-btn');
   const errEl = document.getElementById('auth-error');
   errEl.style.display = 'none';
-  if (!email || !password) { showError('Email y contraseña requeridos.'); return; }
-  btn.disabled = true;
-  btn.textContent = '…';
+  if (!email || !password) { showAuthError('Email y contraseña requeridos.'); return; }
+  btn.disabled = true; btn.textContent = '…';
   try {
     let result;
     if (authMode === 'register') {
@@ -2167,35 +2295,30 @@ async function handleAuth() {
     } else {
       result = await sbClient.auth.signInWithPassword({ email, password });
     }
-    if (result.error) { showError(result.error.message); btn.disabled = false; btn.textContent = authMode === 'login' ? 'Entrar' : 'Crear cuenta'; return; }
+    if (result.error) { showAuthError(result.error.message); btn.disabled = false; btn.textContent = authMode === 'login' ? 'Entrar' : 'Crear cuenta'; return; }
     currentUser = result.data.user;
     await loadProgress();
     showApp();
-  } catch(e) { showError('Error de conexión. Verifica la configuración de Supabase.'); btn.disabled = false; btn.textContent = authMode === 'login' ? 'Entrar' : 'Crear cuenta'; }
+  } catch(e) { showAuthError('Error de conexión.'); btn.disabled = false; btn.textContent = authMode === 'login' ? 'Entrar' : 'Crear cuenta'; }
 }
 
-function showError(msg) {
+function showAuthError(msg) {
   const el = document.getElementById('auth-error');
-  el.textContent = msg;
-  el.style.display = 'block';
+  el.textContent = msg; el.style.display = 'block';
 }
 
 async function logout() {
-  if (supabase) await sbClient.auth.signOut();
+  if (sbClient) await sbClient.auth.signOut();
   currentUser = null; userProgress = {};
   document.getElementById('app').style.display = 'none';
   document.getElementById('auth-screen').classList.remove('hidden');
 }
 
-// ═══════════════════════════════════════════════
-// SETUP
-// ═══════════════════════════════════════════════
 function saveConfig() {
   const url = document.getElementById('sb-url').value.trim();
   const key = document.getElementById('sb-key').value.trim();
   if (!url || !key) { toast('Introduce la URL y la key de Supabase', 'error'); return; }
-  localStorage.setItem('sb_url', url);
-  localStorage.setItem('sb_key', key);
+  localStorage.setItem('sb_url', url); localStorage.setItem('sb_key', key);
   initSupabase(url, key);
   document.getElementById('setup-screen').classList.add('hidden');
   document.getElementById('auth-screen').classList.remove('hidden');
@@ -2216,7 +2339,26 @@ alter table progress enable row level security;
 create policy "Users manage own progress" on progress
   for all using (auth.uid() = user_id);`;
   navigator.clipboard.writeText(sql);
-  toast('SQL copiado al portapapeles', 'success');
+  toast('SQL copiado', 'success');
+}
+
+// ═══════════════════════════════════════════════
+// MOBILE
+// ═══════════════════════════════════════════════
+function toggleSidebar() {
+  const s = document.querySelector('.sidebar');
+  const o = document.getElementById('sidebar-overlay');
+  s.classList.toggle('open');
+  o.classList.toggle('visible');
+}
+function closeSidebar() {
+  document.querySelector('.sidebar').classList.remove('open');
+  document.getElementById('sidebar-overlay').classList.remove('visible');
+}
+function setMobileNav(id) {
+  document.querySelectorAll('.mobile-nav-btn').forEach(b => b.classList.remove('active'));
+  const el = document.getElementById('mnav-' + id);
+  if (el) el.classList.add('active');
 }
 
 // ═══════════════════════════════════════════════
@@ -2226,12 +2368,10 @@ function showApp() {
   document.getElementById('auth-screen').classList.add('hidden');
   document.getElementById('setup-screen').classList.add('hidden');
   document.getElementById('app').style.display = 'block';
-
   const name = currentUser?.user_metadata?.full_name || currentUser?.email?.split('@')[0] || 'Tú';
   const initials = name.split(' ').map(n=>n[0]).join('').slice(0,2).toUpperCase();
   document.getElementById('user-avatar').textContent = initials;
   document.getElementById('user-display-name').textContent = name;
-
   renderNav();
   renderPhase(0);
   updateGlobalProgress();
@@ -2242,39 +2382,79 @@ function renderNav() {
   nav.innerHTML = PHASES.map((p, i) => {
     const total = p.skills.length;
     const done = p.skills.filter(s => userProgress[s.id]?.skill).length;
-    return `<div class="phase-nav-item ${i===currentPhase?'active':''}" onclick="renderPhase(${i})">
+    const active = currentView === 'course' && i === currentPhase;
+    return `<div class="phase-nav-item ${active?'active':''}" onclick="renderPhase(${i}); closeSidebar();">
       <div class="phase-nav-label">${p.label}</div>
       <div class="phase-nav-title">${p.title}</div>
       <div class="phase-nav-count"><span>${done}</span> / ${total} completadas</div>
     </div>`;
   }).join('');
+  // leaderboard active state
+  const lbItem = document.getElementById('lb-nav-item');
+  if (lbItem) lbItem.classList.toggle('active', currentView === 'leaderboard');
+}
+
+// ── NEXT SKILL ──
+function getNextSkill() {
+  for (const phase of PHASES) {
+    for (const skill of phase.skills) {
+      if (!userProgress[skill.id]?.skill) return { skill, phase };
+    }
+  }
+  return null;
+}
+
+function renderNextBanner() {
+  const next = getNextSkill();
+  if (!next) return '';
+  return `<div class="next-banner" onclick="goToSkill('${next.skill.id}')">
+    <div class="next-banner-icon">▶</div>
+    <div>
+      <div class="next-banner-label">Siguiente habilidad</div>
+      <div class="next-banner-title">${next.skill.title}</div>
+      <div class="next-banner-phase">${next.phase.label}</div>
+    </div>
+    <div class="next-banner-arrow">→</div>
+  </div>`;
+}
+
+function goToSkill(skillId) {
+  for (let i = 0; i < PHASES.length; i++) {
+    const found = PHASES[i].skills.find(s => s.id === skillId);
+    if (found) {
+      renderPhase(i);
+      setTimeout(() => {
+        const card = document.getElementById('card-' + skillId);
+        if (card) { card.classList.add('expanded'); card.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+      }, 100);
+      return;
+    }
+  }
 }
 
 function renderPhase(idx) {
   currentPhase = idx;
-  const p = PHASES[idx];
+  currentView = 'course';
   renderNav();
-
+  const p = PHASES[idx];
   const total = p.skills.length;
   const done = p.skills.filter(s => userProgress[s.id]?.skill).length;
-
   const levelMap = { L1: 'badge-l1', L2: 'badge-l2', L3: 'badge-l3', L4: 'badge-l4' };
-
   const html = `
+    ${renderNextBanner()}
     <div class="phase-header-bar">
       <span class="phase-tag" style="background:${p.colorDim};color:${p.color}">${p.label}</span>
       <h1>${p.title}</h1>
       <p>${p.subtitle}</p>
       <div class="phase-stats">
-        <div class="phase-stat"><strong>${done} / ${total}</strong> habilidades completadas</div>
+        <div class="phase-stat"><strong>${done} / ${total}</strong> completadas</div>
         <div class="phase-stat"><strong>${Math.round(done/total*100)}%</strong> de esta fase</div>
       </div>
     </div>
     ${p.skills.map(s => renderSkillCard(s, levelMap)).join('')}
   `;
-
   document.getElementById('main-content').innerHTML = html;
-  window.scrollTo(0,0);
+  window.scrollTo(0, 0);
 }
 
 function renderSkillCard(s, levelMap) {
@@ -2282,6 +2462,37 @@ function renderSkillCard(s, levelMap) {
   const isDone = prog.skill;
   const subtasksDone = s.subtasks.filter((_,i) => prog.subtasks[i]).length;
   const lvlClass = levelMap[s.level] || 'badge-l1';
+  const exData = SUBTASK_EXERCISES[s.id] || [];
+
+  const subtasksHtml = s.subtasks.map((st, i) => {
+    const stDone = prog.subtasks[i] || false;
+    const ex = exData[i];
+    const exHtml = ex ? `
+      <div class="subtask-exercise" id="sex-${s.id}-${i}">
+        <div class="se-label">✦ Ejercicio de práctica</div>
+        <div class="se-case"><strong>Caso:</strong> ${ex.case}</div>
+        <div class="se-task">${ex.task}</div>
+        <div class="se-prompt">${ex.prompt}</div>
+        <div class="se-actions">
+          <button class="se-btn se-copy" onclick="copySubEx('${s.id}',${i})">Copiar prompt</button>
+          <a class="se-btn se-open" href="https://claude.ai/new" target="_blank">Abrir en Claude ↗</a>
+        </div>
+      </div>` : '';
+    return `<div>
+      <div class="subtask ${stDone?'done':''}" id="st-${s.id}-${i}" onclick="toggleSubtask('${s.id}',${i})">
+        <div class="subtask-check">
+          <svg class="subtask-check-icon" width="8" height="8" viewBox="0 0 10 10">
+            <polyline points="1.5,5 4,7.5 8.5,2" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="subtask-text">
+          ${st}
+          ${ex ? `<span style="font-size:10px;color:var(--gold);margin-left:6px;cursor:pointer;" onclick="event.stopPropagation();toggleSubEx('${s.id}',${i})">ver ejercicio ↓</span>` : ''}
+        </div>
+      </div>
+      ${exHtml}
+    </div>`;
+  }).join('');
 
   return `
   <div class="skill-card ${isDone?'completed':''}" id="card-${s.id}">
@@ -2310,23 +2521,13 @@ function renderSkillCard(s, levelMap) {
         <div class="skill-desc">${s.desc}</div>
       </div>
       <div class="skill-section">
-        <div class="skill-section-title">Subtareas</div>
-        ${s.subtasks.map((st, i) => {
-          const stDone = prog.subtasks[i] || false;
-          return `<div class="subtask ${stDone?'done':''}" id="st-${s.id}-${i}" onclick="toggleSubtask('${s.id}',${i})">
-            <div class="subtask-check">
-              <svg class="subtask-check-icon" width="8" height="8" viewBox="0 0 10 10">
-                <polyline points="1.5,5 4,7.5 8.5,2" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </div>
-            <div class="subtask-text">${st}</div>
-          </div>`;
-        }).join('')}
+        <div class="skill-section-title">Subtareas — con ejercicios prácticos</div>
+        ${subtasksHtml}
       </div>
       <div class="skill-section">
         <div class="skill-section-title">Ejercicio final</div>
         <div class="exercise-box">
-          <div class="exercise-label">✦ Ejercicio práctico</div>
+          <div class="exercise-label">✦ Ejercicio integrador</div>
           <div class="exercise-text">${s.exercise.text}</div>
           <div class="exercise-prompt">${s.exercise.prompt}</div>
           <div class="exercise-actions">
@@ -2342,9 +2543,21 @@ function renderSkillCard(s, levelMap) {
   </div>`;
 }
 
+function toggleSubEx(skillId, idx) {
+  const el = document.getElementById(`sex-${skillId}-${idx}`);
+  if (el) el.classList.toggle('visible');
+}
+
+function copySubEx(skillId, idx) {
+  const exData = SUBTASK_EXERCISES[skillId];
+  if (exData && exData[idx]) {
+    navigator.clipboard.writeText(exData[idx].prompt);
+    toast('Prompt copiado', 'success');
+  }
+}
+
 function toggleExpand(skillId) {
-  const card = document.getElementById('card-' + skillId);
-  card.classList.toggle('expanded');
+  document.getElementById('card-' + skillId).classList.toggle('expanded');
 }
 
 async function toggleSkill(skillId) {
@@ -2354,8 +2567,6 @@ async function toggleSkill(skillId) {
   const card = document.getElementById('card-' + skillId);
   if (card) {
     card.classList.toggle('completed', userProgress[skillId].skill);
-    const titleEl = card.querySelector('.skill-title');
-    if (titleEl) titleEl.style.textDecoration = userProgress[skillId].skill ? 'line-through' : '';
     const btn = card.querySelector('.mark-complete-btn');
     if (btn) btn.textContent = userProgress[skillId].skill ? '✓ Completada — clic para reabrir' : '✓ Marcar como completada';
   }
@@ -2370,22 +2581,6 @@ async function toggleSubtask(skillId, idx) {
   await saveProgress(skillId, String(idx), userProgress[skillId].subtasks[idx]);
   const el = document.getElementById(`st-${skillId}-${idx}`);
   if (el) el.classList.toggle('done', userProgress[skillId].subtasks[idx]);
-  const skill = PHASES.flatMap(p=>p.skills).find(s=>s.id===skillId);
-  if (skill) {
-    const done = skill.subtasks.filter((_,i) => userProgress[skillId].subtasks[i]).length;
-    const card = document.getElementById('card-' + skillId);
-    if (card) {
-      let badge = card.querySelector('.badge-subtask-count');
-      if (!badge) {
-        badge = document.createElement('span');
-        badge.className = 'badge badge-subtask-count';
-        badge.style.cssText = 'background:rgba(74,158,110,0.15);color:#6dba91';
-        card.querySelector('.skill-badges').appendChild(badge);
-      }
-      badge.textContent = `${done}/${skill.subtasks.length} subtareas`;
-      if (done === 0) badge.remove();
-    }
-  }
 }
 
 function updateGlobalProgress() {
@@ -2398,9 +2593,107 @@ function updateGlobalProgress() {
 
 function copyPrompt(skillId) {
   const skill = PHASES.flatMap(p=>p.skills).find(s=>s.id===skillId);
-  if (skill) {
-    navigator.clipboard.writeText(skill.exercise.prompt);
-    toast('Prompt copiado', 'success');
+  if (skill) { navigator.clipboard.writeText(skill.exercise.prompt); toast('Prompt copiado', 'success'); }
+}
+
+// ═══════════════════════════════════════════════
+// LEADERBOARD
+// ═══════════════════════════════════════════════
+const AVATAR_COLORS = [
+  { bg: 'rgba(201,168,76,0.2)', color: '#c9a84c' },
+  { bg: 'rgba(74,127,181,0.2)', color: '#4a7fb5' },
+  { bg: 'rgba(74,158,110,0.2)', color: '#4a9e6e' },
+  { bg: 'rgba(194,90,90,0.2)', color: '#c25a5a' },
+  { bg: 'rgba(147,131,220,0.2)', color: '#9380d4' },
+  { bg: 'rgba(201,122,90,0.2)', color: '#c97a5a' },
+];
+
+async function showLeaderboard() {
+  currentView = 'leaderboard';
+  renderNav();
+  setMobileNav('lb');
+  const main = document.getElementById('main-content');
+  main.innerHTML = `<div class="lb-screen"><div style="font-family:var(--font-display);font-size:28px;font-weight:600;margin-bottom:4px;">🏆 Leaderboard del equipo</div><p style="color:var(--text2);font-size:14px;margin-bottom:24px;">Progreso en tiempo real de todo el equipo.</p><div id="lb-content"><div style="color:var(--text3);font-size:14px;padding:20px 0;">Cargando datos del equipo…</div></div></div>`;
+  window.scrollTo(0,0);
+
+  try {
+    // Get all progress data
+    const { data: allProgress } = await sbClient.from('progress').select('user_id, skill_id, subtask_id, completed');
+    // Get all users from auth - we can only get current user's metadata, so we use display names from progress patterns
+    // Group by user
+    const userMap = {};
+    (allProgress || []).forEach(row => {
+      if (!userMap[row.user_id]) userMap[row.user_id] = { skills: new Set(), subtasks: 0 };
+      if (row.subtask_id === '__skill__' && row.completed) userMap[row.user_id].skills.add(row.skill_id);
+      if (row.subtask_id !== '__skill__' && row.completed) userMap[row.user_id].subtasks++;
+    });
+
+    const totalSkills = PHASES.flatMap(p=>p.skills).length;
+    const entries = Object.entries(userMap).map(([uid, data]) => ({
+      uid,
+      skillsDone: data.skills.size,
+      subtasksDone: data.subtasks,
+      pct: Math.round(data.skills.size / totalSkills * 100),
+      isMe: uid === currentUser?.id
+    })).sort((a,b) => b.skillsDone - a.skillsDone || b.subtasksDone - a.subtasksDone);
+
+    if (entries.length === 0) {
+      document.getElementById('lb-content').innerHTML = `<div class="lb-card"><div class="lb-header"><div class="lb-title">Equipo</div></div><div style="padding:24px;color:var(--text3);font-size:14px;">Aún no hay datos de otros miembros. Comparte la URL del curso con tu equipo.</div></div>`;
+      return;
+    }
+
+    const rankIcons = ['🥇','🥈','🥉'];
+    const rows = entries.map((e, i) => {
+      const col = AVATAR_COLORS[i % AVATAR_COLORS.length];
+      const label = e.isMe ? 'Tú' : `Usuario ${i+1}`;
+      const rankClass = i < 3 ? `r${i+1}` : '';
+      const rankDisplay = i < 3 ? rankIcons[i] : `${i+1}`;
+      return `<div class="lb-row">
+        <div class="lb-rank ${rankClass}">${rankDisplay}</div>
+        <div class="lb-avatar" style="background:${col.bg};color:${col.color}">${label.slice(0,2).toUpperCase()}</div>
+        <div class="lb-info">
+          <div class="lb-name">${label}${e.isMe ? '<span class="lb-you">Tú</span>' : ''}</div>
+          <div class="lb-detail">${e.subtasksDone} subtareas completadas</div>
+        </div>
+        <div class="lb-bar-wrap">
+          <div class="lb-bar-bg"><div class="lb-bar-fg" style="width:${e.pct}%"></div></div>
+          <div class="lb-pct">${e.skillsDone}/${totalSkills}</div>
+        </div>
+      </div>`;
+    }).join('');
+
+    // My stats card
+    const me = entries.find(e => e.isMe) || { skillsDone: 0, subtasksDone: 0, pct: 0 };
+    const myRank = entries.findIndex(e => e.isMe) + 1;
+    const nextPerson = entries[myRank - 2]; // person ahead of me
+
+    document.getElementById('lb-content').innerHTML = `
+      <div class="lb-card" style="border-color:rgba(201,168,76,0.3);margin-bottom:24px;">
+        <div class="lb-header"><div class="lb-title">Tu posición</div></div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);">
+          <div style="background:var(--bg2);padding:16px;text-align:center;">
+            <div style="font-size:28px;font-weight:600;color:var(--gold);">${myRank}º</div>
+            <div style="font-size:11px;color:var(--text3);margin-top:4px;text-transform:uppercase;letter-spacing:.05em;">Posición</div>
+          </div>
+          <div style="background:var(--bg2);padding:16px;text-align:center;">
+            <div style="font-size:28px;font-weight:600;color:var(--text);">${me.skillsDone}</div>
+            <div style="font-size:11px;color:var(--text3);margin-top:4px;text-transform:uppercase;letter-spacing:.05em;">Habilidades</div>
+          </div>
+          <div style="background:var(--bg2);padding:16px;text-align:center;">
+            <div style="font-size:28px;font-weight:600;color:var(--green);">${me.pct}%</div>
+            <div style="font-size:11px;color:var(--text3);margin-top:4px;text-transform:uppercase;letter-spacing:.05em;">Completado</div>
+          </div>
+        </div>
+        ${nextPerson && !nextPerson.isMe ? `<div style="padding:12px 20px;font-size:12px;color:var(--text3);border-top:1px solid var(--border);">Te separan <strong style="color:var(--text)">${nextPerson.skillsDone - me.skillsDone} habilidades</strong> del puesto anterior.</div>` : myRank === 1 ? `<div style="padding:12px 20px;font-size:12px;color:var(--gold);border-top:1px solid var(--border);">🥇 Eres el líder del equipo. Mantén el ritmo.</div>` : ''}
+      </div>
+      <div class="lb-card">
+        <div class="lb-header">
+          <div><div class="lb-title">Ranking del equipo</div><div class="lb-subtitle">${entries.length} miembro${entries.length!==1?'s':''} activo${entries.length!==1?'s':''}</div></div>
+        </div>
+        ${rows}
+      </div>`;
+  } catch(e) {
+    document.getElementById('lb-content').innerHTML = `<div style="color:var(--red);font-size:13px;">Error al cargar el leaderboard: ${e.message}</div>`;
   }
 }
 
@@ -2417,16 +2710,13 @@ function toast(msg, type='') {
 window.addEventListener('load', async () => {
   const cfg = getConfig();
   const loading = document.getElementById('loading');
-
   if (!cfg.url || !cfg.key) {
     loading.style.opacity = '0';
     setTimeout(() => loading.style.display = 'none', 300);
     document.getElementById('setup-screen').classList.remove('hidden');
     return;
   }
-
   initSupabase(cfg.url, cfg.key);
-
   try {
     const { data: { session } } = await sbClient.auth.getSession();
     if (session?.user) {
