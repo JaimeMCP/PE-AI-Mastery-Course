@@ -2086,7 +2086,7 @@ EMAIL DE FOLLOW-UP (enviar en 24h):
 // ═══════════════════════════════════════════════
 // SUPABASE CONFIG
 // ═══════════════════════════════════════════════
-let supabase = null;
+let sbClient = null;
 let currentUser = null;
 let userProgress = {}; // { skillId: { skill: bool, subtasks: {idx: bool} } }
 let currentPhase = 0;
@@ -2099,13 +2099,13 @@ function getConfig() {
 }
 
 function initSupabase(url, key) {
-  supabase = window.supabase.createClient(url, key);
+  sbClient = window.supabase.createClient(url, key);
 }
 
 async function loadProgress() {
-  if (!supabase || !currentUser) return;
+  if (!sbClient || !currentUser) return;
   try {
-    const { data } = await supabase
+    const { data } = await sbClient
       .from('progress')
       .select('*')
       .eq('user_id', currentUser.id);
@@ -2122,9 +2122,9 @@ async function loadProgress() {
 }
 
 async function saveProgress(skillId, subtaskId, completed) {
-  if (!supabase || !currentUser) return;
+  if (!sbClient || !currentUser) return;
   try {
-    await supabase.from('progress').upsert({
+    await sbClient.from('progress').upsert({
       user_id: currentUser.id,
       skill_id: skillId,
       subtask_id: subtaskId,
@@ -2163,9 +2163,9 @@ async function handleAuth() {
     let result;
     if (authMode === 'register') {
       const name = document.getElementById('auth-name').value.trim();
-      result = await supabase.auth.signUp({ email, password, options: { data: { full_name: name } } });
+      result = await sbClient.auth.signUp({ email, password, options: { data: { full_name: name } } });
     } else {
-      result = await supabase.auth.signInWithPassword({ email, password });
+      result = await sbClient.auth.signInWithPassword({ email, password });
     }
     if (result.error) { showError(result.error.message); btn.disabled = false; btn.textContent = authMode === 'login' ? 'Entrar' : 'Crear cuenta'; return; }
     currentUser = result.data.user;
@@ -2181,7 +2181,7 @@ function showError(msg) {
 }
 
 async function logout() {
-  if (supabase) await supabase.auth.signOut();
+  if (supabase) await sbClient.auth.signOut();
   currentUser = null; userProgress = {};
   document.getElementById('app').style.display = 'none';
   document.getElementById('auth-screen').classList.remove('hidden');
@@ -2428,7 +2428,7 @@ window.addEventListener('load', async () => {
   initSupabase(cfg.url, cfg.key);
 
   try {
-    const { data: { session } } = await supabase.auth.getSession();
+    const { data: { session } } = await sbClient.auth.getSession();
     if (session?.user) {
       currentUser = session.user;
       await loadProgress();
