@@ -737,6 +737,87 @@
     .mobile-hamburger { display:block; }
     .lb-screen { padding:16px; padding-bottom:80px; padding-top:56px; }
   }
+
+  /* ── STREAK ── */
+  .streak-bar { padding:12px 20px; border-bottom:1px solid var(--border); }
+  .streak-row { display:flex; align-items:center; gap:8px; }
+  .streak-fire { font-size:18px; }
+  .streak-num { font-size:20px; font-weight:600; color:var(--gold); line-height:1; }
+  .streak-label { font-size:11px; color:var(--text3); }
+  .streak-dots { display:flex; gap:4px; margin-top:6px; }
+  .streak-dot { width:8px; height:8px; border-radius:50%; background:var(--bg4); }
+  .streak-dot.active { background:var(--gold); }
+
+  /* ── WEEKLY CHALLENGE ── */
+  .weekly-banner { background:var(--bg3); border:1px solid rgba(201,168,76,0.3); border-radius:var(--radius); padding:10px 12px; margin:0 12px 8px; cursor:pointer; transition:border-color .15s; }
+  .weekly-banner:hover { border-color:var(--gold); }
+  .weekly-tag { font-size:9px; text-transform:uppercase; letter-spacing:.1em; color:var(--gold); font-weight:500; margin-bottom:3px; }
+  .weekly-title { font-size:12px; color:var(--text); line-height:1.3; }
+  .weekly-done { font-size:10px; color:var(--text3); margin-top:3px; }
+
+  /* ── BADGES MODAL ── */
+  .modal-overlay { position:fixed; inset:0; background:rgba(0,0,0,.7); z-index:500; display:flex; align-items:center; justify-content:center; padding:20px; }
+  .modal-box { background:var(--bg2); border:1px solid var(--border2); border-radius:var(--radius-lg); width:100%; max-width:480px; max-height:80vh; overflow-y:auto; }
+  .modal-header { padding:20px 20px 16px; border-bottom:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; }
+  .modal-title { font-family:var(--font-display); font-size:18px; font-weight:600; }
+  .modal-close { background:none; border:none; color:var(--text3); cursor:pointer; font-size:18px; padding:4px; transition:color .15s; }
+  .modal-close:hover { color:var(--text); }
+  .modal-body { padding:20px; }
+  .badges-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; }
+  .badge-card { text-align:center; padding:16px 8px; background:var(--bg3); border-radius:var(--radius); border:1px solid var(--border); transition:all .15s; }
+  .badge-card.earned { border-color:rgba(201,168,76,0.4); background:var(--gold-dim); }
+  .badge-card.locked { opacity:.4; filter:grayscale(1); }
+  .badge-emoji { font-size:28px; margin-bottom:6px; }
+  .badge-name { font-size:11px; font-weight:500; color:var(--text); line-height:1.3; }
+  .badge-desc { font-size:10px; color:var(--text3); margin-top:3px; line-height:1.3; }
+  .badge-earned-label { font-size:9px; color:var(--gold); margin-top:4px; font-weight:500; }
+
+  /* ── GLOSSARY ── */
+  .glossary-screen { padding:40px 48px; max-width:960px; }
+  @media(max-width:768px){ .glossary-screen { padding:16px; padding-bottom:80px; padding-top:56px; } }
+  .glossary-search { width:100%; background:var(--bg3); border:1px solid var(--border2); border-radius:var(--radius); padding:10px 14px; color:var(--text); font-family:var(--font-body); font-size:14px; outline:none; margin-bottom:20px; }
+  .glossary-search:focus { border-color:var(--gold); }
+  .glossary-letter { font-size:11px; font-weight:500; text-transform:uppercase; letter-spacing:.1em; color:var(--text3); padding:8px 0 6px; border-bottom:1px solid var(--border); margin-bottom:8px; }
+  .glossary-term { padding:12px 0; border-bottom:1px solid var(--border); }
+  .glossary-term:last-child { border-bottom:none; }
+  .glossary-word { font-size:14px; font-weight:500; color:var(--text); margin-bottom:4px; }
+  .glossary-def { font-size:13px; color:var(--text2); line-height:1.6; }
+  .glossary-tag { display:inline-block; font-size:10px; padding:1px 6px; border-radius:8px; margin-right:4px; margin-bottom:4px; font-weight:500; }
+  .gtag-pe { background:rgba(147,128,212,0.15); color:#9380d4; }
+  .gtag-ia { background:rgba(201,168,76,0.15); color:var(--gold); }
+  .gtag-tech { background:rgba(74,127,181,0.15); color:#4a7fb5; }
+
+  /* ── PHASE PROGRESS RING ── */
+  .phase-ring-wrap { display:flex; align-items:center; gap:10px; margin-top:8px; flex-wrap:wrap; }
+  .phase-ring { position:relative; width:36px; height:36px; flex-shrink:0; }
+  .phase-ring svg { transform:rotate(-90deg); }
+  .phase-ring-num { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-size:10px; font-weight:600; color:var(--gold); }
+
+  /* ── SKILL TIME ESTIMATE ── */
+  .skill-time-est { font-size:11px; color:var(--text3); display:flex; align-items:center; gap:4px; }
+  .skill-time-est svg { opacity:.6; }
+
+  /* ── ARCH DIAGRAM in skills ── */
+  .arch-diagram { background:var(--bg4); border:1px solid var(--border); border-radius:var(--radius); padding:16px; margin:12px 0; overflow-x:auto; }
+  .arch-diagram svg { display:block; margin:0 auto; }
+
+  /* ── CASE STUDIES ── */
+  .cases-screen { padding:40px 48px; max-width:960px; }
+  @media(max-width:768px){ .cases-screen { padding:16px; padding-bottom:80px; padding-top:56px; } }
+  .case-card { background:var(--bg2); border:1px solid var(--border); border-radius:var(--radius-lg); margin-bottom:16px; overflow:hidden; }
+  .case-header { padding:16px 20px; cursor:pointer; display:flex; align-items:center; gap:12px; }
+  .case-sector { font-size:10px; font-weight:500; padding:2px 8px; border-radius:10px; }
+  .case-title { font-size:15px; font-weight:500; flex:1; }
+  .case-body { display:none; padding:0 20px 20px; border-top:1px solid var(--border); }
+  .case-card.open .case-body { display:block; }
+  .case-kpi-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(120px,1fr)); gap:8px; margin:16px 0; }
+  .case-kpi { background:var(--bg3); border-radius:var(--radius); padding:10px 12px; }
+  .case-kpi-val { font-size:18px; font-weight:600; color:var(--text); }
+  .case-kpi-label { font-size:11px; color:var(--text3); margin-top:2px; }
+  .case-doc-list { display:flex; flex-direction:column; gap:6px; margin-top:12px; }
+  .case-doc { display:flex; align-items:center; gap:8px; padding:8px 10px; background:var(--bg3); border-radius:var(--radius); font-size:13px; color:var(--text2); cursor:pointer; transition:background .1s; }
+  .case-doc:hover { background:var(--bg4); color:var(--text); }
+
 </style>
 </head>
 <body>
@@ -840,14 +921,34 @@
         <div class="prog-fill" id="prog-fill" style="width:0%"></div>
       </div>
     </div>
+    <!-- STREAK -->
+    <div class="streak-bar" id="streak-bar">
+      <div class="streak-row">
+        <span class="streak-fire">🔥</span>
+        <div><div class="streak-num" id="streak-num">0</div><div class="streak-label">días seguidos</div></div>
+        <button onclick="showBadges()" style="margin-left:auto;background:none;border:none;cursor:pointer;color:var(--gold);font-size:18px;" title="Ver insignias">🎖</button>
+      </div>
+      <div class="streak-dots" id="streak-dots"></div>
+    </div>
+    <!-- WEEKLY CHALLENGE -->
+    <div class="weekly-banner" id="weekly-banner" onclick="goToWeeklyChallenge()">
+      <div class="weekly-tag">⚡ Reto de la semana</div>
+      <div class="weekly-title" id="weekly-title">Cargando...</div>
+      <div class="weekly-done" id="weekly-done"></div>
+    </div>
     <nav class="phase-nav" id="phase-nav"></nav>
-    <div style="padding:8px 12px 16px; border-top:1px solid var(--border); margin-top:auto;">
-      <div class="phase-nav-item" id="lb-nav-item" onclick="showLeaderboard()" style="border-radius:var(--radius); padding:10px 12px; display:flex; gap:8px; align-items:center;">
-        <span style="font-size:14px;">🏆</span>
-        <div>
-          <div class="phase-nav-label">Equipo</div>
-          <div class="phase-nav-title">Leaderboard</div>
-        </div>
+    <div style="padding:8px 12px 16px; border-top:1px solid var(--border); margin-top:auto; display:flex; flex-direction:column; gap:4px;">
+      <div class="phase-nav-item" id="lb-nav-item" onclick="showLeaderboard()" style="border-radius:var(--radius); padding:8px 12px; display:flex; gap:8px; align-items:center;">
+        <span style="font-size:13px;">🏆</span>
+        <div><div class="phase-nav-label">Equipo</div><div class="phase-nav-title" style="font-size:12px;">Leaderboard</div></div>
+      </div>
+      <div class="phase-nav-item" id="cases-nav-item" onclick="showCases()" style="border-radius:var(--radius); padding:8px 12px; display:flex; gap:8px; align-items:center;">
+        <span style="font-size:13px;">📁</span>
+        <div><div class="phase-nav-label">Práctica</div><div class="phase-nav-title" style="font-size:12px;">Banco de casos</div></div>
+      </div>
+      <div class="phase-nav-item" id="glossary-nav-item" onclick="showGlossary()" style="border-radius:var(--radius); padding:8px 12px; display:flex; gap:8px; align-items:center;">
+        <span style="font-size:13px;">📖</span>
+        <div><div class="phase-nav-label">Referencia</div><div class="phase-nav-title" style="font-size:12px;">Glosario</div></div>
       </div>
     </div>
   </nav>
@@ -881,6 +982,19 @@
     </button>
   </div>
 </nav>
+
+<!-- BADGES MODAL -->
+<div class="modal-overlay hidden" id="badges-modal" onclick="if(event.target===this)hideBadges()">
+  <div class="modal-box">
+    <div class="modal-header">
+      <div class="modal-title">🎖 Tus insignias</div>
+      <button class="modal-close" onclick="hideBadges()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="badges-grid" id="badges-grid"></div>
+    </div>
+  </div>
+</div>
 
 <div class="toast" id="toast"></div>
 
@@ -3100,6 +3214,542 @@ TONO: Profesional pero práctico. Que sea un documento que la gente lea, no arch
 // ═══════════════════════════════════════════════
 // SUBTASK EXERCISES DATA
 // ═══════════════════════════════════════════════
+
+// ═══════════════════════════════════════════════
+// GAMIFICATION DATA
+// ═══════════════════════════════════════════════
+
+const BADGES = [
+  { id: 'first_skill', emoji: '🌱', name: 'Primera habilidad', desc: 'Completa tu primera habilidad', condition: p => Object.values(p).filter(v=>v.skill).length >= 1 },
+  { id: 'phase1_done', emoji: '✍️', name: 'Prompt master', desc: 'Completa la Fase 1 entera', condition: (p, phases) => phases[0].skills.every(s=>p[s.id]?.skill) },
+  { id: 'first_agent', emoji: '🤖', name: 'Primer agente', desc: 'Completa el Agente 1 de comités', condition: p => p['a1']?.skill },
+  { id: 'all_agents', emoji: '⚡', name: 'Full stack', desc: 'Completa los 5 agentes core', condition: p => ['a1','a2','a3','a4','a5'].every(id=>p[id]?.skill) },
+  { id: 'streak_7', emoji: '🔥', name: 'En racha', desc: 'Mantén 7 días seguidos de actividad', condition: (p, phases, streak) => streak >= 7 },
+  { id: 'halfway', emoji: '🏃', name: 'A mitad de camino', desc: 'Completa el 50% del curso', condition: (p, phases) => { const all=phases.flatMap(ph=>ph.skills); return all.filter(s=>p[s.id]?.skill).length >= Math.floor(all.length/2); } },
+  { id: 'security_done', emoji: '🔒', name: 'Fondo seguro', desc: 'Completa la Fase de Seguridad', condition: (p, phases) => { const ph=phases.find(p=>p.id==='pS'); return ph && ph.skills.every(s=>p[s.id]?.skill); } },
+  { id: 'course_complete', emoji: '🏆', name: 'Edge creator', desc: 'Completa el 100% del curso', condition: (p, phases) => phases.flatMap(ph=>ph.skills).every(s=>p[s.id]?.skill) },
+  { id: 'lbo_master', emoji: '💰', name: 'LBO master', desc: 'Completa la Fase de Modelos', condition: (p, phases) => { const ph=phases.find(p=>p.id==='pM'); return ph && ph.skills.every(s=>p[s.id]?.skill); } },
+  { id: 'diligence_pro', emoji: '🔍', name: 'Diligence pro', desc: 'Completa la Fase de Data Rooms', condition: (p, phases) => { const ph=phases.find(p=>p.id==='pD'); return ph && ph.skills.every(s=>p[s.id]?.skill); } },
+  { id: 'make_master', emoji: '⚙️', name: 'Orquestador', desc: 'Completa la Fase de Make/N8N', condition: (p, phases) => { const ph=phases.find(p=>p.id==='pN'); return ph && ph.skills.every(s=>p[s.id]?.skill); } },
+  { id: 'subtasks_20', emoji: '📋', name: 'Detallista', desc: 'Completa 20 subtareas', condition: p => { let n=0; Object.values(p).forEach(v=>{ if(v.subtasks) n+=Object.values(v.subtasks).filter(Boolean).length; }); return n>=20; } },
+];
+
+const WEEKLY_CHALLENGES = [
+  { skillId: 's1', title: 'Prompt con deliverable + context + format aplicado a una participada real' },
+  { skillId: 's2', title: 'Configura tu System Prompt permanente de PE' },
+  { skillId: 's5', title: 'Multi-pass: aplica draft → skeptic → revise a un análisis real' },
+  { skillId: 'n3', title: 'Construye el flujo Gmail → Claude → Notion desde cero' },
+  { skillId: 'a1', title: 'Monta el agente de comités y procesa el comité de Luda' },
+  { skillId: 'a3', title: 'Configura el monitor de KPIs con alertas automáticas' },
+  { skillId: 'm2', title: 'Genera el narrativo de hipótesis de un modelo real' },
+  { skillId: 'd2', title: 'Detecta contradicciones entre el CIM y un contrato' },
+  { skillId: 'sec1', title: 'Crea la política de datos de IA de tu fondo' },
+];
+
+// Pick weekly challenge based on ISO week number
+function getWeeklyChallenge() {
+  const now = new Date();
+  const start = new Date(now.getFullYear(), 0, 1);
+  const week = Math.floor((now - start) / (7 * 24 * 3600 * 1000));
+  return WEEKLY_CHALLENGES[week % WEEKLY_CHALLENGES.length];
+}
+
+// ═══════════════════════════════════════════════
+// GLOSSARY DATA
+// ═══════════════════════════════════════════════
+const GLOSSARY = [
+  { word: 'Add-back', def: 'Ajuste al EBITDA reportado para normalizar partidas one-time o no recurrentes. Ejemplo: costes de reestructuración que no se repetirán.', tags: ['pe'] },
+  { word: 'API (Application Programming Interface)', def: 'Interfaz que permite a dos aplicaciones comunicarse entre sí. Cuando Make llama a Claude, lo hace a través de la API de Anthropic.', tags: ['tech'] },
+  { word: 'API Key', def: 'Contraseña única que identifica tu cuenta al usar una API. La API key de Anthropic autoriza las llamadas a Claude desde Make o N8N.', tags: ['tech'] },
+  { word: 'Bridge analysis', def: 'Análisis que explica la diferencia entre dos cifras financieras mostrando cada componente del cambio. Ejemplo: bridge de EBITDA 2024 a EBITDA 2025.', tags: ['pe'] },
+  { word: 'CAC (Customer Acquisition Cost)', def: 'Coste de adquirir un nuevo cliente. Métrica clave en SaaS y marketplaces. Sostenibilidad del modelo depende de que LTV > CAC.', tags: ['pe'] },
+  { word: 'Carve-out', def: 'Adquisición de una división o unidad de negocio que se separa de una empresa mayor. Requiere identificar costes standalone que no existían dentro del grupo.', tags: ['pe'] },
+  { word: 'Change of control', def: 'Cláusula contractual que se activa cuando cambia el propietario de una empresa. Puede dar derecho a terceros a rescindir contratos o exigir condiciones especiales.', tags: ['pe'] },
+  { word: 'CIM (Confidential Information Memorandum)', def: 'Documento de venta que describe la empresa a potenciales compradores. Equivalente al dossier de presentación en un proceso de M&A.', tags: ['pe'] },
+  { word: 'Covenant', def: 'Condición financiera incluida en los contratos de deuda. Si la empresa incumple el covenant (ej: deuda/EBITDA > 4x), el banco puede exigir el repago anticipado.', tags: ['pe'] },
+  { word: 'Deal flow', def: 'Flujo de oportunidades de inversión que recibe un fondo. El deal sourcing es la actividad de generar y mantener este flujo.', tags: ['pe'] },
+  { word: 'EBITDA', def: 'Earnings Before Interest, Taxes, Depreciation and Amortization. Proxy del flujo de caja operativo antes de estructura financiera e inversiones.', tags: ['pe'] },
+  { word: 'Evidence discipline', def: 'Práctica de citar la fuente exacta (slide, página) para cada afirmación cuantitativa en un análisis. Elimina alucinaciones de Claude y hace el análisis auditable.', tags: ['ia'] },
+  { word: 'EV (Enterprise Value)', def: 'Valor total de la empresa incluyendo deuda neta. EV = capitalización bursátil + deuda neta, o precio que pagas para adquirir la empresa libre de caja y deuda.', tags: ['pe'] },
+  { word: 'Few-shot prompting', def: 'Técnica de IA donde incluyes ejemplos del output que quieres antes de hacer tu petición. Claude imita el estilo, tono y estructura de los ejemplos.', tags: ['ia'] },
+  { word: 'Force schema', def: 'Estructura obligatoria que impones al output de Claude. En lugar de dejar que organice libremente, defines exactamente qué secciones y en qué orden.', tags: ['ia'] },
+  { word: 'Guardrail', def: 'Instrucción en el prompt que previene outputs incorrectos o inventados. Ejemplo: "nunca afirmes algo sin citar su fuente en el documento".', tags: ['ia'] },
+  { word: 'HTTP module', def: 'Módulo en Make que hace llamadas a APIs externas. Es el módulo que usas para conectar Make con la API de Claude.', tags: ['tech'] },
+  { word: 'Hurdle rate', def: 'Rentabilidad mínima que debe generar una inversión para ser considerada. Si el hurdle rate es 20% IRR y el modelo base da 18%, el deal no pasa el filtro.', tags: ['pe'] },
+  { word: 'IC (Investment Committee)', def: 'Comité de Inversión. Órgano decisor de un fondo que aprueba o rechaza inversiones. Todo el análisis de PE tiene como objetivo final informar la decisión del IC.', tags: ['pe'] },
+  { word: 'IRR (Internal Rate of Return)', def: 'Tasa Interna de Retorno. Métrica principal de rentabilidad en PE. Tiene en cuenta el timing del dinero invertido y recuperado.', tags: ['pe'] },
+  { word: 'LOI (Letter of Intent)', def: 'Carta de Intenciones. Documento no vinculante que expresa el interés en adquirir una empresa con los términos indicativos: valoración, estructura, condiciones.', tags: ['pe'] },
+  { word: 'LP (Limited Partner)', def: 'Inversor en un fondo de PE. Aporta capital pero no gestiona. Ejemplos: fondos de fondos, family offices, fondos de pensiones, endowments.', tags: ['pe'] },
+  { word: 'LTV (Lifetime Value)', def: 'Valor total que genera un cliente durante toda su relación con la empresa. Métrica crítica en modelos de suscripción y SaaS.', tags: ['pe'] },
+  { word: 'Make.com', def: 'Herramienta de automatización visual (antes Integromat). Permite conectar aplicaciones y ejecutar flujos automáticos sin programar. Alternativa más técnica: N8N.', tags: ['tech'] },
+  { word: 'MNPI (Material Non-Public Information)', def: 'Información material no pública. En PE: datos financieros de participadas no publicados, información de deals en proceso. Su manejo inadecuado tiene implicaciones legales.', tags: ['pe'] },
+  { word: 'MOIC (Multiple on Invested Capital)', def: 'Múltiplo sobre el capital invertido. Si inviertes 10M€ y recuperas 25M€, el MOIC es 2.5x. Complementario al IRR — un MOIC de 3x en 10 años es peor que en 3 años.', tags: ['pe'] },
+  { word: 'Multi-pass prompting', def: 'Técnica de tres pasos: (1) Draft — generar el análisis inicial, (2) Skeptic — destruirlo desde el IC más hostil, (3) Revise — incorporar las críticas válidas.', tags: ['ia'] },
+  { word: 'N8N', def: 'Herramienta de automatización open-source, alternativa a Make. Puede auto-hospedarse (importante si la política de datos del fondo no permite datos en la nube de terceros).', tags: ['tech'] },
+  { word: 'Orquestador', def: 'Herramienta que coordina el flujo de trabajo entre aplicaciones. Make y N8N son orquestadores. Claude razona; el orquestador actúa y conecta.', tags: ['tech'] },
+  { word: 'Platform acquisition', def: 'Primera adquisición en un sector, que sirve de base para añadir add-ons. La plataforma define la tesis y los criterios para las adquisiciones posteriores.', tags: ['pe'] },
+  { word: 'Polling', def: 'Método en el que Make revisa una aplicación cada X minutos para detectar cambios. Alternativa más lenta que los webhooks pero más simple de configurar.', tags: ['tech'] },
+  { word: 'QofE (Quality of Earnings)', def: 'Análisis de la calidad y sostenibilidad de los beneficios. Determina qué parte del EBITDA es recurrente y real, y cuánto corresponde a ajustes o partidas one-time.', tags: ['pe'] },
+  { word: 'Rate limit', def: 'Límite de llamadas por minuto a una API. La API de Claude tiene rate limits que Make debe gestionar con reintentos y esperas si se alcanzan.', tags: ['tech'] },
+  { word: 'Red flag', def: 'Señal de alerta en una inversión que puede ser deal-killer o requiere investigación adicional. Puede ser financiero, legal, operativo o de equipo.', tags: ['pe'] },
+  { word: 'Red-team', def: 'Técnica de prompting donde Claude adopta el rol del IC más hostil para destruir la tesis de inversión. Encuentra los argumentos contra antes de que lo haga el IC.', tags: ['ia'] },
+  { word: 'RSS feed', def: 'Formato de suscripción a contenidos web. Permite que Make reciba automáticamente nuevos artículos de medios especializados para el agente de deal sourcing.', tags: ['tech'] },
+  { word: 'Runway', def: 'Meses de operación que puede financiar la empresa con su caja actual al ritmo de consumo presente. Runway < 3 meses es señal de alerta crítica en portfolio monitoring.', tags: ['pe'] },
+  { word: 'System prompt', def: 'Instrucciones permanentes que definen la identidad y comportamiento de Claude en toda la conversación. Equivale al briefing permanente de un analista.', tags: ['ia'] },
+  { word: 'Take-private', def: 'Adquisición de una empresa cotizada para sacarla de bolsa. Requiere análisis del accionariado, proceso de delisting, y consideraciones de información pública.', tags: ['pe'] },
+  { word: 'Token', def: 'Unidad básica de texto que procesa Claude. Aproximadamente 4 caracteres o 0.75 palabras. El coste de la API de Anthropic se mide en tokens procesados.', tags: ['tech'] },
+  { word: 'TSA (Transition Service Agreement)', def: 'Acuerdo por el que la empresa vendedora presta servicios a la empresa comprada durante un período tras la venta. Crítico en carve-outs para mantener operaciones.', tags: ['pe'] },
+  { word: 'VDR (Virtual Data Room)', def: 'Repositorio digital seguro donde se comparten documentos en un proceso de M&A. El data room es el VDR con todos los documentos de due diligence.', tags: ['pe'] },
+  { word: 'Webhook', def: 'Mecanismo que notifica instantáneamente a Make cuando ocurre un evento. Más rápido que polling. Ejemplo: Gmail notifica a Make en segundos cuando llega un email específico.', tags: ['tech'] },
+  { word: 'YoY (Year over Year)', def: 'Comparativa con el mismo período del año anterior. Métrica estándar para medir crecimiento eliminando estacionalidad.', tags: ['pe'] },
+];
+
+// ═══════════════════════════════════════════════
+// CASE STUDIES DATA
+// ═══════════════════════════════════════════════
+const CASES = [
+  {
+    id: 'luda',
+    name: 'Luda Partners',
+    sector: 'Pharma-tech / Marketplace',
+    sectorColor: 'rgba(74,158,110,0.15)',
+    sectorText: '#4a9e6e',
+    desc: 'Plataforma B2B de gestión de pedidos y aprovisionamiento para farmacias en España. Modelo marketplace con componentes SaaS (Luda Trends) y servicios de entrega (UM, OTC).',
+    kpis: [
+      { val: '-321k€', label: 'EBITDA mayo 2026' },
+      { val: '1.5m', label: 'Runway' },
+      { val: '+81%', label: 'Ventas netas YoY' },
+      { val: '230', label: 'Clientes Trends' },
+    ],
+    situation: 'GMV YoY negativo mejorando (-5pp vs mes anterior). 14 puntos por debajo del plan global. Glovo lastrando UM. OTC por debajo por retrasos en apertura de zonas. Receta digital pendiente de lanzamiento.',
+    docs: [
+      { name: 'Comité de Dirección — Mayo 2026', hint: 'Usa el PDF que subiste al principio de la conversación' },
+    ],
+    exercises: [
+      'Analiza el comité de mayo 2026 con tu prompt IC-ready. ¿Cambiaría la recomendación si el runway fuera 3 meses?',
+      'Construye el value creation plan para los próximos 18 meses. Prioriza por impacto vs esfuerzo.',
+      'Genera el bloque de LP update del Q1 2026 para Luda. Tono: honesto sobre el gap vs plan, constructivo sobre el plan.',
+    ]
+  },
+  {
+    id: 'medtech',
+    name: 'MedSoft Solutions',
+    sector: 'MedTech / SaaS B2B',
+    sectorColor: 'rgba(74,127,181,0.15)',
+    sectorText: '#4a7fb5',
+    desc: 'Software de gestión clínica para hospitales y clínicas privadas en España e Italia. Modelo SaaS con contratos anuales y módulos adicionales de telemedicina e IA diagnóstica.',
+    kpis: [
+      { val: '8.2M€', label: 'ARR 2025' },
+      { val: '94%', label: 'Retention rate' },
+      { val: '23%', label: 'EBITDA margin' },
+      { val: '42x', label: 'ARR múltiplo pedido' },
+    ],
+    situation: 'Empresa líder en el segmento de clínicas privadas medianas (50-200 camas). Crecimiento del 35% YoY. El vendedor pide 42x ARR. Competidor americano acaba de entrar en España con precios agresivos. Fundador quiere salir en 12 meses.',
+    docs: [
+      { name: 'CIM ficticio — disponible en el ejercicio', hint: 'Genera el CIM ficticio con Claude antes del ejercicio' },
+    ],
+    exercises: [
+      'Aplica el CIM-to-screen loop completo. ¿Es razonable el múltiplo de 42x ARR para este perfil?',
+      'Construye el IC Q&A tree de churn risk. ¿Qué nivel de churn haría insostenible el modelo?',
+      'Red-team: ¿cuáles son los 3 deal killers más probables en este deal?',
+    ]
+  },
+  {
+    id: 'industrial',
+    name: 'Técnicas Metálicas Ibéricas',
+    sector: 'Industrial / Manufacturing',
+    sectorColor: 'rgba(201,168,76,0.15)',
+    sectorText: '#854F0B',
+    desc: 'Fabricante de componentes metálicos de precisión para automoción y aeronáutica en Bilbao. Empresa familiar de tercera generación, 180 empleados, cartera concentrada en 4 clientes principales.',
+    kpis: [
+      { val: '18.5M€', label: 'Revenue 2025' },
+      { val: '3.2M€', label: 'EBITDA normalizado' },
+      { val: '17.3%', label: 'EBITDA margin' },
+      { val: '72%', label: 'Concentración top 3' },
+    ],
+    situation: 'Carve-out de la rama industrial de un grupo familiar. El fundador mantiene la rama inmobiliaria. EBITDA tiene 800k€ de add-backs discutibles (salario fundador, gastos personales, alquiler intragrupo). El mayor cliente (40% revenue) renueva contrato en 6 meses.',
+    docs: [
+      { name: 'P&L simplificado — genera con Claude', hint: 'Usa el prompt de QA harness para normalizar el EBITDA' },
+    ],
+    exercises: [
+      'Analiza los add-backs. ¿Cuánto del EBITDA normalizado es realmente sostenible post-transacción?',
+      'Construye el scenario stack: ¿qué pasa si el cliente principal no renueva el contrato?',
+      'Genera las preguntas clave para el vendor due diligence sobre los costes standalone.',
+    ]
+  },
+];
+
+// ═══════════════════════════════════════════════
+// ARCHITECTURE DIAGRAMS
+// ═══════════════════════════════════════════════
+const ARCH_DIAGRAMS = {
+  'a1': `<svg width="580" height="80" viewBox="0 0 580 80" xmlns="http://www.w3.org/2000/svg">
+    <defs><marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M2 1L8 5L2 9" fill="none" stroke="#5a5855" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+    <rect x="2" y="20" width="90" height="40" rx="6" fill="#1e1e1e" stroke="#3a3a3a" stroke-width="1"/>
+    <text x="47" y="37" text-anchor="middle" font-size="10" fill="#9a9690" font-family="sans-serif">📧 Gmail</text>
+    <text x="47" y="52" text-anchor="middle" font-size="9" fill="#5a5855" font-family="sans-serif">PDF adjunto</text>
+    <line x1="92" y1="40" x2="118" y2="40" stroke="#5a5855" stroke-width="1" marker-end="url(#arr)"/>
+    <rect x="120" y="20" width="90" height="40" rx="6" fill="#1e1e1e" stroke="#3a3a3a" stroke-width="1"/>
+    <text x="165" y="37" text-anchor="middle" font-size="10" fill="#9a9690" font-family="sans-serif">⚙️ Make</text>
+    <text x="165" y="52" text-anchor="middle" font-size="9" fill="#5a5855" font-family="sans-serif">extrae texto</text>
+    <line x1="210" y1="40" x2="236" y2="40" stroke="#5a5855" stroke-width="1" marker-end="url(#arr)"/>
+    <rect x="238" y="20" width="104" height="40" rx="6" fill="#1e1e1e" stroke="#c9a84c" stroke-width="1"/>
+    <text x="290" y="37" text-anchor="middle" font-size="10" fill="#c9a84c" font-family="sans-serif">✦ Claude API</text>
+    <text x="290" y="52" text-anchor="middle" font-size="9" fill="#854F0B" font-family="sans-serif">análisis IC-ready</text>
+    <line x1="342" y1="40" x2="368" y2="40" stroke="#5a5855" stroke-width="1" marker-end="url(#arr)"/>
+    <rect x="370" y="20" width="90" height="40" rx="6" fill="#1e1e1e" stroke="#3a3a3a" stroke-width="1"/>
+    <text x="415" y="37" text-anchor="middle" font-size="10" fill="#9a9690" font-family="sans-serif">📋 Notion</text>
+    <text x="415" y="52" text-anchor="middle" font-size="9" fill="#5a5855" font-family="sans-serif">memo guardado</text>
+    <line x1="460" y1="40" x2="486" y2="40" stroke="#5a5855" stroke-width="1" marker-end="url(#arr)"/>
+    <rect x="488" y="20" width="90" height="40" rx="6" fill="#1e1e1e" stroke="#3a3a3a" stroke-width="1"/>
+    <text x="533" y="37" text-anchor="middle" font-size="10" fill="#9a9690" font-family="sans-serif">📬 Email</text>
+    <text x="533" y="52" text-anchor="middle" font-size="9" fill="#5a5855" font-family="sans-serif">confirmación</text>
+  </svg>`,
+  'a2': `<svg width="580" height="80" viewBox="0 0 580 80" xmlns="http://www.w3.org/2000/svg">
+    <defs><marker id="arr2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M2 1L8 5L2 9" fill="none" stroke="#5a5855" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+    <rect x="2" y="20" width="90" height="40" rx="6" fill="#1e1e1e" stroke="#3a3a3a" stroke-width="1"/>
+    <text x="47" y="37" text-anchor="middle" font-size="10" fill="#9a9690" font-family="sans-serif">📁 Drive</text>
+    <text x="47" y="52" text-anchor="middle" font-size="9" fill="#5a5855" font-family="sans-serif">nuevo CIM</text>
+    <line x1="92" y1="40" x2="118" y2="40" stroke="#5a5855" stroke-width="1" marker-end="url(#arr2)"/>
+    <rect x="120" y="20" width="90" height="40" rx="6" fill="#1e1e1e" stroke="#3a3a3a" stroke-width="1"/>
+    <text x="165" y="37" text-anchor="middle" font-size="10" fill="#9a9690" font-family="sans-serif">⚙️ Make</text>
+    <text x="165" y="52" text-anchor="middle" font-size="9" fill="#5a5855" font-family="sans-serif">lee PDF</text>
+    <line x1="210" y1="40" x2="236" y2="40" stroke="#5a5855" stroke-width="1" marker-end="url(#arr2)"/>
+    <rect x="238" y="20" width="104" height="40" rx="6" fill="#1e1e1e" stroke="#c9a84c" stroke-width="1"/>
+    <text x="290" y="37" text-anchor="middle" font-size="10" fill="#c9a84c" font-family="sans-serif">✦ Claude API</text>
+    <text x="290" y="52" text-anchor="middle" font-size="9" fill="#854F0B" font-family="sans-serif">4-step screen</text>
+    <line x1="342" y1="40" x2="368" y2="40" stroke="#5a5855" stroke-width="1" marker-end="url(#arr2)"/>
+    <rect x="370" y="20" width="90" height="40" rx="6" fill="#1e1e1e" stroke="#9380d4" stroke-width="1"/>
+    <text x="415" y="37" text-anchor="middle" font-size="10" fill="#9a9690" font-family="sans-serif">🔀 Router</text>
+    <text x="415" y="52" text-anchor="middle" font-size="9" fill="#5a5855" font-family="sans-serif">flags críticos?</text>
+    <line x1="460" y1="40" x2="486" y2="40" stroke="#5a5855" stroke-width="1" marker-end="url(#arr2)"/>
+    <rect x="488" y="20" width="90" height="40" rx="6" fill="#1e1e1e" stroke="#3a3a3a" stroke-width="1"/>
+    <text x="533" y="37" text-anchor="middle" font-size="10" fill="#9a9690" font-family="sans-serif">📋 Notion</text>
+    <text x="533" y="52" text-anchor="middle" font-size="9" fill="#5a5855" font-family="sans-serif">inv. memo</text>
+  </svg>`,
+  'a3': `<svg width="580" height="80" viewBox="0 0 580 80" xmlns="http://www.w3.org/2000/svg">
+    <defs><marker id="arr3" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M2 1L8 5L2 9" fill="none" stroke="#5a5855" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+    <rect x="2" y="20" width="90" height="40" rx="6" fill="#1e1e1e" stroke="#3a3a3a" stroke-width="1"/>
+    <text x="47" y="37" text-anchor="middle" font-size="10" fill="#9a9690" font-family="sans-serif">🗓 Día 5/mes</text>
+    <text x="47" y="52" text-anchor="middle" font-size="9" fill="#5a5855" font-family="sans-serif">schedule</text>
+    <line x1="92" y1="40" x2="118" y2="40" stroke="#5a5855" stroke-width="1" marker-end="url(#arr3)"/>
+    <rect x="120" y="20" width="90" height="40" rx="6" fill="#1e1e1e" stroke="#3a3a3a" stroke-width="1"/>
+    <text x="165" y="37" text-anchor="middle" font-size="10" fill="#9a9690" font-family="sans-serif">📊 Sheets</text>
+    <text x="165" y="52" text-anchor="middle" font-size="9" fill="#5a5855" font-family="sans-serif">KPIs participadas</text>
+    <line x1="210" y1="40" x2="236" y2="40" stroke="#5a5855" stroke-width="1" marker-end="url(#arr3)"/>
+    <rect x="238" y="20" width="104" height="40" rx="6" fill="#1e1e1e" stroke="#c9a84c" stroke-width="1"/>
+    <text x="290" y="37" text-anchor="middle" font-size="10" fill="#c9a84c" font-family="sans-serif">✦ Claude API</text>
+    <text x="290" y="52" text-anchor="middle" font-size="9" fill="#854F0B" font-family="sans-serif">detecta desviaciones</text>
+    <line x1="342" y1="40" x2="368" y2="40" stroke="#5a5855" stroke-width="1" marker-end="url(#arr3)"/>
+    <rect x="370" y="20" width="90" height="40" rx="6" fill="#1e1e1e" stroke="#c25a5a" stroke-width="1"/>
+    <text x="415" y="37" text-anchor="middle" font-size="10" fill="#9a9690" font-family="sans-serif">🚨 Alertas</text>
+    <text x="415" y="52" text-anchor="middle" font-size="9" fill="#5a5855" font-family="sans-serif">email al socio</text>
+    <line x1="460" y1="40" x2="486" y2="40" stroke="#5a5855" stroke-width="1" marker-end="url(#arr3)"/>
+    <rect x="488" y="20" width="90" height="40" rx="6" fill="#1e1e1e" stroke="#3a3a3a" stroke-width="1"/>
+    <text x="533" y="37" text-anchor="middle" font-size="10" fill="#9a9690" font-family="sans-serif">📋 Notion</text>
+    <text x="533" y="52" text-anchor="middle" font-size="9" fill="#5a5855" font-family="sans-serif">log mensual</text>
+  </svg>`,
+  'a4': `<svg width="480" height="80" viewBox="0 0 480 80" xmlns="http://www.w3.org/2000/svg">
+    <defs><marker id="arr4" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M2 1L8 5L2 9" fill="none" stroke="#5a5855" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+    <rect x="2" y="20" width="90" height="40" rx="6" fill="#1e1e1e" stroke="#3a3a3a" stroke-width="1"/>
+    <text x="47" y="37" text-anchor="middle" font-size="10" fill="#9a9690" font-family="sans-serif">📰 RSS feeds</text>
+    <text x="47" y="52" text-anchor="middle" font-size="9" fill="#5a5855" font-family="sans-serif">noticias 24h</text>
+    <line x1="92" y1="40" x2="118" y2="40" stroke="#5a5855" stroke-width="1" marker-end="url(#arr4)"/>
+    <rect x="120" y="20" width="90" height="40" rx="6" fill="#1e1e1e" stroke="#3a3a3a" stroke-width="1"/>
+    <text x="165" y="37" text-anchor="middle" font-size="10" fill="#9a9690" font-family="sans-serif">⚙️ Make</text>
+    <text x="165" y="52" text-anchor="middle" font-size="9" fill="#5a5855" font-family="sans-serif">agrega + filtra</text>
+    <line x1="210" y1="40" x2="236" y2="40" stroke="#5a5855" stroke-width="1" marker-end="url(#arr4)"/>
+    <rect x="238" y="20" width="104" height="40" rx="6" fill="#1e1e1e" stroke="#c9a84c" stroke-width="1"/>
+    <text x="290" y="37" text-anchor="middle" font-size="10" fill="#c9a84c" font-family="sans-serif">✦ Claude API</text>
+    <text x="290" y="52" text-anchor="middle" font-size="9" fill="#854F0B" font-family="sans-serif">scoring por tesis</text>
+    <line x1="342" y1="40" x2="368" y2="40" stroke="#5a5855" stroke-width="1" marker-end="url(#arr4)"/>
+    <rect x="370" y="20" width="108" height="40" rx="6" fill="#1e1e1e" stroke="#3a3a3a" stroke-width="1"/>
+    <text x="424" y="37" text-anchor="middle" font-size="10" fill="#9a9690" font-family="sans-serif">📬 Email 7:00</text>
+    <text x="424" y="52" text-anchor="middle" font-size="9" fill="#5a5855" font-family="sans-serif">top oportunidades</text>
+  </svg>`,
+  'a5': `<svg width="580" height="80" viewBox="0 0 580 80" xmlns="http://www.w3.org/2000/svg">
+    <defs><marker id="arr5" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M2 1L8 5L2 9" fill="none" stroke="#5a5855" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+    <rect x="2" y="20" width="90" height="40" rx="6" fill="#1e1e1e" stroke="#3a3a3a" stroke-width="1"/>
+    <text x="47" y="37" text-anchor="middle" font-size="10" fill="#9a9690" font-family="sans-serif">📊 Sheets</text>
+    <text x="47" y="52" text-anchor="middle" font-size="9" fill="#5a5855" font-family="sans-serif">datos portfolio</text>
+    <line x1="92" y1="40" x2="118" y2="40" stroke="#5a5855" stroke-width="1" marker-end="url(#arr5)"/>
+    <rect x="120" y="20" width="90" height="40" rx="6" fill="#1e1e1e" stroke="#3a3a3a" stroke-width="1"/>
+    <text x="165" y="37" text-anchor="middle" font-size="10" fill="#9a9690" font-family="sans-serif">⚙️ Make</text>
+    <text x="165" y="52" text-anchor="middle" font-size="9" fill="#5a5855" font-family="sans-serif">por participada</text>
+    <line x1="210" y1="40" x2="236" y2="40" stroke="#5a5855" stroke-width="1" marker-end="url(#arr5)"/>
+    <rect x="238" y="20" width="104" height="40" rx="6" fill="#1e1e1e" stroke="#c9a84c" stroke-width="1"/>
+    <text x="290" y="37" text-anchor="middle" font-size="10" fill="#c9a84c" font-family="sans-serif">✦ Claude API</text>
+    <text x="290" y="52" text-anchor="middle" font-size="9" fill="#854F0B" font-family="sans-serif">LP narrative</text>
+    <line x1="342" y1="40" x2="368" y2="40" stroke="#5a5855" stroke-width="1" marker-end="url(#arr5)"/>
+    <rect x="370" y="20" width="90" height="40" rx="6" fill="#1e1e1e" stroke="#3a3a3a" stroke-width="1"/>
+    <text x="415" y="37" text-anchor="middle" font-size="10" fill="#9a9690" font-family="sans-serif">📄 G.Docs</text>
+    <text x="415" y="52" text-anchor="middle" font-size="9" fill="#5a5855" font-family="sans-serif">borrador report</text>
+    <line x1="460" y1="40" x2="486" y2="40" stroke="#5a5855" stroke-width="1" marker-end="url(#arr5)"/>
+    <rect x="488" y="20" width="90" height="40" rx="6" fill="#1e1e1e" stroke="#3a3a3a" stroke-width="1"/>
+    <text x="533" y="37" text-anchor="middle" font-size="10" fill="#9a9690" font-family="sans-serif">📬 Revisión</text>
+    <text x="533" y="52" text-anchor="middle" font-size="9" fill="#5a5855" font-family="sans-serif">link + aprobación</text>
+  </svg>`,
+  'n3': `<svg width="480" height="80" viewBox="0 0 480 80" xmlns="http://www.w3.org/2000/svg">
+    <defs><marker id="arrn3" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M2 1L8 5L2 9" fill="none" stroke="#5a5855" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+    <rect x="2" y="20" width="80" height="40" rx="6" fill="#1e1e1e" stroke="#3a3a3a" stroke-width="1"/>
+    <text x="42" y="37" text-anchor="middle" font-size="10" fill="#9a9690" font-family="sans-serif">📧 Gmail</text>
+    <text x="42" y="52" text-anchor="middle" font-size="9" fill="#5a5855" font-family="sans-serif">trigger</text>
+    <line x1="82" y1="40" x2="106" y2="40" stroke="#5a5855" stroke-width="1" marker-end="url(#arrn3)"/>
+    <rect x="108" y="20" width="80" height="40" rx="6" fill="#1e1e1e" stroke="#3a3a3a" stroke-width="1"/>
+    <text x="148" y="37" text-anchor="middle" font-size="10" fill="#9a9690" font-family="sans-serif">📎 PDF</text>
+    <text x="148" y="52" text-anchor="middle" font-size="9" fill="#5a5855" font-family="sans-serif">extracción</text>
+    <line x1="188" y1="40" x2="212" y2="40" stroke="#5a5855" stroke-width="1" marker-end="url(#arrn3)"/>
+    <rect x="214" y="20" width="100" height="40" rx="6" fill="#1e1e1e" stroke="#c9a84c" stroke-width="1"/>
+    <text x="264" y="37" text-anchor="middle" font-size="10" fill="#c9a84c" font-family="sans-serif">✦ HTTP → Claude</text>
+    <text x="264" y="52" text-anchor="middle" font-size="9" fill="#854F0B" font-family="sans-serif">análisis</text>
+    <line x1="314" y1="40" x2="338" y2="40" stroke="#5a5855" stroke-width="1" marker-end="url(#arrn3)"/>
+    <rect x="340" y="20" width="80" height="40" rx="6" fill="#1e1e1e" stroke="#3a3a3a" stroke-width="1"/>
+    <text x="380" y="37" text-anchor="middle" font-size="10" fill="#9a9690" font-family="sans-serif">📋 Notion</text>
+    <text x="380" y="52" text-anchor="middle" font-size="9" fill="#5a5855" font-family="sans-serif">resultado</text>
+    <line x1="420" y1="40" x2="444" y2="40" stroke="#5a5855" stroke-width="1" marker-end="url(#arrn3)"/>
+    <rect x="446" y="20" width="32" height="40" rx="6" fill="#1e1e1e" stroke="#4a9e6e" stroke-width="1"/>
+    <text x="462" y="44" text-anchor="middle" font-size="12" fill="#4a9e6e" font-family="sans-serif">✓</text>
+  </svg>`,
+};
+
+// ═══════════════════════════════════════════════
+// STREAK ENGINE
+// ═══════════════════════════════════════════════
+function getStreak() {
+  const log = JSON.parse(localStorage.getItem('activity_log') || '[]');
+  if (log.length === 0) return 0;
+  const today = new Date().toISOString().slice(0,10);
+  const yesterday = new Date(Date.now()-86400000).toISOString().slice(0,10);
+  if (!log.includes(today) && !log.includes(yesterday)) return 0;
+  let streak = 0;
+  let d = new Date();
+  if (!log.includes(today)) d = new Date(Date.now()-86400000);
+  while (true) {
+    const ds = d.toISOString().slice(0,10);
+    if (!log.includes(ds)) break;
+    streak++;
+    d = new Date(d.getTime()-86400000);
+  }
+  return streak;
+}
+
+function recordActivity() {
+  const today = new Date().toISOString().slice(0,10);
+  const log = JSON.parse(localStorage.getItem('activity_log') || '[]');
+  if (!log.includes(today)) {
+    log.push(today);
+    if (log.length > 90) log.splice(0, log.length-90);
+    localStorage.setItem('activity_log', JSON.stringify(log));
+  }
+}
+
+function renderStreak() {
+  const streak = getStreak();
+  const el = document.getElementById('streak-num');
+  if (el) el.textContent = streak;
+  const dotsEl = document.getElementById('streak-dots');
+  if (dotsEl) {
+    const log = JSON.parse(localStorage.getItem('activity_log') || '[]');
+    dotsEl.innerHTML = Array.from({length:7},(_,i)=>{
+      const d = new Date(Date.now()-(6-i)*86400000).toISOString().slice(0,10);
+      return `<div class="streak-dot ${log.includes(d)?'active':''}"></div>`;
+    }).join('');
+  }
+}
+
+// ═══════════════════════════════════════════════
+// BADGES ENGINE
+// ═══════════════════════════════════════════════
+function checkBadges(prevEarned) {
+  const streak = getStreak();
+  const newBadges = [];
+  BADGES.forEach(b => {
+    const earned = b.condition(userProgress, PHASES, streak);
+    if (earned && !prevEarned.includes(b.id)) newBadges.push(b);
+  });
+  if (newBadges.length > 0) {
+    const earned = JSON.parse(localStorage.getItem('earned_badges') || '[]');
+    newBadges.forEach(b => { if (!earned.includes(b.id)) earned.push(b.id); });
+    localStorage.setItem('earned_badges', JSON.stringify(earned));
+    newBadges.forEach(b => {
+      setTimeout(() => toast(`${b.emoji} Insignia desbloqueada: ${b.name}`, 'success'), 500);
+    });
+  }
+}
+
+function getEarnedBadges() {
+  return JSON.parse(localStorage.getItem('earned_badges') || '[]');
+}
+
+function showBadges() {
+  const earned = getEarnedBadges();
+  const streak = getStreak();
+  const grid = document.getElementById('badges-grid');
+  grid.innerHTML = BADGES.map(b => {
+    const isEarned = b.condition(userProgress, PHASES, streak);
+    return `<div class="badge-card ${isEarned?'earned':'locked'}">
+      <div class="badge-emoji">${b.emoji}</div>
+      <div class="badge-name">${b.name}</div>
+      <div class="badge-desc">${b.desc}</div>
+      ${isEarned ? '<div class="badge-earned-label">✓ Conseguida</div>' : ''}
+    </div>`;
+  }).join('');
+  document.getElementById('badges-modal').classList.remove('hidden');
+}
+
+function hideBadges() {
+  document.getElementById('badges-modal').classList.add('hidden');
+}
+
+// ═══════════════════════════════════════════════
+// WEEKLY CHALLENGE
+// ═══════════════════════════════════════════════
+function renderWeeklyChallenge() {
+  const ch = getWeeklyChallenge();
+  const titleEl = document.getElementById('weekly-title');
+  const doneEl = document.getElementById('weekly-done');
+  if (!titleEl) return;
+  titleEl.textContent = ch.title;
+  const isDone = userProgress[ch.skillId]?.skill;
+  if (doneEl) doneEl.textContent = isDone ? '✓ Completado por ti' : 'Pendiente';
+  if (doneEl) doneEl.style.color = isDone ? '#4a9e6e' : '#5a5855';
+}
+
+function goToWeeklyChallenge() {
+  const ch = getWeeklyChallenge();
+  goToSkill(ch.skillId);
+  setMobileNav('curso');
+  closeSidebar();
+}
+
+// ═══════════════════════════════════════════════
+// GLOSSARY
+// ═══════════════════════════════════════════════
+function showGlossary() {
+  currentView = 'glossary';
+  renderNav();
+  const main = document.getElementById('main-content');
+  const tagMap = { pe: ['pe', 'PE'], ia: ['ia', 'IA'], tech: ['tech', 'Tech'] };
+  const sorted = [...GLOSSARY].sort((a,b) => a.word.localeCompare(b.word));
+  let letters = {};
+  sorted.forEach(g => {
+    const l = g.word[0].toUpperCase();
+    if (!letters[l]) letters[l] = [];
+    letters[l].push(g);
+  });
+  const glossaryHtml = Object.entries(letters).map(([l, terms]) =>
+    `<div class="glossary-letter">${l}</div>` +
+    terms.map(g => `<div class="glossary-term">
+      <div class="glossary-word">${g.word}
+        ${g.tags.map(t => `<span class="glossary-tag g${t==='pe'?'tag-pe':t==='ia'?'tag-ia':'tag-tech'}">${t.toUpperCase()}</span>`).join('')}
+      </div>
+      <div class="glossary-def">${g.def}</div>
+    </div>`).join('')
+  ).join('');
+  main.innerHTML = `<div class="glossary-screen">
+    <div style="font-family:var(--font-display);font-size:28px;font-weight:600;margin-bottom:4px;">📖 Glosario</div>
+    <p style="color:var(--text2);font-size:14px;margin-bottom:20px;">${GLOSSARY.length} términos de PE, IA y tecnología.</p>
+    <input class="glossary-search" placeholder="Buscar término..." oninput="filterGlossary(this.value)" />
+    <div id="glossary-content">${glossaryHtml}</div>
+  </div>`;
+  window.scrollTo(0,0);
+}
+
+function filterGlossary(q) {
+  const terms = document.querySelectorAll('.glossary-term');
+  const letters = document.querySelectorAll('.glossary-letter');
+  const lq = q.toLowerCase();
+  terms.forEach(t => {
+    const word = t.querySelector('.glossary-word').textContent.toLowerCase();
+    const def = t.querySelector('.glossary-def').textContent.toLowerCase();
+    t.style.display = (!q || word.includes(lq) || def.includes(lq)) ? '' : 'none';
+  });
+  letters.forEach(l => {
+    const next = l.nextElementSibling;
+    let hasVisible = false;
+    let el = l.nextElementSibling;
+    while (el && !el.classList.contains('glossary-letter')) {
+      if (el.style.display !== 'none') hasVisible = true;
+      el = el.nextElementSibling;
+    }
+    l.style.display = hasVisible ? '' : 'none';
+  });
+}
+
+// ═══════════════════════════════════════════════
+// CASE STUDIES
+// ═══════════════════════════════════════════════
+function showCases() {
+  currentView = 'cases';
+  renderNav();
+  const main = document.getElementById('main-content');
+  main.innerHTML = `<div class="cases-screen">
+    <div style="font-family:var(--font-display);font-size:28px;font-weight:600;margin-bottom:4px;">📁 Banco de casos</div>
+    <p style="color:var(--text2);font-size:14px;margin-bottom:24px;">Tres empresas con datos reales o simulados para practicar cada habilidad del curso.</p>
+    ${CASES.map(c => `
+    <div class="case-card" id="case-${c.id}">
+      <div class="case-header" onclick="toggleCase('${c.id}')">
+        <span class="case-sector" style="background:${c.sectorColor};color:${c.sectorText}">${c.sector}</span>
+        <span class="case-title">${c.name}</span>
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style="flex-shrink:0;color:var(--text3)"><polyline points="4,6 8,10 12,6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <div class="case-body">
+        <p style="font-size:14px;color:var(--text2);margin:12px 0 8px;line-height:1.6;">${c.desc}</p>
+        <div class="case-kpi-grid">
+          ${c.kpis.map(k=>`<div class="case-kpi"><div class="case-kpi-val">${k.val}</div><div class="case-kpi-label">${k.label}</div></div>`).join('')}
+        </div>
+        <p style="font-size:13px;color:var(--text2);margin:8px 0 12px;line-height:1.6;padding:10px;background:var(--bg3);border-radius:var(--radius);">${c.situation}</p>
+        <div style="font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--text3);margin-bottom:8px;">Ejercicios sugeridos</div>
+        ${c.exercises.map((e,i)=>`<div style="display:flex;gap:10px;padding:8px 0;border-bottom:1px solid var(--border);font-size:13px;color:var(--text2);">
+          <span style="color:var(--gold);font-weight:500;flex-shrink:0;">${i+1}.</span>${e}
+        </div>`).join('')}
+        <div style="font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--text3);margin:16px 0 8px;">Documentos</div>
+        ${c.docs.map(d=>`<div class="case-doc">
+          <span style="font-size:14px;">📄</span>
+          <div><div style="font-size:13px;color:var(--text)">${d.name}</div><div style="font-size:11px;color:var(--text3);margin-top:2px;">${d.hint}</div></div>
+        </div>`).join('')}
+      </div>
+    </div>`).join('')}
+  </div>`;
+  window.scrollTo(0,0);
+}
+
+function toggleCase(id) {
+  document.getElementById('case-'+id).classList.toggle('open');
+}
+
+// ═══════════════════════════════════════════════
+// ARCH DIAGRAMS IN SKILL CARDS
+// ═══════════════════════════════════════════════
+function getArchDiagram(skillId) {
+  const svg = ARCH_DIAGRAMS[skillId];
+  if (!svg) return '';
+  return `<div class="arch-diagram">
+    <div style="font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:var(--text3);margin-bottom:10px;">Arquitectura del agente</div>
+    ${svg}
+  </div>`;
+}
+
+// ═══════════════════════════════════════════════
+// TIME ESTIMATES
+// ═══════════════════════════════════════════════
+const TIME_ESTIMATES = {
+  's1':15,'s2':20,'s3':25,'s4':20,'s5':30,'s6':20,
+  's7':25,'s8':30,'s9':20,'s10':15,
+  's11':20,'s12':25,'s13':40,'s14':25,'s15':20,'s16':25,'s17':30,'s18':35,
+  's19':25,'s20':30,'s21':35,'s22':25,'s23':30,'s24':35,'s25':40,'s26':20,
+  's27':20,'s28':25,'s29':45,'s30':30,'s31':20,'s32':25,'s33':25,'s34':30,
+  'n1':15,'n2':20,'n3':60,'n4':45,'n5':30,'n6':40,
+  'a1':90,'a2':90,'a3':75,'a4':60,'a5':90,
+  'm1':30,'m2':25,'m3':25,'m4':35,
+  'd1':45,'d2':35,'d3':40,
+  'sec1':20,'sec2':35,'sec3':30,
+};
+function getTimeEst(skillId) {
+  const t = TIME_ESTIMATES[skillId];
+  if (!t) return '';
+  return `<span class="skill-time-est"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="5" stroke="currentColor" stroke-width="1"/><path d="M6 3.5V6L7.5 7.5" stroke="currentColor" stroke-width="1" stroke-linecap="round"/></svg>${t} min</span>`;
+}
 const SUBTASK_EXERCISES = {
   's1': [
     { case: 'Caso: Recibes el comité de Luda de mayo 2026. Runway de 1.5 meses, GMV YoY negativo mejorando, EBITDA -321k.', task: 'Escribe un prompt sin ninguna estructura y observa qué output obtienes. Luego escribe el mismo prompt SIN deliverable, sin decision context y sin format.', prompt: 'Analiza este informe de comité de dirección de Luda.' },
@@ -3291,6 +3941,9 @@ function showApp() {
   renderNav();
   renderPhase(0);
   updateGlobalProgress();
+  recordActivity();
+  renderStreak();
+  renderWeeklyChallenge();
 }
 
 function renderNav() {
@@ -3299,15 +3952,32 @@ function renderNav() {
     const total = p.skills.length;
     const done = p.skills.filter(s => userProgress[s.id]?.skill).length;
     const active = currentView === 'course' && i === currentPhase;
-    return `<div class="phase-nav-item ${active?'active':''}" onclick="renderPhase(${i}); closeSidebar();">
-      <div class="phase-nav-label">${p.label}</div>
-      <div class="phase-nav-title">${p.title}</div>
-      <div class="phase-nav-count"><span>${done}</span> / ${total} completadas</div>
+    const pct = total > 0 ? Math.round(done/total*100) : 0;
+    const r = 14; const circ = 2*Math.PI*r;
+    const dash = circ * pct / 100;
+    return `<div class="phase-nav-item ${active?'active':''}" onclick="renderPhase(${i}); closeSidebar();" style="display:flex;align-items:center;gap:10px;padding:8px 20px;">
+      <div class="phase-ring">
+        <svg width="36" height="36" viewBox="0 0 36 36">
+          <circle cx="18" cy="18" r="${r}" fill="none" stroke="var(--bg4)" stroke-width="2.5"/>
+          <circle cx="18" cy="18" r="${r}" fill="none" stroke="${p.color}" stroke-width="2.5" stroke-dasharray="${dash.toFixed(1)} ${(circ-dash).toFixed(1)}" stroke-linecap="round" style="transition:stroke-dasharray .4s;"/>
+        </svg>
+        <div class="phase-ring-num" style="color:${p.color}">${pct}%</div>
+      </div>
+      <div style="flex:1;min-width:0;">
+        <div class="phase-nav-label">${p.label}</div>
+        <div class="phase-nav-title">${p.title}</div>
+        <div class="phase-nav-count"><span style="color:${p.color}">${done}</span> / ${total}</div>
+      </div>
     </div>`;
   }).join('');
   // leaderboard active state
   const lbItem = document.getElementById('lb-nav-item');
   if (lbItem) lbItem.classList.toggle('active', currentView === 'leaderboard');
+  const casesItem = document.getElementById('cases-nav-item');
+  if (casesItem) casesItem.classList.toggle('active', currentView === 'cases');
+  const glossaryItem = document.getElementById('glossary-nav-item');
+  if (glossaryItem) glossaryItem.classList.toggle('active', currentView === 'glossary');
+  renderWeeklyChallenge();
 }
 
 // ── NEXT SKILL ──
@@ -3424,6 +4094,7 @@ function renderSkillCard(s, levelMap) {
           <span class="badge ${lvlClass}">${s.level}</span>
           <span class="badge badge-time">${s.time}</span>
           <span class="badge badge-must">${s.priority}</span>
+          ${getTimeEst(s.id)}
           ${subtasksDone > 0 ? `<span class="badge" style="background:rgba(74,158,110,0.15);color:#6dba91">${subtasksDone}/${s.subtasks.length} subtareas</span>` : ''}
         </div>
       </div>
@@ -3435,6 +4106,7 @@ function renderSkillCard(s, levelMap) {
       <div class="skill-section">
         <div class="skill-section-title">Qué aprenderás</div>
         <div class="skill-desc">${s.desc}</div>
+        ${getArchDiagram(s.id)}
       </div>
       <div class="skill-section">
         <div class="skill-section-title">Subtareas — con ejercicios prácticos</div>
@@ -3488,7 +4160,14 @@ async function toggleSkill(skillId) {
   }
   updateGlobalProgress();
   renderNav();
-  if (userProgress[skillId].skill) toast('Habilidad completada 🎯', 'success');
+  renderWeeklyChallenge();
+  if (userProgress[skillId].skill) {
+    recordActivity();
+    renderStreak();
+    const prevEarned = getEarnedBadges();
+    checkBadges(prevEarned);
+    toast('Habilidad completada 🎯', 'success');
+  }
 }
 
 async function toggleSubtask(skillId, idx) {
@@ -3497,6 +4176,12 @@ async function toggleSubtask(skillId, idx) {
   await saveProgress(skillId, String(idx), userProgress[skillId].subtasks[idx]);
   const el = document.getElementById(`st-${skillId}-${idx}`);
   if (el) el.classList.toggle('done', userProgress[skillId].subtasks[idx]);
+  if (userProgress[skillId].subtasks[idx]) {
+    recordActivity();
+    renderStreak();
+    const prevEarned = getEarnedBadges();
+    checkBadges(prevEarned);
+  }
 }
 
 function updateGlobalProgress() {
