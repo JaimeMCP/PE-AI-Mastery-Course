@@ -1013,7 +1013,6 @@
       <div class="user-pill">
         <div class="user-avatar" id="user-avatar">—</div>
         <span class="user-name" id="user-display-name">—</span>
-        <button class="theme-toggle" onclick="toggleTheme()" id="theme-btn" title="Cambiar tema">🌙</button>
         <button class="theme-toggle" onclick="toggleTheme()" id="theme-btn">🌙</button>
         <button class="logout-btn" onclick="logout()">Logout</button>
       </div>
@@ -4621,14 +4620,31 @@ function getDocLabel(phaseId) {
 }
 
 function personalizePrompt(prompt, phaseId) {
+  return personalizeSubEx(prompt, phaseId);
+}
+
+function personalizeSubEx(text, phaseId) {
+  if (!text) return text;
   var label = getDocLabel(phaseId);
-  var docName = (getPhaseDoc(phaseId) || {}).name || '[EMPRESA]';
-  docName = docName.split('—')[0].trim();
-  return prompt
-    .replace(/el comité de Luda adjunto/g, label)
+  var doc = getPhaseDoc(phaseId) || {};
+  var docName = (doc.name || '[EMPRESA]').split('—')[0].trim();
+  var docType = doc.type || 'documento';
+  return text
+    .replace(/el comité de Luda de mayo 2026/g, label)
+    .replace(/comité de Luda adjunto/g, label)
     .replace(/el documento adjunto/g, label)
+    .replace(/Comité de Dirección de Luda/g, label)
+    .replace(/informe de Luda/g, label)
+    .replace(/documento de Luda/g, label)
+    .replace(/el comité de Luda/g, label)
+    .replace(/Luda Partners/g, docName)
+    .replace(/Luda/g, docName)
     .replace(/\[PEGA EL PDF[^\]]*\]/g, label)
-    .replace(/\[EMPRESA\]/g, docName);
+    .replace(/\[EMPRESA\]/g, docName)
+    .replace(/el documento adjunto/g, label)
+    .replace(/Caso: Recibes el comité de Luda[^.]*/g, 'Caso: Tienes ' + label)
+    .replace(/Mismo caso: comité de Luda[^.]*/g, 'Mismo caso: ' + label)
+    .replace(/participada tuya/g, 'tu ' + docType);
 }
 
 // ═══════════════════════════════════════════════
@@ -4918,9 +4934,9 @@ function renderSkillCard(s, levelMap) {
     const exHtml = ex ? `
       <div class="subtask-exercise" id="sex-${s.id}-${i}">
         <div class="se-label">✦ Ejercicio de práctica</div>
-        <div class="se-case"><strong>Caso:</strong> ${ex.case}</div>
+        <div class="se-case"><strong>Caso:</strong> ${personalizeSubEx(ex.case, PHASES[currentPhase].id)}</div>
         <div class="se-task">${ex.task}</div>
-        <div class="se-prompt">${ex.prompt}</div>
+        <div class="se-prompt">${personalizeSubEx(ex.prompt, PHASES[currentPhase].id)}</div>
         <div class="se-actions">
           <button class="se-btn se-copy" onclick="copySubEx('${s.id}',${i})">Copiar prompt</button>
           <a class="se-btn se-open" href="https://claude.ai/new" target="_blank">Abrir en Claude ↗</a>
@@ -5173,22 +5189,7 @@ function toast(msg, type='') {
 // ═══════════════════════════════════════════════
 // THEME TOGGLE
 // ═══════════════════════════════════════════════
-function toggleTheme() {
-  const isLight = document.documentElement.classList.toggle('light');
-  localStorage.setItem('theme', isLight ? 'light' : 'dark');
-  const btn = document.getElementById('theme-btn');
-  if (btn) btn.textContent = isLight ? '☀️' : '🌙';
-}
 
-function initTheme() {
-  const saved = localStorage.getItem('theme');
-  const preferLight = window.matchMedia('(prefers-color-scheme: light)').matches;
-  if (saved === 'light' || (!saved && preferLight)) {
-    document.documentElement.classList.add('light');
-  }
-  const btn = document.getElementById('theme-btn');
-  if (btn) btn.textContent = document.documentElement.classList.contains('light') ? '☀️' : '🌙';
-}
 
 // ═══════════════════════════════════════════════
 // INIT
