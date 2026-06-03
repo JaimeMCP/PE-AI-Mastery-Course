@@ -5248,7 +5248,8 @@ function renderSkill(s, p) {
   var isDone = !!progress[s.id];
   var pid = p.id;
 
-  var conceptHtml = s.concept.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+  var conceptText = s.concept || s.desc || '';
+  var conceptHtml = conceptText.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
 
   var diagramHtml = s.diagram ? '<div class="diagram-wrap">'+s.diagram+'</div>' : '';
 
@@ -5258,9 +5259,14 @@ function renderSkill(s, p) {
   if(typeof renderScaffolding === 'function') dynamicsHtml += (renderScaffolding(s.id)||'');
   if(typeof renderFindTheError === 'function') dynamicsHtml += (renderFindTheError(s.id)||'');
 
+  // Handle both structures: new (tryPrompt/refPrompt/gap) vs old (exercise)
+  var tryPrompt = s.tryPrompt || (s.exercise ? s.exercise.text : 'Practica esta habilidad con tu documento seleccionado.');
+  var refPrompt = s.refPrompt || (s.exercise ? s.exercise.prompt : '');
+  var gapText = s.gap || '';
+
   var tryHtml = '<div class="try-box">'
     + '<div class="try-label">✏ Tu turno primero</div>'
-    + '<div class="try-q">'+s.tryPrompt+'</div>'
+    + '<div class="try-q">'+tryPrompt+'</div>'
     + '<textarea class="try-textarea" id="try-'+s.id+'" placeholder="Escribe tu prompt aquí antes de ver la referencia..." onchange="saveTry(\''+s.id+'\',this.value)">'+getTry(s.id)+'</textarea>'
     + '<div class="try-actions">'
     + '<button class="show-ref-btn" onclick="showRef(\''+s.id+'\')">Ver prompt de referencia →</button>'
@@ -5269,9 +5275,9 @@ function renderSkill(s, p) {
 
   var refHtml = '<div class="ref-box" id="ref-'+s.id+'">'
     + '<div class="ref-label">✦ Prompt de referencia</div>'
-    + '<div class="ref-prompt" id="refp-'+s.id+'">'+escHtml(personalizeText(s.refPrompt, pid))
+    + '<div class="ref-prompt" id="refp-'+s.id+'">'+escHtml(personalizeText(refPrompt, pid))
     + '<button class="copy-ref" onclick="copyRef(\''+s.id+'\')">Copiar</button></div>'
-    + '<div class="gap-box"><div class="gap-label">El gap clave</div><div class="gap-text">'+s.gap+'</div></div>'
+    + (gapText ? '<div class="gap-box"><div class="gap-label">El gap clave</div><div class="gap-text">'+gapText+'</div></div>' : '')
     + '<div style="margin-top:10px;display:flex;gap:8px;">'
     + '<a class="open-claude-btn" href="https://claude.ai/new" target="_blank">↗ Abrir en Claude con tu prompt</a>'
     + '</div>'
