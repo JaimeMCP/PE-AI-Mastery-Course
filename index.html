@@ -922,6 +922,48 @@
   .doc-change:hover { color:var(--text); }
   .doc-expanded { margin-top:10px; display:flex; flex-direction:column; gap:6px; }
 
+  /* ── QUIZ ── */
+  .quiz-section { background:var(--bg2); border:1px solid var(--border); border-radius:var(--radius-lg); margin-top:32px; overflow:hidden; }
+  .quiz-header { display:flex; align-items:center; justify-content:space-between; padding:16px 20px; cursor:pointer; transition:background .1s; }
+  .quiz-header:hover { background:var(--bg3); }
+  .quiz-header-left { display:flex; align-items:center; gap:12px; }
+  .quiz-icon { font-size:20px; }
+  .quiz-title { font-family:var(--font-display); font-size:15px; font-weight:600; color:var(--text); }
+  .quiz-subtitle { font-size:11px; color:var(--text3); margin-top:2px; }
+  .quiz-toggle-btn { font-size:12px; font-weight:500; color:var(--gold); padding:5px 12px; border:1px solid rgba(201,168,76,0.3); border-radius:var(--radius); background:var(--gold-dim); flex-shrink:0; }
+  .quiz-body { padding:0 20px 24px; border-top:1px solid var(--border); }
+  .quiz-q { padding:20px 0; border-bottom:1px solid var(--border); }
+  .quiz-q:last-of-type { border-bottom:none; }
+  .quiz-q-num { font-size:10px; text-transform:uppercase; letter-spacing:.1em; color:var(--text3); margin-bottom:8px; font-weight:500; }
+  .quiz-q-text { font-size:14px; font-weight:500; color:var(--text); line-height:1.5; margin-bottom:14px; }
+  .quiz-output-box { font-family:var(--font-mono); font-size:11px; background:var(--bg4); border:1px solid var(--border2); border-radius:var(--radius); padding:12px; color:var(--text2); line-height:1.7; margin-bottom:14px; white-space:pre-wrap; word-break:break-word; }
+  .quiz-options { display:flex; flex-direction:column; gap:8px; }
+  .quiz-opt { display:flex; align-items:flex-start; gap:10px; padding:10px 12px; background:var(--bg3); border:1px solid var(--border); border-radius:var(--radius); cursor:pointer; transition:all .15s; }
+  .quiz-opt:hover:not(.disabled):not(.correct):not(.wrong) { border-color:var(--gold); background:var(--gold-dim); }
+  .quiz-opt.correct { background:rgba(74,158,110,0.1); border-color:rgba(74,158,110,0.4); cursor:default; }
+  .quiz-opt.wrong { background:rgba(194,90,90,0.1); border-color:rgba(194,90,90,0.3); cursor:default; }
+  .quiz-opt.disabled { opacity:.5; cursor:default; }
+  .quiz-opt-letter { width:22px; height:22px; border-radius:50%; background:var(--bg4); border:1px solid var(--border2); display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:600; color:var(--text2); flex-shrink:0; }
+  .quiz-opt.correct .quiz-opt-letter { background:rgba(74,158,110,0.2); border-color:#4a9e6e; color:#4a9e6e; }
+  .quiz-opt.wrong .quiz-opt-letter { background:rgba(194,90,90,0.2); border-color:#c25a5a; color:#c25a5a; }
+  .quiz-opt-text { font-size:13px; color:var(--text); line-height:1.4; padding-top:3px; }
+  .quiz-explanation { font-size:12px; line-height:1.6; margin-top:12px; padding:10px 14px; border-radius:var(--radius); border-left:3px solid; }
+  .correct-exp { background:rgba(74,158,110,0.08); border-color:#4a9e6e; color:var(--text2); }
+  .wrong-exp { background:rgba(194,90,90,0.08); border-color:#c25a5a; color:var(--text2); }
+  .quiz-submit-btn { width:100%; margin-top:20px; background:var(--gold-dim); border:1px solid var(--gold); border-radius:var(--radius); padding:11px; color:var(--gold); font-family:var(--font-body); font-size:14px; font-weight:500; cursor:pointer; transition:all .15s; }
+  .quiz-submit-btn:hover { background:rgba(201,168,76,0.2); }
+  /* Reflection */
+  .quiz-reflection-badge { font-size:11px; background:rgba(147,128,212,0.12); color:#9380d4; border-radius:var(--radius); padding:5px 10px; display:inline-block; margin-bottom:10px; }
+  .quiz-textarea { width:100%; min-height:100px; background:var(--bg3); border:1px solid var(--border2); border-radius:var(--radius); padding:10px 12px; color:var(--text); font-family:var(--font-body); font-size:13px; line-height:1.6; resize:vertical; outline:none; margin-bottom:10px; box-sizing:border-box; }
+  .quiz-textarea:focus { border-color:var(--gold); }
+  .quiz-reflection-actions { display:flex; flex-direction:column; gap:6px; }
+  .quiz-eval-btn { background:var(--gold-dim); border:1px solid var(--gold); border-radius:var(--radius); padding:9px 16px; color:var(--gold); font-family:var(--font-body); font-size:13px; font-weight:500; cursor:pointer; transition:all .15s; text-align:left; }
+  .quiz-eval-btn:hover { background:rgba(201,168,76,0.2); }
+  .quiz-eval-note { font-size:11px; color:var(--text3); }
+  .quiz-reflection-done { font-size:12px; color:var(--green); margin:8px 0; }
+  .quiz-mark-reflection { display:flex; align-items:center; gap:8px; font-size:12px; color:var(--text2); cursor:pointer; margin-top:8px; }
+  .quiz-mark-reflection input { cursor:pointer; accent-color:var(--green); }
+
 </style>
 </head>
 <body>
@@ -3326,6 +3368,8 @@ const BADGES = [
   { id: 'diligence_pro', emoji: '🔍', name: 'Diligence pro', desc: 'Completa la Fase de Data Rooms', condition: (p, phases) => { const ph=phases.find(p=>p.id==='pD'); return ph && ph.skills.every(s=>p[s.id]?.skill); } },
   { id: 'make_master', emoji: '⚙️', name: 'Orquestador', desc: 'Completa la Fase de Make/N8N', condition: (p, phases) => { const ph=phases.find(p=>p.id==='pN'); return ph && ph.skills.every(s=>p[s.id]?.skill); } },
   { id: 'subtasks_20', emoji: '📋', name: 'Detallista', desc: 'Completa 20 subtareas', condition: p => { let n=0; Object.values(p).forEach(v=>{ if(v.subtasks) n+=Object.values(v.subtasks).filter(Boolean).length; }); return n>=20; } },
+  { id: 'first_quiz', emoji: '🎯', name: 'Primer quiz', desc: 'Completa el quiz de cualquier fase', condition: (p, phases) => { try { return Object.keys(localStorage).some(k => k.startsWith('quiz_') && JSON.parse(localStorage.getItem(k))?.completed); } catch(e) { return false; } } },
+  { id: 'quiz_perfect', emoji: '💎', name: 'Perfecto', desc: 'Saca 4/4 en el quiz de cualquier fase', condition: (p, phases) => { try { return Object.keys(localStorage).some(k => k.startsWith('quiz_') && JSON.parse(localStorage.getItem(k))?.score === 4); } catch(e) { return false; } } },
 ];
 
 const WEEKLY_CHALLENGES = [
@@ -4660,6 +4704,1017 @@ function initTheme() {
 
 
 // ═══════════════════════════════════════════════
+// QUIZ DATA — 5 preguntas por fase (4 MC + 1 reflexión)
+// ═══════════════════════════════════════════════
+const QUIZZES = {
+  'p1': {
+    title: 'Quiz — Prompting profesional',
+    questions: [
+      {
+        type: 'mc',
+        q: 'Recibes este prompt de un colega: "Analiza Luda y dime cómo está". ¿Qué es lo más crítico que le falta?',
+        options: [
+          'No especifica el modelo de Claude a usar',
+          'No tiene decision context — Claude no sabe para qué sirve el análisis',
+          'Es demasiado corto, debería ser más detallado',
+          'No menciona el nombre completo de la empresa'
+        ],
+        correct: 1,
+        explanation: 'El decision context es lo que transforma un resumen genérico en un análisis accionable. Sin él, Claude no sabe si estás preparando un IC, decidiendo un bridge financing, o escribiendo un LP update — y el output será genérico para los tres.'
+      },
+      {
+        type: 'mc',
+        q: 'Claude te genera este output: "Luda es una empresa prometedora con buen potencial de crecimiento y un equipo sólido comprometido con el proyecto." ¿Cuál es el problema principal?',
+        options: [
+          'Es demasiado corto para un análisis de PE',
+          'Viola el guardrail de forbidden claims — afirma cosas sin evidencia citada',
+          'Debería mencionar el EBITDA exacto',
+          'El tono es demasiado informal para un IC'
+        ],
+        correct: 1,
+        explanation: '"Prometedora", "buen potencial", "equipo sólido comprometido" son forbidden claims — afirmaciones sin evidencia. Un IC real preguntaría inmediatamente: ¿basado en qué? El guardrail de evidence discipline está precisamente para eliminar este tipo de output.'
+      },
+      {
+        type: 'error',
+        q: 'Este es el output de Claude sobre el comité de Luda. Tiene un error de evidence discipline. Identifícalo:',
+        output: `KPIs Luda — Mayo 2026:
+— GMV YoY: -8.3% (slide 3)
+— Ventas netas: +81% YoY (slide 14)
+— EBITDA: -321k€ (slide 19)
+— Caja: 323k€ (slide 20)
+— Runway: 1.5 meses (slide 21)
+— El equipo directivo está ejecutando bien el plan de expansión OTC`,
+        options: [
+          'El GMV de -8.3% no está en el documento — es un dato inventado',
+          'Las ventas netas están en el slide equivocado',
+          'El EBITDA debería ser positivo si las ventas crecen',
+          'No hay error — el output es correcto'
+        ],
+        correct: 0,
+        explanation: 'El documento dice que el GMV YoY es negativo y mejora ~5pp, pero nunca da el porcentaje exacto de -8.3%. Ese número lo inventó Claude. La última línea sobre el equipo directivo tampoco tiene cita — otro forbidden claim sin evidencia.'
+      },
+      {
+        type: 'mc',
+        q: '¿En qué situación tiene más sentido usar multi-pass prompting (draft → skeptic → revise)?',
+        options: [
+          'Cuando necesitas un resumen rápido de un comité mensual de 10 páginas',
+          'Cuando preparas el análisis para un IC donde el socio va a cuestionar cada supuesto',
+          'Cuando el documento tiene más de 50 páginas',
+          'Cuando no tienes tiempo y necesitas el output en 2 minutos'
+        ],
+        correct: 1,
+        explanation: 'El multi-pass tiene coste en tiempo — usarlo para un resumen rápido es sobredimensionado. Su valor está en análisis de alta exigencia donde las críticas del IC van a ser fuertes. El Pass 2 (skeptic) simula exactamente esas críticas antes de que las haga el IC real.'
+      },
+      {
+        type: 'reflection',
+        q: 'Tienes que analizar el comité de dirección de una participada cuyo runway es de 6 semanas. El socio necesita el análisis en 2 horas para decidir si convocar una reunión de emergencia del consejo. Describe exactamente cómo estructurarías el prompt: qué incluirías, en qué orden, y qué no incluirías para no perder tiempo.',
+        evalPrompt: `Eres un tutor experto en prompting para private equity. Evalúa esta respuesta de un asociado de PE.
+
+PREGUNTA: Tienes que analizar el comité de dirección de una participada cuyo runway es de 6 semanas. El socio necesita el análisis en 2 horas para decidir si convocar una reunión de emergencia del consejo. Describe exactamente cómo estructurarías el prompt.
+
+RESPUESTA DEL ALUMNO:
+[RESPUESTA_USUARIO]
+
+Evalúa con estos criterios:
+1. ¿Incluyó decision context claro (decidir si convocar consejo de emergencia)?
+2. ¿Identificó que el format debe priorizar flags críticos al inicio (no al final)?
+3. ¿Entendió que en 2 horas no hay tiempo para multi-pass — un prompt bien estructurado es suficiente?
+4. ¿Mencionó la restricción de citar fuentes (evidence discipline)?
+
+Da feedback en 3-4 líneas: qué hizo bien, qué le faltó, y una mejora concreta. Tono de tutor de PE, no de profesor de colegio.`
+      }
+    ]
+  },
+  'p2': {
+    title: 'Quiz — Análisis avanzado',
+    questions: [
+      {
+        type: 'mc',
+        q: 'Estás aplicando el CIM-to-screen loop. En el Paso 2 (red flags), Claude identifica 7 flags. ¿Cuál es tu siguiente acción correcta?',
+        options: [
+          'Pasar directamente al IC con los 7 flags documentados',
+          'Priorizar los 3 más graves y clasificarlos: DEAL KILLER / SIGNIFICATIVO / MANEJABLE',
+          'Descartar el deal — 7 flags es demasiado para seguir',
+          'Pedir a Claude que reduzca los flags a 3 automáticamente'
+        ],
+        correct: 1,
+        explanation: 'El número de flags no determina si el deal muere — su severidad sí. Un deal puede tener 7 flags menores y seguir adelante, o 1 flag deal-killer y terminar ahí. Priorizar y clasificar es el juicio del analista, no de Claude.'
+      },
+      {
+        type: 'error',
+        q: 'Un colega usó Claude para generar el competitor grid de MedSoft. Identifica el problema en este output:',
+        output: `COMPETITOR GRID — MedSoft Solutions (Software clínico):
+
+Competidor 1: Epic Systems — líder mundial, $3.3B revenue, foco en hospitales grandes
+Competidor 2: Cerner (Oracle Health) — #2 mundial, presente en España desde 2019
+Competidor 3: Meditech — especialista en hospitales medianos, buena penetración en UK
+Competidor 4: Imdex Health — startup española, 45M€ ARR, Series B reciente
+Competidor 5: ClinicCloud — SaaS para clínicas pequeñas, ~8M€ ARR
+
+Múltiplos de sector: EV/Revenue 6-9x para empresas con >80% retention`,
+        options: [
+          'Faltan más competidores — debería tener al menos 10',
+          'Imdex Health probablemente no existe — Claude puede haber alucinado un competidor',
+          'Los múltiplos de sector son incorrectos para software clínico',
+          'No hay error — el output es sólido para un análisis inicial'
+        ],
+        correct: 1,
+        explanation: 'Claude puede alucinar nombres de empresas que suenan plausibles pero no existen. "Imdex Health" con datos específicos (45M€ ARR, Series B) es exactamente el tipo de hallazgo que necesitas verificar antes de presentarlo. Regla: cualquier empresa que no reconozcas, búscala antes de incluirla en el análisis.'
+      },
+      {
+        type: 'mc',
+        q: '¿Cuál es la diferencia más importante entre el prompt de QC y el prompt de análisis inicial?',
+        options: [
+          'El QC usa un tono más formal',
+          'El QC busca errores internos (unidades, citas, bridges) — el análisis genera insights',
+          'El QC es más largo y detallado',
+          'El QC solo se aplica a documentos financieros, no a CIMs'
+        ],
+        correct: 1,
+        explanation: 'Son propósitos completamente distintos. El análisis genera insights y recomendaciones. El QC verifica que esos insights están correctamente construidos — unidades consistentes, citas verificables, puentes que cuadran. Aplicar el QC sobre tu propio análisis antes del IC es lo que separa un análisis fiable de uno que te puede avergonzar.'
+      },
+      {
+        type: 'mc',
+        q: 'Generas el LBO v1 con Claude para una participada con EBITDA de 2.1M€. Claude asume un múltiplo de entrada de 8x EV/EBITDA. ¿Qué debes verificar antes de usar este número?',
+        options: [
+          'Que el múltiplo sea redondo para facilitar los cálculos',
+          'Que 8x esté en línea con transacciones comparables reales en ese sector y tamaño',
+          'Que el EBITDA de 2.1M€ sea el normalizado, no el reportado',
+          'Tanto B como C son verificaciones necesarias'
+        ],
+        correct: 3,
+        explanation: 'Ambas verificaciones son críticas. Un múltiplo de entrada sin benchmark sectorial es un supuesto en el aire. Y si el EBITDA base es el reportado (con add-backs pendientes de verificar), toda la valoración está construida sobre arena. El LBO v1 de Claude acelera el trabajo — pero el criterio sobre los inputs es siempre tuyo.'
+      },
+      {
+        type: 'reflection',
+        q: 'Has aplicado el CIM-to-screen loop a un teaser de una empresa de logística. Claude identifica como red flag principal que el 68% del revenue viene de un solo cliente (Amazon). Sin embargo, el management argumenta que el contrato dura 7 años y tiene cláusulas de exclusividad. ¿Cómo cambia (o no cambia) tu evaluación de este flag? ¿Qué harías a continuación?',
+        evalPrompt: `Eres un tutor de private equity evaluando el juicio de un asociado en análisis de concentración de cliente.
+
+SITUACIÓN: Red flag de concentración — 68% revenue de un solo cliente (Amazon). Management dice: contrato 7 años con exclusividad.
+
+RESPUESTA DEL ALUMNO:
+[RESPUESTA_USUARIO]
+
+Evalúa con estos criterios:
+1. ¿Entendió que el contrato largo mitiga pero no elimina el riesgo (qué pasa en año 8)?
+2. ¿Identificó que hay que verificar las cláusulas reales del contrato (no la afirmación del management)?
+3. ¿Consideró el riesgo de cambio de control (Amazon puede no renovar post-adquisición)?
+4. ¿Propuso un next step concreto (leer el contrato, preguntar al management, buscar precedentes)?
+
+Feedback en 3-4 líneas. Tono de senior de PE en una conversación real.`
+      }
+    ]
+  },
+  'pM': {
+    title: 'Quiz — Modelos financieros con IA',
+    questions: [
+      {
+        type: 'mc',
+        q: 'Claude genera un LBO con IRR del 28% en el caso base. ¿Cuál es tu primera reacción como analista?',
+        options: [
+          'Presentarlo al IC — un IRR del 28% es excelente',
+          'Verificar los 3-5 supuestos que más impactan ese IRR antes de confiar en el número',
+          'Pedir a Claude que recalcule con un múltiplo de salida más conservador',
+          'Compararlo con el hurdle rate del fondo y si supera, avanzar'
+        ],
+        correct: 1,
+        explanation: 'Un IRR atractivo generado por IA es una hipótesis, no un resultado. El trabajo del analista es identificar cuáles son los supuestos que más sensibilizan ese número — crecimiento de revenue, múltiplo de salida, márgenes — y verificar que son defensibles. Presentar un IRR del 28% al IC sin haber hecho ese trabajo es el error más común.'
+      },
+      {
+        type: 'error',
+        q: 'Revisa este narrativo de hipótesis generado por Claude para el LP report. Identifica el problema:',
+        output: `CASO BASE — MedSoft Solutions:
+Proyectamos un crecimiento de revenue del 32% anual durante los próximos 5 años, impulsado por la expansión geográfica a Italia y Portugal, el lanzamiento del módulo de IA diagnóstica, y el crecimiento orgánico del negocio core en España. El equipo directivo ha demostrado capacidad de ejecución consistente y el mercado europeo de software clínico presenta una oportunidad significativa. Esperamos alcanzar márgenes EBITDA del 28% en el año 5, en línea con los mejores operadores del sector.`,
+        options: [
+          'El 32% de crecimiento es demasiado agresivo para un LP report',
+          'No hay justificación cuantitativa para ninguno de los supuestos — son afirmaciones sin respaldo',
+          'El tono es demasiado optimista para un documento institucional',
+          'Falta mencionar los riesgos del caso base'
+        ],
+        correct: 1,
+        explanation: 'Cada supuesto necesita su benchmark o evidencia: ¿qué % del 32% viene de cada palanca? ¿Cuánto creció la expansión a Italia en otros players? ¿El 28% de margen en año 5 está basado en qué comparable? "En línea con los mejores operadores" es exactamente el tipo de afirmación vacía que un LP sofisticado va a cuestionar.'
+      },
+      {
+        type: 'mc',
+        q: 'En el análisis de sensibilidades de un deal, Claude identifica que el múltiplo de salida es la variable que más impacta el IRR. ¿Qué implica esto para tu trabajo de diligencia?',
+        options: [
+          'Debes asumir el múltiplo más conservador del rango para ser prudente',
+          'Debes profundizar en los drivers de valoración del sector para defender el múltiplo de salida',
+          'El deal tiene demasiado riesgo si depende del múltiplo de salida',
+          'Debes cambiar la estructura a deuda para reducir la dependencia del múltiplo'
+        ],
+        correct: 1,
+        explanation: 'Que el múltiplo de salida sea la variable más sensible no es bueno ni malo — es información. Te dice dónde enfocar el trabajo: necesitas entender los drivers de valoración del sector, las transacciones comparables recientes, y qué haría que el mercado pagara más o menos por este tipo de empresa en 5 años. Eso es lo que defiende el múltiplo ante el IC.'
+      },
+      {
+        type: 'mc',
+        q: 'Generas el value creation plan de una participada con Claude. La palanca de mayor impacto es "expansión internacional". ¿Qué información adicional necesitas para que esta palanca sea creíble en el IC?',
+        options: [
+          'El nombre de los países objetivo',
+          'Revenue potencial, timeline realista, coste de entrada, y evidencia de que el producto funciona en esos mercados',
+          'Que el CEO confirme que quiere expandirse internacionalmente',
+          'Un benchmark de cuántas empresas similares se han expandido con éxito'
+        ],
+        correct: 1,
+        explanation: 'Una palanca de value creation sin cuantificación es un deseo, no un plan. El IC preguntará: ¿cuánto revenue adicional? ¿en qué plazo? ¿a qué coste? ¿qué evidencia tienes de product-market fit en esos mercados? Claude puede generar la estructura — pero los datos que hacen creíble la palanca vienen de la diligencia.'
+      },
+      {
+        type: 'reflection',
+        q: 'Tienes el modelo financiero de una participada con tres escenarios. En el caso base el IRR es 19% (justo por encima del hurdle rate). En el downside es 11%. El socio te pregunta: "¿Deberíamos hacer este deal?". No te pide el IRR — te pide tu opinión. ¿Qué le dices y cómo llegas a esa conclusión?',
+        evalPrompt: `Eres un socio de PE evaluando el juicio de un asociado sobre una decisión de inversión.
+
+SITUACIÓN: IRR base 19% (just above hurdle), downside 11%. El socio pide opinión directa.
+
+RESPUESTA DEL ALUMNO:
+[RESPUESTA_USUARIO]
+
+Evalúa con estos criterios:
+1. ¿El alumno dio una opinión directa (sí/no/con condiciones) o evitó tomar posición?
+2. ¿Consideró la asimetría riesgo/retorno — 8pp de caída en downside vs 0pp de upside buffer?
+3. ¿Mencionó qué factores cualitativos cambiarían su opinión (equipo, moat, mercado)?
+4. ¿Estructuró el argumento de forma que el socio pueda tomar una decisión, no solo recibir información?
+
+Feedback directo como lo haría un socio de PE. Sin suavizar.`
+      }
+    ]
+  },
+  'p3': {
+    title: 'Quiz — Workflows que escalan',
+    questions: [
+      {
+        type: 'mc',
+        q: '¿Cuál es la diferencia principal entre un template con variables y un prompt estático?',
+        options: [
+          'El template es más largo y detallado',
+          'El template tiene placeholders que cambian por deal — el output es consistente sin reescribir el prompt cada vez',
+          'El template solo funciona para un tipo de deal específico',
+          'El template requiere conocimientos técnicos para usarse'
+        ],
+        correct: 1,
+        explanation: 'La consistencia es el valor. Con un prompt estático, cada analista escribe el suyo y los outputs varían en calidad y formato. Con un template, cambias [EMPRESA], [SECTOR], [EV_RANGO] y obtienes el mismo nivel de análisis independientemente de quién lo use. Eso es lo que escala a un equipo.'
+      },
+      {
+        type: 'mc',
+        q: 'Estás construyendo el pipeline de notas de una reunión de management. Las notas crudas dicen: "CEO dice que van a lanzar en Q3, pero llevan diciendo lo mismo desde Q1. Glovo sigue siendo un problema. La directora de producto parece quemada." ¿Qué paso del pipeline aplicas primero?',
+        options: [
+          'Traducir directamente a IC-ready language',
+          'Estructurar las notas en tabla por tema antes de extraer insights',
+          'Generar los follow-ups inmediatamente',
+          'Evaluar si la información es suficiente para el próximo comité'
+        ],
+        correct: 1,
+        explanation: 'El pipeline es secuencial por una razón: si intentas traducir a IC-ready sin estructurar primero, mezclas temas y pierdes información. La tabla fuerza a separar: retrasos de lanzamiento / riesgo Glovo / riesgo equipo directivo. Desde esa estructura, los insights emergen solos y la traducción a IC language es mecánica.'
+      },
+      {
+        type: 'error',
+        q: 'Un colega preparó este add-back para el QA harness de una participada industrial. Identifica el error:',
+        output: `ADD-BACK PROPUESTO:
+Nombre: Salario del fundador por encima de mercado
+Importe: +180k€
+Clasificación: ONE-TIME ✓
+Justificación: El fundador cobra 280k€/año. El salario de mercado para un CEO de empresa similar es 100k€. La diferencia (180k€) es un add-back legítimo de owner economics.
+EBITDA reportado: 850k€
+EBITDA normalizado: 1.030k€ (+21%)`,
+        options: [
+          'El importe de 180k€ es demasiado alto para ser creíble',
+          'La clasificación es incorrecta: owner economics es un ajuste estructural permanente, no ONE-TIME',
+          'El salario de mercado de 100k€ parece bajo para un CEO',
+          'No hay error — el add-back está correctamente clasificado'
+        ],
+        correct: 1,
+        explanation: 'Owner economics (ajuste por salario del propietario) es un ajuste ESTRUCTURAL — no es one-time porque el efecto persiste: bajo el nuevo propietario, el CEO cobrará salario de mercado permanentemente. Clasificarlo como ONE-TIME sobreestima el EBITDA normalizado de forma incorrecta. Un auditor de QofE lo rechazaría inmediatamente.'
+      },
+      {
+        type: 'mc',
+        q: '¿Por qué es importante versionar los playbooks de prompts "como si fueran código"?',
+        options: [
+          'Para que parezca más profesional ante los LPs',
+          'Para poder revertir a una versión anterior si un cambio empeora la calidad de los outputs',
+          'Porque la regulación europea exige documentar los procesos de IA',
+          'Para que Claude entienda mejor los prompts con versiones numeradas'
+        ],
+        correct: 1,
+        explanation: 'Los prompts evolucionan y a veces un cambio bienintencionado empeora los outputs. Sin versionado, no sabes a qué versión volver. Con versionado, puedes comparar outputs entre versiones, entender qué cambio mejoró o empeoró la calidad, y mantener consistencia cuando hay múltiples personas usando el mismo playbook.'
+      },
+      {
+        type: 'reflection',
+        q: 'Llevas 2 meses usando el playbook de prompts del fondo. Notas que el prompt de análisis de comités genera outputs muy buenos para participadas de software, pero mediocres para las participadas industriales (números, márgenes, terminología distinta). ¿Cómo lo resolverías? ¿Un prompt único que funcione para todos, o algo diferente?',
+        evalPrompt: `Eres un tutor de PE evaluando cómo un asociado gestiona la evolución de sus sistemas de IA.
+
+SITUACIÓN: Prompt de comités funciona bien para software pero mal para industrial.
+
+RESPUESTA DEL ALUMNO:
+[RESPUESTA_USUARIO]
+
+Evalúa:
+1. ¿Identificó que la solución es especialización (prompt por sector) en lugar de un prompt genérico más largo?
+2. ¿Entendió que hay que documentar los casos de uso de cada variante en el playbook?
+3. ¿Consideró cómo manejar la transición para que el equipo adopte la nueva versión?
+4. ¿Propuso alguna forma de evaluar si la versión nueva es realmente mejor (test con documentos reales)?
+
+Feedback concreto. ¿Tomaría esta decisión un VP de PE bien entrenado en IA?`
+      }
+    ]
+  },
+  'pD': {
+    title: 'Quiz — Due diligence avanzada',
+    questions: [
+      {
+        type: 'mc',
+        q: 'Estás procesando un data room con 180 documentos. Claude procesa los primeros 50 y encuentra 3 contradicciones con el CIM. ¿Cuál es tu siguiente paso?',
+        options: [
+          'Detener el proceso y descartar el deal — 3 contradicciones es una señal clara',
+          'Continuar procesando los 130 restantes Y escalar las 3 contradicciones al socio en paralelo',
+          'Pedir al management que explique las contradicciones antes de continuar la diligencia',
+          'Verificar manualmente solo las 3 contradicciones encontradas y no procesar más documentos'
+        ],
+        correct: 1,
+        explanation: 'Las dos acciones son paralelas, no secuenciales. Escalar inmediatamente las contradicciones (el socio necesita saberlo) y continuar el procesamiento (pueden aparecer más). Detener la diligencia por 3 contradicciones sin entender su severidad es una reacción prematura — algunas contradicciones son errores menores, otras son deal killers.'
+      },
+      {
+        type: 'error',
+        q: 'Claude analizó el contrato principal de un carve-out e identificó estos riesgos. Hay un error de clasificación crítico:',
+        output: `ANÁLISIS DE RIESGOS — CONTRATO PRINCIPAL (Cliente A, 45% revenue):
+
+Riesgo 1: El contrato vence en 18 meses
+Clasificación: MEDIO — hay tiempo para renovar antes del cierre
+Implicación: Requiere seguimiento post-adquisición
+
+Riesgo 2: Cláusula de change of control — el cliente puede rescindir con 30 días de aviso si hay cambio de propietario
+Clasificación: ALTO — riesgo real pero manejable con negociación previa
+Implicación: Negociar waiver antes del cierre
+
+Riesgo 3: El precio está indexado al IPC con cap del 2%
+Clasificación: BAJO — protección de márgenes limitada en entorno inflacionario`,
+        options: [
+          'El Riesgo 3 debería ser ALTO en entorno inflacionario actual',
+          'El Riesgo 2 (change of control) en el cliente que representa el 45% del revenue debería ser DEAL KILLER, no ALTO',
+          'El Riesgo 1 debería ser CRÍTICO — 18 meses es muy poco tiempo',
+          'No hay error — la clasificación es correcta'
+        ],
+        correct: 1,
+        explanation: 'Una cláusula de change of control en el contrato que representa el 45% del revenue es potencialmente un DEAL KILLER. Si el cliente rescinde, pierdes casi la mitad del negocio el día 1. Clasificarlo como ALTO "pero manejable" minimiza un riesgo existencial. El IC necesita saber que este deal no puede cerrarse sin un waiver firmado de ese cliente.'
+      },
+      {
+        type: 'mc',
+        q: 'En el análisis de QofE, el management propone un add-back de 340k€ por "gastos de desarrollo de nuevo producto que no se repetirán". ¿Cuál es la pregunta más importante que debes hacer?',
+        options: [
+          '¿Cuánto es el 340k€ como % del EBITDA reportado?',
+          '¿Está el producto lanzado y generando revenue, o sigue en desarrollo?',
+          '¿Lo ha revisado el auditor externo?',
+          '¿Hay documentación de los gastos en las facturas?'
+        ],
+        correct: 1,
+        explanation: 'Si el producto sigue en desarrollo, los gastos de I+D probablemente se repetirán — no son one-time. Si ya está lanzado y no hay más inversión planificada, el add-back puede ser legítimo. Esta distinción cambia completamente si los 340k€ se incluyen o no en el EBITDA normalizado, y por tanto el precio del deal.'
+      },
+      {
+        type: 'mc',
+        q: 'Procesas 200 documentos de un data room con Claude. El resumen final identifica 12 red flags. ¿Cómo priorizas cuáles investigar primero?',
+        options: [
+          'Por orden de aparición en el data room',
+          'Por impacto potencial en valoración y probabilidad de que sean reales',
+          'Los que aparecen en más de un documento simultáneamente',
+          'Los que el management no ha mencionado en sus presentaciones'
+        ],
+        correct: 1,
+        explanation: 'La matriz impacto × probabilidad es el criterio correcto. Un flag de alto impacto pero baja probabilidad (ej: litigio menor en un sector no regulado) puede esperar. Un flag de impacto medio pero alta probabilidad (ej: concentración de cliente con contrato corto) necesita atención inmediata. Los flags que aparecen en múltiples documentos son una señal adicional, pero no el criterio principal.'
+      },
+      {
+        type: 'reflection',
+        q: 'Has procesado el data room de un deal. Claude encontró una contradicción: el CIM afirma que la empresa tiene contratos de exclusividad con sus 5 distribuidores principales. Pero los contratos reales muestran que la exclusividad solo aplica en España — en Portugal y México los distribuidores pueden vender productos competidores. La tesis de inversión se basaba en la exclusividad como moat competitivo. ¿Cómo presentas esto al socio y qué recomiendas?',
+        evalPrompt: `Eres un socio senior de PE evaluando cómo un asociado maneja una discrepancia crítica entre el CIM y la diligencia.
+
+SITUACIÓN: El CIM exagera el alcance de la exclusividad — solo aplica en España, no en Portugal y México.
+
+RESPUESTA DEL ALUMNO:
+[RESPUESTA_USUARIO]
+
+Evalúa:
+1. ¿El alumno fue directo sobre la magnitud del problema (la tesis tiene un agujero)?
+2. ¿Propuso cuantificar el impacto antes de recomendar (¿cuánto revenue viene de Portugal y México?)?
+3. ¿Consideró si esto es renegociable pre-cierre o si cambia fundamentalmente el precio?
+4. ¿Estructuró la comunicación al socio de forma clara: hecho → implicación → recomendación?
+
+Evalúa como si fuera un ejercicio real de IC prep. ¿Confiarías en este asociado para presentarlo?`
+      }
+    ]
+  },
+  'pN': {
+    title: 'Quiz — Orquestación con Make',
+    questions: [
+      {
+        type: 'mc',
+        q: 'Tu agente de comités lleva 3 semanas funcionando. Esta mañana el comité de Luda llegó por email pero no apareció en Notion. ¿Cuál es tu checklist de diagnóstico en orden de probabilidad?',
+        options: [
+          'Primero Notion, luego Gmail, luego la API de Claude',
+          'Primero el filtro de Gmail (¿pasó el email?), luego la API de Claude (¿hubo error?), luego Notion',
+          'Revisar el historial de ejecuciones de Make para ver en qué módulo falló',
+          'Reiniciar el escenario de Make y esperar a ver si se repite'
+        ],
+        correct: 2,
+        explanation: 'El historial de ejecuciones de Make te dice exactamente en qué módulo falló, con el error específico. Es el punto de partida correcto — antes de diagnosticar por intuición, tienes los datos. Después del historial: si fue Gmail (filtro), si fue Claude (rate limit, timeout), si fue Notion (token expirado, campo requerido vacío).'
+      },
+      {
+        type: 'mc',
+        q: '¿Cuál es la diferencia principal entre webhook y polling en Make?',
+        options: [
+          'El webhook es más caro en operaciones de Make',
+          'El polling revisa activamente cada X minutos; el webhook recibe notificación instantánea cuando ocurre el evento',
+          'El webhook solo funciona con aplicaciones de Google',
+          'El polling es más fiable porque no depende de notificaciones externas'
+        ],
+        correct: 1,
+        explanation: 'Para un agente de comités, la diferencia práctica es: con polling cada 15 minutos, el análisis puede tardar hasta 15 minutos en procesarse. Con webhook, se procesa en <30 segundos. Para alertas urgentes (runway crítico, flag en un comité), 15 minutos puede ser la diferencia entre una decisión a tiempo y tarde.'
+      },
+      {
+        type: 'error',
+        q: 'Un colega configuró este módulo HTTP en Make para llamar a Claude. Identifica el error de configuración:',
+        output: `Módulo HTTP — Llamada a Claude API:
+URL: https://api.anthropic.com/v1/messages
+Method: POST
+Headers:
+  Content-Type: application/json
+  Authorization: Bearer sk-ant-api03-xxxxxxxxxxxx
+Body:
+  {
+    "model": "claude-3-opus-20240229",
+    "max_tokens": 1000,
+    "messages": [{"role": "user", "content": "{{2.text}}"}]
+  }`,
+        options: [
+          'La URL es incorrecta — falta el número de versión',
+          'El header de autenticación es incorrecto — debe ser "x-api-key" no "Authorization: Bearer"',
+          'El modelo claude-3-opus es demasiado caro para automatizaciones',
+          'max_tokens de 1000 es insuficiente para un análisis de comité'
+        ],
+        correct: 1,
+        explanation: 'La API de Anthropic usa "x-api-key: sk-ant-..." no el formato OAuth "Authorization: Bearer". Este error hace que todas las llamadas devuelvan 401 Unauthorized. Es el error más común al configurar el módulo HTTP por primera vez — el formato de autenticación de Anthropic es diferente al de OpenAI y otros servicios.'
+      },
+      {
+        type: 'mc',
+        q: '¿Por qué es importante añadir manejo de errores con reintento automático en el agente de comités?',
+        options: [
+          'Para cumplir con los requisitos de auditoría del fondo',
+          'Porque la API de Claude tiene rate limits y puede devolver errores 429 en momentos de alta demanda',
+          'Para evitar que Make cobre operaciones fallidas',
+          'Porque los PDFs a veces no se pueden leer correctamente'
+        ],
+        correct: 1,
+        explanation: 'Los rate limits son la realidad de cualquier API. Si el agente llama a Claude exactamente cuando hay alta demanda (o si tienes varios documentos procesándose simultáneamente), recibirás un 429. Sin reintento automático, el análisis se pierde silenciosamente. Con reintento (3 intentos, 5 min de espera), el agente lo resuelve solo y tú te enteras por el log, no por un error.'
+      },
+      {
+        type: 'reflection',
+        q: 'Llevas un mes con el agente de comités funcionando. Procesa 8 participadas al mes y el output en Notion es de buena calidad. El socio te pregunta si podemos automatizar también la preparación de la agenda del comité de inversión mensual, que incluye resumir el estado de cada participada y proponer los puntos de discusión. ¿Cómo abordarías este nuevo agente? ¿Qué reutilizarías del agente de comités y qué tendrías que construir desde cero?',
+        evalPrompt: `Eres un tutor de automatización para PE evaluando la capacidad de un asociado de diseñar nuevos agentes.
+
+SITUACIÓN: Nuevo agente para agenda del IC mensual, basándose en el agente de comités ya existente.
+
+RESPUESTA DEL ALUMNO:
+[RESPUESTA_USUARIO]
+
+Evalúa:
+1. ¿Identificó qué puede reutilizar (el output de Notion del agente de comités como input del nuevo agente)?
+2. ¿Entendió que necesita un trigger diferente (schedule mensual, no evento de email)?
+3. ¿Pensó en el output: qué formato necesita la agenda del IC y quién la recibe?
+4. ¿Consideró los edge cases: qué pasa si una participada no mandó el comité ese mes?
+
+Evalúa si el alumno piensa como un workflow builder o como alguien que usa herramientas sin entender la arquitectura.`
+      }
+    ]
+  },
+  'pS': {
+    title: 'Quiz — Seguridad y gobierno de IA',
+    questions: [
+      {
+        type: 'mc',
+        q: 'Un analista del equipo quiere subir el modelo financiero completo de un deal en proceso (no anunciado) a Claude.ai para que le ayude con el commentary. ¿Cuál es tu respuesta?',
+        options: [
+          'Está bien — Claude.ai Pro tiene política de no-training con datos de usuarios',
+          'Mejor usar la API con el sistema configurado por el fondo, no Claude.ai directo',
+          'Prohibido — ningún dato de un deal puede entrar en ningún sistema de IA',
+          'Solo si el deal ya está firmado y anunciado'
+        ],
+        correct: 1,
+        explanation: 'La respuesta correcta no es prohibición total ni permiso total — es usar el canal correcto. La API de Anthropic con la configuración del fondo ofrece más control sobre cómo se procesan los datos. Claude.ai Pro tiene buenas políticas, pero para MNPI de deals no anunciados, el nivel de control que ofrece la API es más adecuado. La política del fondo debe definir esto explícitamente.'
+      },
+      {
+        type: 'mc',
+        q: '¿Cuál de estas acciones viola las mejores prácticas de seguridad en los agentes de Make del fondo?',
+        options: [
+          'Guardar la API key de Anthropic en el módulo HTTP de Make usando el gestor de credenciales',
+          'Copiar la API key directamente en el campo "value" del header del módulo HTTP',
+          'Usar una API key diferente para cada agente del fondo',
+          'Rotar las API keys cada 90 días'
+        ],
+        correct: 1,
+        explanation: 'Pegar la API key directamente en el campo del módulo hace que aparezca visible en el historial de ejecuciones de Make y en cualquier exportación del escenario. El gestor de credenciales de Make la almacena encriptada y la referencia como variable — nunca aparece en texto plano. Es la diferencia entre una contraseña en un post-it y una en un gestor de contraseñas.'
+      },
+      {
+        type: 'error',
+        q: 'El equipo redactó esta cláusula para la política de IA del fondo. Identifica el problema:',
+        output: `POLÍTICA DE IA — Cláusula 4.2:
+"Queda prohibido el uso de herramientas de IA generativa para el análisis de información confidencial de participadas, incluyendo pero no limitado a: estados financieros, planes de negocio, información de empleados, y datos de clientes. Toda consulta sobre participadas deberá realizarse con datos públicamente disponibles o datos anonimizados."`,
+        options: [
+          'La cláusula es demasiado restrictiva — prohíbe el caso de uso más valioso de la IA en PE',
+          'El lenguaje legal no es suficientemente preciso',
+          'Falta especificar qué herramientas están prohibidas',
+          'La cláusula es correcta y protege adecuadamente al fondo'
+        ],
+        correct: 0,
+        explanation: 'Esta cláusula prohíbe exactamente lo que hace valiosa la IA en PE: analizar los comités mensuales, procesar los data rooms, generar el LP update. Una política bien redactada no prohíbe el uso — define el canal correcto (API vs Claude.ai), los datos que requieren aprobación previa (MNPI pre-anuncio), y el protocolo cuando hay duda. Prohibición total = el equipo no usa las herramientas y la política no sirve.'
+      },
+      {
+        type: 'mc',
+        q: 'Un LP institucional pregunta en su due diligence del gestor: "¿Cómo usa el fondo la inteligencia artificial en su proceso de inversión?" ¿Cuál es la respuesta más apropiada?',
+        options: [
+          'Decir que no usamos IA para evitar preguntas incómodas sobre riesgos',
+          'Explicar los casos de uso específicos, los controles de calidad, y la política de gobierno de datos',
+          'Referirles a la política de IA del fondo sin entrar en detalle',
+          'Decir que la IA es solo una herramienta de productividad menor y no tiene impacto en las decisiones'
+        ],
+        correct: 1,
+        explanation: 'Los LPs sofisticados están preguntando más sobre IA — y la respuesta correcta no es minimizarla ni ocultarla. Un gestor que puede articular claramente sus casos de uso de IA, sus controles, y su gobierno de datos demuestra madurez operacional. Ocultarlo o minimizarlo genera desconfianza si el LP descubre el uso real por otro canal.'
+      },
+      {
+        type: 'reflection',
+        q: 'Un nuevo analista se incorpora al equipo. Tiene experiencia previa usando ChatGPT en su fondo anterior sin ninguna política formal. Su instinto es subir todo a Claude.ai porque "es más rápido". ¿Cómo le explicas la política de IA del fondo y cómo consigues que la adopte sin que la vea como un freno burocrático?',
+        evalPrompt: `Eres un coach de PE evaluando cómo un asociado senior transmite la cultura de gobierno de IA a un nuevo miembro del equipo.
+
+SITUACIÓN: Nuevo analista con hábitos de uso sin política formal. Necesita adoptar la política del fondo.
+
+RESPUESTA DEL ALUMNO:
+[RESPUESTA_USUARIO]
+
+Evalúa:
+1. ¿El alumno explicó el "por qué" (riesgos reales de MNPI, responsabilidad del gestor) no solo el "qué no hacer"?
+2. ¿Ofreció alternativas concretas (qué SÍ puede hacer con Claude.ai vs qué va por la API)?
+3. ¿Usó un enfoque de onboarding práctico (mostrar los agentes ya construidos, no solo leer la política)?
+4. ¿Equilibró la protección del fondo con el objetivo de que el analista sea más productivo con IA?
+
+¿Conseguiría esta conversación que el analista adoptara la política o la vería como burocracia?`
+      }
+    ]
+  },
+  'pA': {
+    title: 'Quiz — Los 5 agentes core',
+    questions: [
+      {
+        type: 'mc',
+        q: 'El agente de análisis de CIMs (Agente 2) lleva funcionando 2 meses. Notas que los memos generados para deals de retail son consistentemente peores que para deals de software. ¿Cuál es la causa más probable?',
+        options: [
+          'Claude no es bueno analizando empresas de retail',
+          'El system prompt del agente usa terminología y métricas de software (ARR, churn, NRR) que no aplican a retail',
+          'Los CIMs de retail son más largos y Claude pierde contexto',
+          'Hay que usar un modelo de Claude diferente para retail'
+        ],
+        correct: 1,
+        explanation: 'Los system prompts especializados en un sector producen análisis excelentes en ese sector y mediocres en otros. La solución es un router de sector al inicio del agente: Claude clasifica el sector del deal y selecciona el sub-prompt apropiado. Un agente maduro de CIM tiene variantes por sector, no un único prompt genérico.'
+      },
+      {
+        type: 'mc',
+        q: '¿Cuál es el riesgo más importante de automatizar completamente el LP update trimestral sin revisión humana?',
+        options: [
+          'Que el formato no sea exactamente el que esperan los LPs',
+          'Que Claude genere narrativos que oculten o minimicen underperformance real que los LPs necesitan conocer',
+          'Que el coste de la API sea demasiado alto para 10 participadas',
+          'Que los LPs descubran que el update fue generado por IA'
+        ],
+        correct: 1,
+        explanation: 'La responsabilidad fiduciaria del gestor hacia los LPs es no-delegable a un sistema de IA. Claude puede minimizar inconscientemente el underperformance porque el training lo lleva a generar textos "constructivos". El borrador de Claude acelera el trabajo enormemente — pero la revisión humana que garantiza que la comunicación es honesta es siempre necesaria.'
+      },
+      {
+        type: 'error',
+        q: 'El agente de deal sourcing (Agente 4) envía este resumen matutino. Identifica el problema:',
+        output: `OPORTUNIDADES DEL DÍA — 04/06/2026
+
+1. TechPharma Solutions levanta Serie B de 12M€ (Relevancia: 9/10)
+   → Empresa de software para cadena de suministro farmacéutica. Encaja con tesis.
+
+2. Grupo Alimentario Ibérico adquiere filial de distribución (Relevancia: 8/10)
+   → Operación de M&A en sector alimentario. Potencial add-on para portfolio.
+
+3. Startup de IA diagnóstica cierra ronda seed de 800k€ (Relevancia: 7/10)
+   → Early stage, demasiado pequeño pero sector interesante para monitorizar.
+
+Fuentes: TechCrunch ES, Cinco Días, El Confidencial`,
+        options: [
+          'El scoring de relevancia es demasiado alto para las tres oportunidades',
+          'La oportunidad 2 (sector alimentario) no debería aparecer si la tesis del fondo es pharma-tech',
+          'Faltan los links a las noticias originales para verificar',
+          'La oportunidad 3 es demasiado pequeña para mencionarla'
+        ],
+        correct: 1,
+        explanation: 'Si el agente está enviando oportunidades de sector alimentario cuando la tesis es pharma-tech, el prompt de filtrado no está aplicando la tesis correctamente. Un score de 8/10 para algo fuera de la tesis indica que Claude está puntuando la relevancia periodística (es una operación de M&A interesante) en lugar de la relevancia para el fondo. El prompt de scoring necesita ajuste.'
+      },
+      {
+        type: 'mc',
+        q: '¿Cuándo tiene sentido construir el Agente 5 (LP updates automáticos)?',
+        options: [
+          'Desde el primer día — ahorra tiempo inmediatamente',
+          'Solo cuando el fondo tiene más de 5 participadas y el LP update manual lleva más de 2 días',
+          'Nunca — los LP updates son demasiado importantes para automatizar',
+          'Cuando el fondo tenga más de 20 LPs activos'
+        ],
+        correct: 1,
+        explanation: 'La regla general de automatización: si una tarea recurrente lleva más tiempo que construir el agente, automatiza. Para LP updates, el punto de inflexión suele estar en 5+ participadas. Por debajo, el borrador manual es más rápido que mantener el agente. Por encima, el agente paga el coste de construcción en el primer trimestre.'
+      },
+      {
+        type: 'reflection',
+        q: 'Llevas 3 meses con los 5 agentes funcionando. El socio te pide que presentes al consejo asesor del fondo cómo está usando el equipo la IA, qué ha mejorado, y qué riesgos estáis gestionando. Tienes 10 minutos. ¿Qué presentas y cómo lo estructuras?',
+        evalPrompt: `Eres un miembro del consejo asesor de un fondo de PE evaluando una presentación sobre IA.
+
+SITUACIÓN: Asociado presenta 3 meses de uso de IA al consejo asesor (10 minutos).
+
+RESPUESTA DEL ALUMNO:
+[RESPUESTA_USUARIO]
+
+Evalúa:
+1. ¿Estructuró la presentación con un narrative claro (problema → solución → resultados → riesgos gestionados)?
+2. ¿Incluyó métricas concretas (tiempo ahorrado, calidad de outputs, % de deals procesados automáticamente)?
+3. ¿Abordó proactivamente los riesgos (governance, datos confidenciales, dependencia) sin que el consejo lo preguntara?
+4. ¿El tono fue el de un gestor responsable o el de alguien "vendiendo" la tecnología?
+
+¿Inspiraría confianza en el consejo o generaría más preguntas que respuestas?`
+      }
+    ]
+  },
+  'p4': {
+    title: 'Quiz — Principal / Director',
+    questions: [
+      {
+        type: 'mc',
+        q: 'Aplicas el red-team prompt antes de un IC. Claude encuentra 4 argumentos fuertes contra la tesis. ¿Qué haces con ellos?',
+        options: [
+          'Eliminarlos del análisis para que el IC no los vea',
+          'Incorporar los 2 más fuertes al memo con una refutación explícita basada en evidencia',
+          'Cancelar el IC hasta tener respuestas para todos',
+          'Presentarlos como "riesgos conocidos y mitigados" sin más detalle'
+        ],
+        correct: 1,
+        explanation: 'Los mejores memos de IC presentan las mejores objeciones Y las responden. Un IC sofisticado valora más a un analista que anticipa y refuta las críticas que a uno que solo presenta la tesis positiva. Los argumentos que NO puedes refutar con evidencia merecen más trabajo — no ocultarlos.'
+      },
+      {
+        type: 'mc',
+        q: '¿Cuál es la diferencia entre un IC Q&A tree y una lista de preguntas frecuentes del IC?',
+        options: [
+          'El Q&A tree es más largo',
+          'El Q&A tree tiene lógica condicional: según la respuesta, la siguiente pregunta cambia',
+          'El Q&A tree está generado por IA; las preguntas frecuentes las escribe el analista',
+          'No hay diferencia práctica'
+        ],
+        correct: 1,
+        explanation: 'La lógica condicional es el valor del Q&A tree. Si el IC pregunta por churn y la respuesta es "tenemos 4% mensual", la siguiente pregunta debería ser sobre causas y retención. Si la respuesta es "tenemos 0.5% mensual", la siguiente pregunta debería ser sobre la definición de churn que están usando. Una lista de preguntas no captura esta ramificación.'
+      },
+      {
+        type: 'error',
+        q: 'Este scenario stack fue generado por Claude para una participada SaaS. Identifica el error conceptual:',
+        output: `SCENARIO STACK — SaaS B2B Healthcare
+
+CASO UPSIDE (30% probabilidad):
+Driver: NRR > 120%, expansión a Italia en Q3
+Leading indicator: Pipeline de Italia > 500k€ en Q2
+
+CASO BASE (50% probabilidad):  
+Driver: NRR 105-110%, España estable
+Leading indicator: Churn mensual < 1.5%
+
+CASO DOWNSIDE (20% probabilidad):
+Driver: NRR < 100%, pérdida de 2 cuentas Enterprise
+Leading indicator: Churn mensual > 2.5%
+
+LIQUIDITY TRIGGER: Si caja < 3 meses de runway → acción del fondo`,
+        options: [
+          'Las probabilidades no suman 100%',
+          'Los leading indicators del upside y downside son distintas métricas — no permiten comparación consistente en el monitoring mensual',
+          'El liquidity trigger es demasiado conservador',
+          'No hay error — el scenario stack está bien construido'
+        ],
+        correct: 1,
+        explanation: 'Para que el scenario stack funcione como sistema de alertas, los leading indicators deben ser la MISMA métrica con distintos umbrales. Si en upside mides pipeline de Italia y en downside mides churn, no puedes comparar mensualmente y decir "¿en qué escenario estamos?". El indicador correcto para los tres escenarios debería ser el mismo KPI (ej: NRR mensual) con tres rangos: >120% / 105-110% / <100%.'
+      },
+      {
+        type: 'mc',
+        q: 'El evaluation harness retrospectivo sobre un deal que salió mal revela que el sistema habría detectado 3 de los 5 problemas reales. ¿Cómo interpretas este resultado?',
+        options: [
+          'El sistema es insuficiente — debería detectar el 100% de los problemas',
+          '60% de detección es un buen resultado — los 2 problemas no detectados necesitan análisis para mejorar el sistema',
+          'El deal simplemente fue mala suerte — el sistema no puede predecir todo',
+          'Hay que añadir más preguntas al red-team prompt para mejorar la detección'
+        ],
+        correct: 1,
+        explanation: 'El objetivo del evaluation harness no es perfección — es aprendizaje sistemático. 60% de detección es un buen punto de partida. Lo importante es analizar los 2 problemas no detectados: ¿qué tipo de información habría necesitado el sistema para encontrarlos? ¿Era información disponible en la diligencia o era imposible de detectar? Esa respuesta es lo que mejora el siguiente deal.'
+      },
+      {
+        type: 'reflection',
+        q: 'Llevas 6 meses usando el sistema completo de IA. Un fondo competidor te pregunta en un evento del sector: "¿Cuál ha sido el mayor aprendizaje sobre usar IA en PE?" No te preguntan sobre herramientas ni sobre resultados — te preguntan sobre el aprendizaje. ¿Qué respondes?',
+        evalPrompt: `Eres un evaluador de madurez en el uso de IA para PE. Esta pregunta no tiene respuesta correcta única.
+
+SITUACIÓN: Qué aprendizaje genuino ha tenido el asociado después de 6 meses de uso intensivo de IA.
+
+RESPUESTA DEL ALUMNO:
+[RESPUESTA_USUARIO]
+
+Evalúa la profundidad del aprendizaje:
+1. ¿La respuesta va más allá de "ahorramos tiempo" o "mejoramos la calidad"?
+2. ¿Refleja un aprendizaje sobre las LIMITACIONES de la IA, no solo sus capacidades?
+3. ¿Muestra evolución en el criterio (qué hacen diferente ahora vs al principio)?
+4. ¿Sería una respuesta que un socio de KKR o Apollo encontraría interesante o genérica?
+
+Este es el quiz más importante del curso — evalúa si el alumno ha desarrollado juicio real o solo habilidades técnicas.`
+      }
+    ]
+  },
+  'p5': {
+    title: 'Quiz — Partner / Firma',
+    questions: [
+      {
+        type: 'mc',
+        q: 'Estás personalizando el outreach para un family office que históricamente ha invertido en fondos de buyout medianos con foco ESG. ¿Cuál de estos mensajes de apertura es más efectivo?',
+        options: [
+          '"Somos un fondo de growth equity con track record de 2.8x MOIC y buscamos nuevos LPs comprometidos con la creación de valor."',
+          '"Vimos que vuestro portfolio incluye X e Y — creemos que nuestro enfoque en empresas tech-enabled en sectores regulados complementa bien esa exposición, especialmente dado vuestro foco ESG en salud digital."',
+          '"Adjunto nuestro deck de fundraising con toda la información sobre la estrategia del fondo."',
+          '"¿Tendríais 30 minutos para explorar si hay fit con vuestra estrategia de allocations?"'
+        ],
+        correct: 1,
+        explanation: 'La opción B demuestra que has hecho los deberes (conoces su portfolio), conecta tu propuesta con su tesis específica (ESG en salud digital), y es relevante para ELLOS, no para ti. El outreach que funciona parte de la perspectiva del LP, no de la del fondo. La opción A es genérica. La C y D no tienen ningún gancho.'
+      },
+      {
+        type: 'mc',
+        q: '¿Cuál es el mayor riesgo de usar IA para generar LP research briefs sin verificación?',
+        options: [
+          'Que el brief sea demasiado largo para leer antes de la reunión',
+          'Que Claude invente datos sobre el LP (AUM, allocations, inversiones previas) que parecen reales pero no lo son',
+          'Que el brief no cubra todos los temas que el LP puede preguntar',
+          'Que el LP descubra que usaste IA para preparar la reunión'
+        ],
+        correct: 1,
+        explanation: 'Los datos específicos sobre LPs (AUM exacto, allocations recientes, compromisos anteriores en fondos similares) cambian constantemente y son difíciles de verificar para Claude. Un brief que dice "el LP tiene 2.3B€ AUM con 15% en PE" parece sólido pero puede estar completamente desactualizado o ser incorrecto. Siempre verificar AUM y allocations con fuentes primarias (IRE, PitchBook, LinkedIn) antes de la reunión.'
+      },
+      {
+        type: 'error',
+        q: 'El equipo generó este LP update de una participada para el Q1 2026. Identifica el problema de tono y contenido:',
+        output: `MedSoft Solutions — Q1 2026:
+
+Performance: El trimestre presentó ciertos desafíos operativos que impactaron moderadamente los resultados financieros. El revenue se situó ligeramente por debajo de las proyecciones del año, si bien el equipo directivo ha implementado medidas correctoras que esperamos den sus frutos en los próximos trimestres.
+
+Outlook: Mantenemos una visión constructiva sobre la evolución del negocio y confiamos en la capacidad del equipo para ejecutar el plan de creación de valor.`,
+        options: [
+          'Es demasiado corto para un LP update de calidad',
+          'Usa lenguaje evasivo que oculta la realidad — no dice cuánto fue el gap vs plan ni qué medidas correctoras se tomaron',
+          'El tono es demasiado negativo y puede alarmar a los LPs',
+          'Falta mencionar el EBITDA y la caja'
+        ],
+        correct: 1,
+        explanation: '"Ciertos desafíos", "moderadamente", "ligeramente por debajo", "confiamos en la capacidad" son señales de alerta para un LP sofisticado — indican que el gestor está siendo evasivo. Un LP institucional prefiere: "Revenue Q1: 1.8M€ vs 2.1M€ presupuestado (-14%). Gap explicado por retraso en firma de 2 contratos Enterprise. Medida correctora: pipeline de Q2 cubre el gap con 3 contratos en fase avanzada." Honestidad directa genera más confianza que lenguaje corporativo evasivo.'
+      },
+      {
+        type: 'mc',
+        q: 'El fundraising CRM con IA registra que un LP hizo esta objeción en la última reunión: "Vuestro track record tiene solo 2 exits y los dos fueron en 2021, un año excepcional de mercado." ¿Cuál es la respuesta más sólida?',
+        options: [
+          'Explicar que 2021 fue un año bueno para todos pero nuestros exits superaron el benchmark',
+          'Reconocer la limitación del track record y pivot a la solidez del portfolio actual y los IRRs unrealized',
+          'Compartir más información sobre el proceso de inversión para demostrar que el track record no es suerte',
+          'Preguntar al LP qué track record mínimo necesitaría para comprometerse'
+        ],
+        correct: 1,
+        explanation: 'Defender exits de 2021 como prueba de habilidad es una batalla difícil de ganar — el LP tiene razón en que el contexto de mercado lo facilita. La respuesta sólida reconoce la objeción (no la evita), pivota a evidencia más robusta (unrealized portfolio valorado conservadoramente, metodología de inversión, calidad de las participadas actuales), y deja al LP con información para tomar una decisión, no con argumentos para ganar un debate.'
+      },
+      {
+        type: 'reflection',
+        q: 'Después de 8 meses usando IA en el fondo, el equipo ha construido un sistema que funciona bien. Pero notas que los analistas más júniors están empezando a confiar demasiado en los outputs de Claude sin desarrollar el criterio propio para evaluarlos. Un analista reciente presentó en el IC un análisis que era literalmente el output de Claude sin editar — y nadie en el equipo lo detectó hasta que el socio hizo una pregunta que Claude no podía responder. ¿Cómo gestionas este problema sin desincentivar el uso de IA?',
+        evalPrompt: `Eres un socio de PE evaluando la madurez de gestión de equipo de un associate senior.
+
+SITUACIÓN: Riesgo de sobre-dependencia de IA en el equipo. Un analista presentó output de Claude sin filtrar.
+
+RESPUESTA DEL ALUMNO:
+[RESPUESTA_USUARIO]
+
+Evalúa:
+1. ¿Identificó que el problema no es la IA sino la ausencia de criterio para evaluarla?
+2. ¿Propuso soluciones concretas (estándar mínimo de edición, revisión entre pares, training específico)?
+3. ¿Equilibró la corrección del problema con no generar miedo al uso de IA en el equipo?
+4. ¿Reconoció la responsabilidad propia en no haber detectado el problema antes?
+
+¿Es esta la respuesta de alguien listo para ser Principal o de alguien que aún está aprendiendo a gestionar equipos?`
+      }
+    ]
+  }
+};
+
+
+// ═══════════════════════════════════════════════
+// QUIZ ENGINE
+// ═══════════════════════════════════════════════
+
+function getQuizState(phaseId) {
+  try { return JSON.parse(localStorage.getItem('quiz_' + phaseId) || 'null'); } catch(e) { return null; }
+}
+function saveQuizState(phaseId, state) {
+  localStorage.setItem('quiz_' + phaseId, JSON.stringify(state));
+}
+
+function renderQuizSection(phaseId) {
+  const quiz = QUIZZES[phaseId];
+  if (!quiz) return '';
+  const state = getQuizState(phaseId);
+  const completed = state && state.completed;
+  const score = state ? state.score : null;
+  const total = quiz.questions.filter(q => q.type !== 'reflection').length;
+
+  return '<div class="quiz-section" id="quiz-' + phaseId + '">'
+    + '<div class="quiz-header" onclick="toggleQuiz(\'' + phaseId + '\')">'
+    + '<div class="quiz-header-left">'
+    + '<span class="quiz-icon">' + (completed ? '✓' : '📝') + '</span>'
+    + '<div>'
+    + '<div class="quiz-title">' + quiz.title + '</div>'
+    + '<div class="quiz-subtitle">' + (completed ? 'Completado · ' + score + '/' + total + ' correctas' : '5 preguntas · 4 de juicio + 1 reflexión abierta') + '</div>'
+    + '</div>'
+    + '</div>'
+    + '<div class="quiz-toggle-btn" id="quiz-toggle-' + phaseId + '">Comenzar →</div>'
+    + '</div>'
+    + '<div class="quiz-body" id="quiz-body-' + phaseId + '" style="display:none">'
+    + renderQuizBody(phaseId, state)
+    + '</div>'
+    + '</div>';
+}
+
+function renderQuizBody(phaseId, state) {
+  const quiz = QUIZZES[phaseId];
+  if (!quiz) return '';
+  let html = '';
+  quiz.questions.forEach(function(q, i) {
+    const answered = state && state.answers && state.answers[i] !== undefined;
+    const userAnswer = state && state.answers ? state.answers[i] : null;
+    html += renderQuestion(phaseId, q, i, answered, userAnswer);
+  });
+  if (!state || !state.completed) {
+    html += '<button class="quiz-submit-btn" onclick="submitQuiz(\'' + phaseId + '\')">Ver resultados</button>';
+  }
+  return html;
+}
+
+function renderQuestion(phaseId, q, idx, answered, userAnswer) {
+  if (q.type === 'reflection') {
+    return renderReflection(phaseId, q, idx, answered, userAnswer);
+  }
+  let html = '<div class="quiz-q" id="qq-' + phaseId + '-' + idx + '">'
+    + '<div class="quiz-q-num">Pregunta ' + (idx + 1) + ' de 5</div>'
+    + '<div class="quiz-q-text">' + q.q + '</div>';
+
+  if (q.type === 'error' && q.output) {
+    html += '<div class="quiz-output-box">' + q.output.replace(/\n/g, '<br>') + '</div>';
+  }
+
+  html += '<div class="quiz-options">';
+  q.options.forEach(function(opt, oi) {
+    let cls = 'quiz-opt';
+    if (answered) {
+      if (oi === q.correct) cls += ' correct';
+      else if (oi === userAnswer && oi !== q.correct) cls += ' wrong';
+      else cls += ' disabled';
+    }
+    html += '<div class="' + cls + '" onclick="' + (answered ? '' : 'answerQuestion(\'' + phaseId + '\',' + idx + ',' + oi + ')') + '">'
+      + '<div class="quiz-opt-letter">' + String.fromCharCode(65 + oi) + '</div>'
+      + '<div class="quiz-opt-text">' + opt + '</div>'
+      + '</div>';
+  });
+  html += '</div>';
+
+  if (answered) {
+    html += '<div class="quiz-explanation ' + (userAnswer === q.correct ? 'correct-exp' : 'wrong-exp') + '">'
+      + (userAnswer === q.correct ? '✓ Correcto — ' : '✗ Incorrecto — ')
+      + q.explanation + '</div>';
+  }
+  html += '</div>';
+  return html;
+}
+
+function renderReflection(phaseId, q, idx, answered, userAnswer) {
+  const savedText = userAnswer || '';
+  const promptForClaude = q.evalPrompt.replace('[RESPUESTA_USUARIO]', savedText || '[escribe tu respuesta arriba]');
+  const encoded = encodeURIComponent(promptForClaude);
+  const claudeUrl = 'https://claude.ai/new';
+
+  return '<div class="quiz-q quiz-reflection" id="qq-' + phaseId + '-' + idx + '">'
+    + '<div class="quiz-q-num">Pregunta 5 de 5 · Reflexión abierta</div>'
+    + '<div class="quiz-reflection-badge">✦ Esta pregunta no tiene respuesta correcta única — Claude evaluará tu razonamiento</div>'
+    + '<div class="quiz-q-text">' + q.q + '</div>'
+    + '<textarea class="quiz-textarea" id="qt-' + phaseId + '-' + idx + '" placeholder="Escribe tu respuesta aquí (mínimo 3-4 líneas para que Claude pueda evaluarla bien)..." onchange="saveReflection(\'' + phaseId + '\',' + idx + ',this.value)">' + savedText + '</textarea>'
+    + '<div class="quiz-reflection-actions">'
+    + '<button class="quiz-eval-btn" onclick="evalReflection(\'' + phaseId + '\',' + idx + ')">'
+    + '↗ Copiar prompt de evaluación y abrir Claude'
+    + '</button>'
+    + '<div class="quiz-eval-note">Claude leerá tu respuesta y te dará feedback como un tutor de PE</div>'
+    + '</div>'
+    + (answered ? '<div class="quiz-reflection-done">✓ Marcado como completado</div>' : '')
+    + '<label class="quiz-mark-reflection">'
+    + '<input type="checkbox" ' + (answered ? 'checked' : '') + ' onchange="markReflection(\'' + phaseId + '\',' + idx + ',this.checked)"> '
+    + 'He recibido el feedback de Claude y estoy satisfecho con mi aprendizaje'
+    + '</label>'
+    + '</div>';
+}
+
+function toggleQuiz(phaseId) {
+  const body = document.getElementById('quiz-body-' + phaseId);
+  const btn = document.getElementById('quiz-toggle-' + phaseId);
+  if (!body) return;
+  const isOpen = body.style.display !== 'none';
+  body.style.display = isOpen ? 'none' : 'block';
+  if (btn) btn.textContent = isOpen ? 'Comenzar →' : 'Cerrar ↑';
+}
+
+function answerQuestion(phaseId, qIdx, optIdx) {
+  var state = getQuizState(phaseId) || { answers: {}, completed: false, score: 0 };
+  if (state.answers[qIdx] !== undefined) return;
+  state.answers[qIdx] = optIdx;
+  saveQuizState(phaseId, state);
+  // Re-render just this question
+  var quiz = QUIZZES[phaseId];
+  var q = quiz.questions[qIdx];
+  var el = document.getElementById('qq-' + phaseId + '-' + qIdx);
+  if (el) el.outerHTML = renderQuestion(phaseId, q, qIdx, true, optIdx);
+}
+
+function saveReflection(phaseId, qIdx, text) {
+  var state = getQuizState(phaseId) || { answers: {}, completed: false, score: 0 };
+  // Save text but don't mark as answered yet
+  if (!state.reflectionTexts) state.reflectionTexts = {};
+  state.reflectionTexts[qIdx] = text;
+  saveQuizState(phaseId, state);
+}
+
+function markReflection(phaseId, qIdx, checked) {
+  var state = getQuizState(phaseId) || { answers: {}, completed: false, score: 0 };
+  if (checked) {
+    state.answers[qIdx] = 'reflection_done';
+  } else {
+    delete state.answers[qIdx];
+  }
+  saveQuizState(phaseId, state);
+}
+
+function evalReflection(phaseId, qIdx) {
+  var quiz = QUIZZES[phaseId];
+  var q = quiz.questions[qIdx];
+  var textarea = document.getElementById('qt-' + phaseId + '-' + qIdx);
+  var userText = textarea ? textarea.value.trim() : '';
+  if (!userText || userText.length < 20) {
+    toast('Escribe tu respuesta antes de evaluarla', 'error');
+    return;
+  }
+  // Save the reflection text
+  saveReflection(phaseId, qIdx, userText);
+  // Build the evaluation prompt with the user's answer
+  var evalPrompt = q.evalPrompt.replace('[RESPUESTA_USUARIO]', userText);
+  // Copy to clipboard
+  navigator.clipboard.writeText(evalPrompt).then(function() {
+    toast('Prompt copiado — abriendo Claude...', 'success');
+    setTimeout(function() { window.open('https://claude.ai/new', '_blank'); }, 600);
+  }).catch(function() {
+    // If clipboard fails, just open Claude
+    window.open('https://claude.ai/new', '_blank');
+    toast('Pega el prompt en Claude manualmente', 'error');
+  });
+}
+
+function submitQuiz(phaseId) {
+  var state = getQuizState(phaseId) || { answers: {}, completed: false, score: 0 };
+  var quiz = QUIZZES[phaseId];
+  // Check if all MC questions answered
+  var mcQuestions = quiz.questions.filter(function(q) { return q.type !== 'reflection'; });
+  var allAnswered = mcQuestions.every(function(q, i) {
+    var actualIdx = quiz.questions.indexOf(q);
+    return state.answers[actualIdx] !== undefined;
+  });
+  if (!allAnswered) {
+    toast('Responde todas las preguntas antes de ver los resultados', 'error');
+    return;
+  }
+  // Calculate score
+  var score = 0;
+  quiz.questions.forEach(function(q, i) {
+    if (q.type !== 'reflection' && state.answers[i] === q.correct) score++;
+  });
+  state.score = score;
+  state.completed = true;
+  saveQuizState(phaseId, state);
+  // Update badge check
+  var prevEarned = getEarnedBadges();
+  checkBadges(prevEarned);
+  // Re-render quiz section
+  var quizEl = document.getElementById('quiz-' + phaseId);
+  if (quizEl) quizEl.outerHTML = renderQuizSection(phaseId);
+  // Re-open the body
+  toggleQuiz(phaseId);
+  // Show result toast
+  var pct = Math.round(score / mcQuestions.length * 100);
+  if (pct >= 80) toast('🎯 ' + score + '/' + mcQuestions.length + ' correctas — excelente', 'success');
+  else if (pct >= 60) toast('📚 ' + score + '/' + mcQuestions.length + ' correctas — repasa las explicaciones', 'success');
+  else toast('💪 ' + score + '/' + mcQuestions.length + ' — revisa la fase antes de continuar', 'error');
+}
+
+// ═══════════════════════════════════════════════
 // SUPABASE CONFIG
 // ═══════════════════════════════════════════════
 let sbClient = null;
@@ -4910,6 +5965,7 @@ function renderPhase(idx) {
       </div>
     </div>
     ${p.skills.map(s => renderSkillCard(s, levelMap)).join('')}
+    ${renderQuizSection(p.id)}
   `;
   document.getElementById('main-content').innerHTML = html;
   window.scrollTo(0, 0);
