@@ -37,6 +37,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-body);font-si
 
 /* ── AUTH ── */
 .auth-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px;}
+#auth-screen{position:fixed;inset:0;z-index:1000;background:var(--bg);overflow-y:auto;}
 .auth-card{width:100%;max-width:400px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:36px;}
 .auth-logo{font-family:var(--font-display);font-size:11px;letter-spacing:.2em;color:var(--gold);text-transform:uppercase;margin-bottom:28px;}
 .auth-card h1{font-family:var(--font-display);font-size:24px;font-weight:600;margin-bottom:6px;}
@@ -5055,8 +5056,8 @@ async function handleAuth() {
 async function doLogout() {
   if (sbClient) await sbClient.auth.signOut();
   currentUser = null; progress = {};
-  document.getElementById('app').classList.add('hidden');
-  document.getElementById('auth-screen').classList.remove('hidden');
+  var appEl2 = document.getElementById('app'); if(appEl2){ appEl2.classList.add('hidden'); appEl2.style.display='none'; }
+  var authEl2 = document.getElementById('auth-screen'); if(authEl2){ authEl2.classList.remove('hidden'); authEl2.style.removeProperty('display'); }
 }
 
 // ═══════════════════════════════════════════════
@@ -5407,8 +5408,10 @@ function toast(msg, type) {
 // APP INIT
 // ═══════════════════════════════════════════════
 function showApp() {
-  document.getElementById('auth-screen').classList.add('hidden');
-  document.getElementById('app').classList.remove('hidden');
+  var authEl = document.getElementById('auth-screen');
+  if(authEl) { authEl.classList.add('hidden'); authEl.style.display='none'; }
+  var appEl = document.getElementById('app');
+  if(appEl) { appEl.classList.remove('hidden'); appEl.style.display='flex'; }
   var name = (currentUser.user_metadata && currentUser.user_metadata.full_name) || currentUser.email.split('@')[0] || '?';
   var initials = name.split(' ').map(function(n){return n[0];}).join('').slice(0,2).toUpperCase();
   document.getElementById('sb-avatar').textContent = initials;
