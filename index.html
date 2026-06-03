@@ -366,6 +366,20 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-body);font-si
   .quiz-reflection-done { font-size:12px; color:var(--green); margin:8px 0; }
   .quiz-mark-reflection { display:flex; align-items:center; gap:8px; font-size:12px; color:var(--text2); cursor:pointer; margin-top:8px; }
   .quiz-mark-reflection input { cursor:pointer; accent-color:var(--green); }
+
+  /* ── HOW TO ── */
+  .howto-section { background:var(--bg3); border:1px solid rgba(74,127,181,0.25); border-radius:var(--radius-lg); padding:16px 18px; margin:12px 0; }
+  .howto-label { font-size:10px; font-weight:500; text-transform:uppercase; letter-spacing:.1em; color:#4a7fb5; margin-bottom:12px; display:flex; align-items:center; gap:6px; }
+  .howto-steps { display:flex; flex-direction:column; gap:0; }
+  .howto-step { display:flex; gap:14px; padding:12px 0; border-bottom:1px solid var(--border); }
+  .howto-step:last-child { border-bottom:none; padding-bottom:0; }
+  .howto-num { width:26px; height:26px; border-radius:50%; background:rgba(74,127,181,0.15); border:1px solid rgba(74,127,181,0.3); color:#4a7fb5; font-size:11px; font-weight:600; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:2px; }
+  .howto-body { flex:1; min-width:0; }
+  .howto-title { font-size:13px; font-weight:500; color:var(--text); margin-bottom:3px; }
+  .howto-detail { font-size:12px; color:var(--text2); line-height:1.6; }
+  .howto-tip { font-size:12px; color:var(--text2); line-height:1.5; padding:10px 12px; background:var(--bg4); border-radius:var(--radius); border-left:2px solid #4a7fb5; margin-top:10px; }
+  .howto-tip-label { font-size:10px; font-weight:500; color:#4a7fb5; text-transform:uppercase; letter-spacing:.06em; margin-bottom:3px; }
+
 </style>
 </head>
 <body>
@@ -5061,6 +5075,402 @@ function submitQuiz(phaseId) {
 
 
 // ═══════════════════════════════════════════════
+// "CÓMO SE HACE" — Framework de referencia por habilidad
+// Se muestra entre Concepto y Aprende viendo / Practica
+// Todos los textos pasan por personalizeText() en render
+// ═══════════════════════════════════════════════
+
+const HOW_TO = {
+
+  // ── FASE 1: PROMPTING ──
+  's1': {
+    steps: [
+      { n: 1, title: 'Escribe el Deliverable', detail: 'Empieza con una frase que empiece por un sustantivo: "Resumen ejecutivo en 5 bullets", "Tabla de KPIs", "Lista de 5 preguntas". Nunca empieces con un verbo genérico como "analiza" o "explica".' },
+      { n: 2, title: 'Añade el Decision Context', detail: 'Una sola frase que responda: ¿para qué sirve este análisis? Ejemplo: "para decidir si activar un bridge financing en los próximos 30 días". Sin esta frase, Claude no sabe qué priorizar.' },
+      { n: 3, title: 'Define el Format', detail: 'Lista los bloques exactos del output: ## Resumen / ## KPIs / ## Alertas / ## Recomendación. Añade límites concretos: "máx 3 alertas", "exactamente 5 bullets". Los límites obligan a priorizar.' },
+      { n: 4, title: 'Añade la restricción de datos', detail: 'Siempre al final: "Si un dato no está en el documento, escribe No reportado. Nunca inventes cifras." Esta línea elimina el 90% de las alucinaciones.' },
+    ],
+    tip: 'Prueba con __EMPRESA__: escribe primero sin estas partes y guarda el output. Luego añádelas y compara. La diferencia justifica los 2 minutos extra.'
+  },
+  's2': {
+    steps: [
+      { n: 1, title: 'Define la identidad (no el rol)', detail: 'No escribas "actúa como analista". Escribe quién ES: "Eres analista senior de PE integrado en [FONDO]. Tu trabajo es producir análisis IC-ready." La identidad crea consistencia en toda la conversación.' },
+      { n: 2, title: 'Escribe las reglas absolutas', detail: 'Máximo 4 reglas. Cada una empieza con "Nunca" o "Siempre". Ejemplo: "Nunca inventas datos". Las reglas absolutas son más efectivas que las preferencias ("intenta citar fuentes").' },
+      { n: 3, title: 'Define la audiencia', detail: 'Una frase: "Tu audiencia son socios con 20+ años de experiencia que no toleran ambigüedades". Esto calibra el nivel de detalle, el tono y el umbral de lo que merece mención.' },
+      { n: 4, title: 'Guárdalo y úsalo siempre', detail: 'Este system prompt va al inicio de cada conversación de análisis. Guárdalo en Notion o en el portapapeles. No lo reescribas cada vez — evoluciónalo con versiones.' },
+    ],
+    tip: 'Aplícalo ahora a __EMPRESA__: abre Claude, pega el system prompt, adjunta el documento y observa cómo cambia el tono respecto a una conversación sin system prompt.'
+  },
+  's3': {
+    steps: [
+      { n: 1, title: 'Elige el ROL según el ángulo', detail: 'Portfolio monitoring → evalúas ejecución con criterio de si ampliarías posición. Deal screening → evalúas si merece diligencia. IC preparation → preparas respuestas a las preguntas más difíciles. El mismo documento, tres ángulos distintos.' },
+      { n: 2, title: 'Escribe el TASK con la decisión específica', detail: 'No "analiza el documento". Escribe: "Analiza __EMPRESA__. Contexto: en 72 horas hay reunión con el management para decidir X." Cuanto más específica la decisión, más accionable el output.' },
+      { n: 3, title: 'Añade la restricción temporal si existe', detail: 'Si hay urgencia real, inclúyela: "tienes 30 días", "la reunión es mañana". Claude prioriza diferente con y sin presión temporal.' },
+    ],
+    tip: 'Prueba a cambiar solo el ROL manteniendo el mismo TASK con __EMPRESA__: usa "portfolio monitoring" vs "IC preparation". Guarda los dos outputs y compara qué prioriza cada uno.'
+  },
+  's4': {
+    steps: [
+      { n: 1, title: 'Pass 1 — Draft', detail: 'Usa tu prompt IC-ready estándar. No lo modifiques para que quede "bien". El draft tiene que reflejar tu mejor análisis con la información disponible, sin autocensura.' },
+      { n: 2, title: 'Pass 2 — Skeptic', detail: 'Nuevo mensaje en la misma conversación: "Actúa como el socio más escéptico del IC. Destruye este análisis. Dame los 3 argumentos más fuertes contra la recomendación, con evidencia del documento." No uses palabras suaves: "cuestiona" produce respuestas educadas; "destruye" produce las críticas reales.' },
+      { n: 3, title: 'Evalúa las críticas', detail: 'Por cada crítica del Pass 2: ¿puedo refutarla con evidencia del documento? Si sí → es una crítica injusta, la refutas en el Pass 3. Si no → es válida, la incorporas.' },
+      { n: 4, title: 'Pass 3 — Revise', detail: 'Nuevo mensaje: "Genera la versión final incorporando estas críticas válidas: [lista]. Para las injustas, añade una línea de refutación con evidencia. Marca con [REVISADO] las secciones que cambian."' },
+    ],
+    tip: 'Aplica los tres passes a __EMPRESA__. Cuenta cuántas críticas del Pass 2 no puedes refutar. Ese número es el gap entre tu análisis actual y uno IC-ready.'
+  },
+  's5': {
+    steps: [
+      { n: 1, title: 'Añade la regla al system prompt', detail: 'En tu system prompt permanente añade: "Cada cifra o dato factual lleva su fuente: (slide N), (p. N) o (sección: nombre). Si no puedes citar → escribe [dato no localizado]." Ponla ANTES de las otras reglas para que tenga prioridad.' },
+      { n: 2, title: 'Define los confidence tags', detail: 'Añade: [CITADO] = extracción directa / [INFERIDO] = deducción lógica / [SUPUESTO] = hipótesis no en el documento. Estos tags hacen visible qué es evidencia y qué es razonamiento.' },
+      { n: 3, title: 'Define los forbidden claims', detail: 'Lista explícita de afirmaciones que nunca puede hacer sin evidencia: "el equipo está comprometido", "los márgenes mejorarán", cualquier proyección sin [SUPUESTO]. Las listas son más efectivas que las instrucciones generales.' },
+      { n: 4, title: 'Verifica manualmente 5 citas', detail: 'Después del primer análisis con evidence discipline, abre el documento original y verifica 5 citas al azar. Calcula el % de precisión. Esa es tu línea base para mejorarlo.' },
+    ],
+    tip: 'Usa __EMPRESA__: genera el análisis con evidence discipline activada y verifica las 3 primeras citas. ¿Son correctas? Si alguna está inventada, añade una instrucción específica al system prompt para ese tipo de error.'
+  },
+
+  // ── FASE 2: ANÁLISIS AVANZADO ──
+  's6': {
+    steps: [
+      { n: 1, title: 'Paso 1 — Summary (5 min)', detail: 'Prompt: "Genera resumen ejecutivo del CIM adjunto: tesis, mercado TAM/SAM, modelo de negocio, KPIs financieros clave, valoración pedida." Output máximo: 1 página.' },
+      { n: 2, title: 'Paso 2 — Red flags (10 min)', detail: 'Nuevo prompt: "Actúa como analista buscando razones para NO hacer el deal. Identifica los 5 red flags más graves con evidencia del documento. Clasifica cada uno: DEAL KILLER / SIGNIFICATIVO / MANEJABLE." Si hay un DEAL KILLER, el proceso se detiene aquí.' },
+      { n: 3, title: 'Paso 3 — Key questions (5 min)', detail: 'Nuevo prompt: "Genera las 10 preguntas más importantes para la primera reunión con el management, ordenadas por importancia. Solo preguntas que no puedas responder con el documento actual."' },
+      { n: 4, title: 'Paso 4 — Workplan (5 min)', detail: 'Solo si decides avanzar: "Genera el workplan de due diligence de 4 semanas: workstreams, responsables, milestones, must-have para IC, deal killer que detendría el proceso."' },
+    ],
+    tip: 'El loop completo toma menos de 30 minutos. La decisión de avanzar o no debería estar clara al final del Paso 2. Si tras los 4 pasos no puedes decidir, faltan datos — escríbelos como gaps explícitos.'
+  },
+  's7': {
+    steps: [
+      { n: 1, title: 'Elige los ángulos de ataque correctos', detail: 'El red team más efectivo cubre estos 5 ángulos: (1) concentración de clientes o revenue, (2) dependencia de personas clave, (3) durabilidad del moat, (4) ciclicidad del sector, (5) capacidad de servicio de la deuda. Pide a Claude que cubra todos.' },
+      { n: 2, title: 'Formula el prompt de forma adversarial', detail: 'No "¿qué riesgos tiene?" sino "destruye esta tesis". No "¿qué mejorarías?" sino "¿qué pregunta haría el IC que el equipo no sabría responder?" La formulación adversarial produce críticas reales.' },
+      { n: 3, title: 'Pide el veredicto binario', detail: 'Al final del prompt: "¿Pasaría este deal tu IC? SÍ / NO / NECESITA MÁS TRABAJO." El veredicto fuerza a Claude a sintetizar en lugar de listar problemas indefinidamente.' },
+      { n: 4, title: 'Prepara las respuestas', detail: 'Por cada deal killer del red team: escribe en una línea cómo lo refutarías en el IC. Si no puedes refutarlo en una línea, necesitas más trabajo de diligencia.' },
+    ],
+    tip: 'Aplica el red team a __EMPRESA__. El objetivo no es que el deal no tenga problemas — es que tú conozcas los problemas antes de que los encuentre el IC.'
+  },
+  's8': {
+    steps: [
+      { n: 1, title: 'Define los campos ANTES de escribir el prompt', detail: 'Lista en papel los campos que necesitas: fuentes de ingreso, unit economics, palancas de crecimiento, riesgos. Luego convierte esa lista en el schema. Si no sabes qué campos necesitas, empiezas con el schema genérico y lo ajustas.' },
+      { n: 2, title: 'Marca todos los campos como obligatorios', detail: 'En el prompt: "Rellena OBLIGATORIAMENTE todos los campos. Si un campo no tiene datos → escribe No reportado. Nunca omitas un campo." Sin esta instrucción, Claude omite silenciosamente lo que no puede responder.' },
+      { n: 3, title: 'Añade tipos para los campos numéricos', detail: 'Para cada campo que debe ser un número: "CAC: [€ o No reportado]". Para los calculados: "LTV proxy: [cálculo con [INFERIDO] si es estimación]". Los tipos evitan respuestas vagas como "significativo" o "alto".' },
+      { n: 4, title: 'Úsalo como checklist de preguntas', detail: 'Los campos marcados "No reportado" son exactamente las preguntas que tienes que hacer en la primera reunión con el management. El schema convierte los gaps en agenda.' },
+    ],
+    tip: 'Aplica el force schema de business model a __EMPRESA__. Cuenta cuántos campos salen "No reportado". Esos son los huecos de información que tienes que cubrir antes del IC.'
+  },
+  's9': {
+    steps: [
+      { n: 1, title: 'Qué verificar en unidades', detail: 'Busca mezclas de €, k€, M€ en el mismo análisis. Busca % calculados sobre bases distintas (€ brutos vs netos). Busca cifras por unidad (por farmacia, por pedido) sin especificar la base.' },
+      { n: 2, title: 'Qué verificar en fechas', detail: 'Compara períodos iguales: el YoY usa el mismo mes del año anterior. Si el análisis dice "+81% YoY en ventas netas" verifica que es marzo 2026 vs marzo 2025, no marzo vs Q1.' },
+      { n: 3, title: 'Qué verificar en bridge logic', detail: 'Si hay un bridge EBITDA, suma manualmente los add-backs. Verifica que EBITDA reportado + add-backs = EBITDA normalizado. Los bridges con gaps son el error más común en análisis de PE.' },
+      { n: 4, title: 'Cómo usar el QC como último paso', detail: 'El QC no es opcional antes de un IC. Flujo: genera el análisis → pega el output completo en un nuevo mensaje → pide el QC → si aparecen errores, corrígelos → presenta la versión corregida.' },
+    ],
+    tip: 'Genera el análisis de __EMPRESA__ y pásalo por el QC prompt. ¿Encuentra algo? Si no encuentra nada, verifica manualmente 2 cifras al azar para confirmar que el QC es exhaustivo.'
+  },
+
+  // ── FASE 3: MODELOS FINANCIEROS ──
+  'm1': {
+    steps: [
+      { n: 1, title: 'Estructura el input antes de pedir la arquitectura', detail: 'Dale a Claude los datos en formato tabla: Revenue 2025 / EBITDA 2025 / Margen / Caja / Deuda. Sin datos estructurados, Claude inventa supuestos poco defensibles. Con datos reales, los supuestos tienen ancla.' },
+      { n: 2, title: 'Pide 3 escenarios explícitamente', detail: 'Siempre: base / upside / downside. Para cada uno: qué supuesto de revenue growth, qué margen EBITDA en año 5, qué múltiplo de salida. El IC pedirá el downside — tenlo preparado.' },
+      { n: 3, title: 'Pide la justificación de cada supuesto', detail: 'En el prompt: "Para cada supuesto indica: valor, justificación con benchmark sectorial, y riesgo si está equivocado." Sin justificación, los supuestos son indefendibles ante el IC.' },
+      { n: 4, title: 'Construye el checklist de verificación', detail: 'Pide a Claude: "Lista los 5 supuestos que más impactan el IRR y que debo verificar con el management antes de finalizar el modelo." Esos 5 son tu agenda para la próxima reunión.' },
+    ],
+    tip: 'Con los datos financieros de __EMPRESA__, pide la arquitectura LBO v1. Evalúa: ¿los supuestos de Claude son defensibles con lo que sabes del negocio? ¿Cuáles cambiarías?'
+  },
+  'm2': {
+    steps: [
+      { n: 1, title: 'Exporta los supuestos en formato tabla', detail: 'Copia de tu Excel: escenario / revenue year 5 / EBITDA margin year 5 / múltiplo salida / IRR. No pegues el modelo completo — Claude no necesita las fórmulas, necesita los números clave.' },
+      { n: 2, title: 'Pide la narrativa por escenario', detail: 'Instrucción: "Para cada escenario, genera un párrafo de 4-6 frases: descripción, por qué es el más probable, justificación de los supuestos de crecimiento con benchmarks, condiciones que lo harían real." Un párrafo por escenario, no una tabla.' },
+      { n: 3, title: 'Pide el tono institucional', detail: 'En el system prompt o en la instrucción: "Tono KKR/Apollo LP report. Sin adjetivos vacíos. Cada afirmación respaldada por dato o benchmark sectorial." El tono institucional es verificable — si hay un adjetivo sin dato, está mal.' },
+      { n: 4, title: 'Verifica cada afirmación cuantitativa', detail: 'Lee el narrativo línea a línea. Por cada cifra o benchmark: ¿de dónde viene? Si Claude citó "crecimiento del sector del 18% anual" sin fuente, busca la fuente o elimina la afirmación.' },
+    ],
+    tip: 'Genera el narrativo del caso base de __EMPRESA__. ¿Suena como si lo hubiera escrito un analista de PE o se nota que es IA? El test: ¿tu socio lo reconocería como del fondo?'
+  },
+  'm3': {
+    steps: [
+      { n: 1, title: 'Exporta la tabla de sensibilidades como texto', detail: 'Formato: "IRR según revenue growth (filas: 15%, 20%, 25%, 30%) × múltiplo de salida (columnas: 7x, 8x, 9x, 10x)". Texto plano, no Excel — Claude no puede leer .xlsx directamente.' },
+      { n: 2, title: 'Pide el punto de equilibrio primero', detail: 'Instrucción: "¿Cuál es la combinación mínima de revenue growth y múltiplo de salida que mantiene un IRR >= [hurdle rate]%?" Esta es la línea que defiende el deal ante el IC.' },
+      { n: 3, title: 'Pide el escenario de pesadilla', detail: 'Instrucción: "Identifica la combinación de variables que más destruye el retorno. Estima la probabilidad de que ocurra y el plan de mitigación." El IC siempre pregunta por el worst case.' },
+      { n: 4, title: 'Convierte la tabla en 5 líneas para el IC', detail: 'Instrucción: "Resume el análisis de sensibilidades en máximo 5 líneas, sin jerga técnica, con el mensaje clave claro para un IC." Eso es lo que presentas, no la tabla completa.' },
+    ],
+    tip: 'Con las sensibilidades de __EMPRESA__: ¿cuál es la variable que más impacta el retorno? ¿Cómo la monitorizarías durante la tenencia para detectar pronto si va mal?'
+  },
+  'm4': {
+    steps: [
+      { n: 1, title: 'Identifica las 3-5 palancas principales', detail: 'No más de 5. Cada palanca debe tener impacto cuantificable en EBITDA: "expansión OTC → +X€ EBITDA en 18 meses" no "mejorar la distribución". Las palancas vagas no sobreviven al IC.' },
+      { n: 2, title: 'Construye la matriz impacto × esfuerzo', detail: 'Para cada palanca: impacto en EBITDA (€) y esfuerzo de implementación (ALTO/MEDIO/BAJO). Las palancas de alto impacto y bajo esfuerzo van primero. Las de bajo impacto y alto esfuerzo no van.' },
+      { n: 3, title: 'Define los hitos de los primeros 100 días', detail: 'Los 100 días son el período de mayor credibilidad con el management. Pide a Claude: "¿Cuáles son los 3 hitos más importantes en los primeros 100 días que demostrarían que el plan de valor está funcionando?"' },
+      { n: 4, title: 'Define el KPI tracker', detail: '5 métricas que demuestran que el plan funciona. Frecuencia de medición. Umbral de alerta. Sin este tracker, el comité mensual no tiene criterio de evaluación del plan.' },
+    ],
+    tip: 'Genera el value creation plan para __EMPRESA__. ¿Las palancas son específicas y cuantificables o son vagas? Si no puedes poner un número en euros, la palanca no está suficientemente desarrollada.'
+  },
+
+  // ── FASE 4: WORKFLOWS ──
+  's10': {
+    steps: [
+      { n: 1, title: 'Identifica las partes fijas y las variables', detail: 'Lee tu prompt más usado. Subraya en rojo lo que cambia por deal (nombre empresa, sector, EV). Subraya en verde lo que siempre es igual (estructura del análisis, reglas, format). Lo rojo son las variables del template.' },
+      { n: 2, title: 'Define las variables con nombre descriptivo', detail: 'Usa [EMPRESA], [SECTOR], [EV_RANGO], [TESIS] — no números. Los nombres descriptivos hacen el template legible 3 meses después de crearlo.' },
+      { n: 3, title: 'Documenta cuándo usar el template', detail: 'En la cabecera del template: "Usar para: [casos]. No usar para: [excepciones]." Sin documentación, el equipo lo usa donde no aplica y los outputs son malos.' },
+      { n: 4, title: 'Ponle versión y owner', detail: 'v1.0 / Fecha / Owner. Cuando el template mejore, es v1.1. Sin versionado, en 2 meses hay 4 versiones distintas del mismo template circulando por el equipo.' },
+    ],
+    tip: 'Coge tu prompt de análisis de __EMPRESA__ y conviértelo en template. Pruébalo con otra participada real cambiando solo las variables. ¿El output es igual de bueno?'
+  },
+  's11': {
+    steps: [
+      { n: 1, title: 'Paso 1 — Estructura en tabla', detail: 'Pega las notas crudas y pide: "Organiza estas notas en una tabla con columnas: Tema / Hecho / Cifra / Implicación. Si no hay cifra, déjala vacía — no la inventes." La tabla hace visible qué tiene datos y qué es opinión.' },
+      { n: 2, title: 'Paso 2 — Extrae los 5 insights', detail: 'De la tabla: "Identifica los 5 insights más relevantes para la decisión de inversión, ordenados por importancia. Un insight = un hecho con su implicación directa." No todos los puntos de la tabla son insights — prioriza.' },
+      { n: 3, title: 'Paso 3 — Traduce a IC language', detail: 'Regla: sin adjetivos valorativos. "El Q3 fue difícil" → "Revenue Q3 -14% vs budget (slide 7). Implicación: gap acumulado vs plan supera el 20%." Cada insight: hecho con cifra + implicación para la inversión.' },
+      { n: 4, title: 'Paso 4 — Sintetiza', detail: 'De los 5 insights: "Genera el resumen ejecutivo de 5 bullets para el próximo comité. Cada bullet: un hecho y su implicación. Sin adjetivos. Sin relleno." Esos 5 bullets son el output final.' },
+    ],
+    tip: 'Coge las notas de la última reunión con el management de __EMPRESA__ y pásalas por los 4 pasos. ¿El output final es presentable en el próximo comité sin editar?'
+  },
+  's12': {
+    steps: [
+      { n: 1, title: 'Genera el schema por workstream', detail: 'Un schema por cada área: commercial, QofE, legal, tech, ESG. Empieza con commercial — es el más importante. Instrucción: "Genera el schema de commercial DD para __EMPRESA__ en [sector]. Para cada pregunta: fuente de verificación y criticidad MUST HAVE / NICE TO HAVE."' },
+      { n: 2, title: 'Añade las preguntas específicas del sector', detail: 'El schema genérico cubre el 70%. El 30% restante es específico del sector de __EMPRESA__. Pide a Claude: "¿Qué preguntas son específicas de [sector] que no estarían en un schema genérico de PE?"' },
+      { n: 3, title: 'Identifica el MUST VERIFY antes del IC', detail: 'Al final del schema: "Lista los 5 datos que si no puedo verificar antes del IC, el deal no puede avanzar." Esos 5 son tu prioridad absoluta en las primeras 2 semanas de diligencia.' },
+      { n: 4, title: 'Asigna responsable por workstream', detail: 'Cada workstream tiene un owner interno y un advisor externo. Sin asignación explícita, todo el mundo asume que otro lo está haciendo. El schema sin owners es una lista de deseos.' },
+    ],
+    tip: 'Genera el schema de commercial DD para __EMPRESA__. ¿Cuántas preguntas salen "No reportado" con la información que ya tienes? Esos son los huecos a cubrir antes de comprometer recursos en la diligencia.'
+  },
+
+  // ── FASE 5: DUE DILIGENCE ──
+  'd1': {
+    steps: [
+      { n: 1, title: 'Clasifica los documentos antes de procesar', detail: 'Primer prompt por documento: "Clasifica este documento en: FINANCIERO / LEGAL / COMERCIAL / OPERATIVO / RRHH. Responde solo con la categoría." La clasificación determina qué prompt de extracción usar después.' },
+      { n: 2, title: 'Usa prompts de extracción específicos por tipo', detail: 'Para cada categoría un prompt distinto: contratos → cláusulas clave + fechas de vencimiento + change of control. P&L → anomalías + tendencias + partidas inusuales. Legal → contingencias + litigios + obligaciones.' },
+      { n: 3, title: 'Agrega los resúmenes antes de la síntesis', detail: 'Después de procesar todos los documentos, junta los resúmenes en un solo mensaje: "Tienes estos [N] resúmenes de documentos de due diligence de [EMPRESA]. Genera el análisis consolidado identificando: patrones, contradicciones entre documentos, y los 5 hallazgos más importantes."' },
+      { n: 4, title: 'Gestiona el rate limit', detail: 'Con 100+ documentos, Make puede superar el rate limit de la API. Solución: añade un módulo Sleep de 3 segundos entre cada llamada. Para lotes grandes: procesa en grupos de 20 con 30 segundos de pausa entre grupos.' },
+    ],
+    tip: 'Simula con 5 documentos de __EMPRESA__ (o usa documentos ficticios): procesa cada uno por separado y luego fusiona. ¿Qué emerge de la síntesis que no veías en documentos individuales?'
+  },
+  'd2': {
+    steps: [
+      { n: 1, title: 'Estructura el prompt de detección correctamente', detail: 'No pidas "busca inconsistencias". Pide específicamente: "Compara los datos del CIM con los del documento adjunto. Para cada afirmación del CIM, verifica si el documento la confirma, la contradice, o no la menciona."' },
+      { n: 2, title: 'Cubre los 4 tipos de contradicción', detail: 'Instrucción explícita: "(1) cifras que no coinciden, (2) fechas inconsistentes, (3) afirmaciones del CIM que los contratos desmienten, (4) omisiones relevantes — qué menciona el CIM que debería estar en los contratos y no está."' },
+      { n: 3, title: 'Clasifica las contradicciones por impacto', detail: 'Para cada contradicción: impacto en valoración si es real + verificabilidad (¿puede refutarse en diligencia o es estructural?). Una contradicción menor en datos históricos es diferente de una cláusula de change of control no mencionada.' },
+      { n: 4, title: 'Escala inmediatamente las críticas', detail: 'Si aparece una contradicción que afecta a la tesis o a la valoración: escala al socio el mismo día, no esperes al próximo comité. La velocidad de escalado en due diligence diferencia los fondos que cierran buenos deals de los que llegan tarde.' },
+    ],
+    tip: 'Con __EMPRESA__: compara el CIM o teaser con el contrato principal o P&L. ¿Hay algo que el CIM presenta de forma diferente a como aparece en los documentos reales?'
+  },
+  'd3': {
+    steps: [
+      { n: 1, title: 'Empieza por la calidad de los ingresos', detail: 'Primer análisis: ¿qué % de los ingresos son recurrentes? ¿Hay ingresos que no se repetirán post-transacción (contratos con el propietario actual, one-timers del año de venta)? Un negocio que parece crecer puede estar inflando el año de venta.' },
+      { n: 2, title: 'Construye la lista de add-backs candidatos', detail: 'Instrucción: "Lista todos los ajustes potenciales al EBITDA reportado. Para cada uno: importe estimado, clasificación ONE-TIME/ESTRUCTURAL/DISCUTIBLE, evidencia necesaria para confirmarlo." Solo incluir add-backs con evidencia en el documento.' },
+      { n: 3, title: 'Construye el bridge EBITDA', detail: 'EBITDA reportado + cada add-back confirmado = EBITDA normalizado. El bridge tiene que cuadrar exactamente. Si la suma no cierra, hay un error en algún add-back.' },
+      { n: 4, title: 'Genera las preguntas para el advisor de QofE', detail: 'Por cada add-back discutible: una pregunta específica para el advisor. "¿Los gastos de reestructuración de 340k€ en 2024 son realmente one-time o reflejan un patrón estructural?" Las preguntas vagas producen respuestas vagas.' },
+    ],
+    tip: 'Con los datos financieros de __EMPRESA__: ¿cuál es la diferencia entre el EBITDA reportado y el normalizado? ¿Cuántos add-backs son "discutibles"? Ese % es el riesgo de QofE del deal.'
+  },
+
+  // ── FASE 6: ORQUESTACIÓN MAKE ──
+  'n1': {
+    steps: [
+      { n: 1, title: 'Evalúa cada flujo con el framework de 4 preguntas', detail: '¿El trigger es siempre el mismo? ¿El procesamiento usa siempre el mismo prompt? ¿El output va siempre al mismo sitio? ¿Ocurre más de 4 veces al mes? Si las 4 son sí: automatiza. Si alguna es no: hazlo manual todavía.' },
+      { n: 2, title: 'Perfecciona el prompt ANTES de automatizar', detail: 'La regla más importante: usa el prompt manualmente durante 2 semanas mínimo. Si el output manual tiene problemas, el agente los replicará a escala. Automatizar un prompt mediocre produce resultados mediocres en automático.' },
+      { n: 3, title: 'Empieza por el flujo más simple', detail: 'El mejor primer flujo es el que tiene el trigger más predecible (email con adjunto) y el output más estructurado (página de Notion con campos fijos). Domina un flujo completamente antes de construir el segundo.' },
+    ],
+    tip: 'Lista los 5 flujos de tu semana en PE. Para cada uno aplica el framework. ¿Cuál pasa las 4 preguntas? Ese es tu primer agente.'
+  },
+  'n2': {
+    steps: [
+      { n: 1, title: 'Make para la mayoría de los casos', detail: 'Si usas Gmail, Google Drive, Notion, Sheets y nadie en el equipo sabe programar: Make. Interfaz visual, 5000+ integraciones nativas, soporte en español. Plan gratuito suficiente para empezar.' },
+      { n: 2, title: 'N8N si los datos son muy sensibles', detail: 'Si la política del fondo no permite que datos de participadas pasen por servidores de terceros: N8N self-hosted en vuestro servidor. Más técnico de configurar, pero los datos nunca salen de vuestro control.' },
+      { n: 3, title: 'Configura Make en 10 minutos', detail: 'make.com → Sign up → New organization → nombre del fondo → Add team members. Conecta Gmail y Google Drive en "Connections". Esos son los dos conectores que necesitas para el primer agente.' },
+    ],
+    tip: '¿Cuál es la política de datos de tu fondo? Si no existe, es la primera tarea antes de construir agentes. La Fase 7 (Seguridad) cubre cómo definirla.'
+  },
+  'n3': {
+    steps: [
+      { n: 1, title: 'Módulo 1: Watch emails', detail: 'Gmail → Watch emails. Filter: en el campo "Search" escribe el mismo filtro que usarías en Gmail (ej: "from:(@participada.com) subject:(comité OR board) has:attachment"). Frecuencia: cada 15 minutos para empezar.' },
+      { n: 2, title: 'Módulo 2: Download attachment', detail: 'Gmail → Get an attachment. Conecta al módulo anterior. Selecciona el primer adjunto. Make extrae el texto automáticamente si es un PDF de texto (no escaneado).' },
+      { n: 3, title: 'Módulo 3: HTTP → Claude API', detail: 'Tools → HTTP → Make a request. URL: https://api.anthropic.com/v1/messages. Method: POST. Header crítico: "x-api-key" (no "Authorization: Bearer" — ese es OpenAI). Body: JSON con model, max_tokens, system y messages.' },
+      { n: 4, title: 'Módulo 4: Create Notion page', detail: 'Notion → Create a database item. Selecciona tu database de comités. Mapea los campos: Título ← nombre de participada, Análisis ← {{data.content[0].text}}, Fecha ← {{fecha del email}}.' },
+    ],
+    tip: 'Antes de construirlo en Make: simula el flujo manualmente una vez con __EMPRESA__. Manda el email, extrae el texto del PDF, pasa el prompt a Claude, copia el output a Notion. Ese proceso manual es exactamente lo que Make automatiza.'
+  },
+  'n4': {
+    steps: [
+      { n: 1, title: 'Configura las credenciales de forma segura', detail: 'En Make: Connections → Create a connection → HTTP. Guarda la API key de Anthropic en el gestor de credenciales de Make, no en el campo del header directamente. Así no aparece en texto plano en los logs.' },
+      { n: 2, title: 'Estructura el body JSON correctamente', detail: '{"model":"claude-sonnet-4-6","max_tokens":2000,"system":"[TU SYSTEM PROMPT]","messages":[{"role":"user","content":"{{texto_del_pdf}}"}]}. El campo system es el system prompt permanente. El campo content es el texto variable.' },
+      { n: 3, title: 'Extrae el output correctamente', detail: 'La respuesta de Claude está en: {{data.content[0].text}}. No en {{data.text}} ni en {{content}}. Este es el error más común al parsear la respuesta por primera vez.' },
+      { n: 4, title: 'Prueba con una llamada simple primero', detail: 'Antes de conectar con el PDF real: prueba el módulo HTTP con un texto fijo ("Analiza este texto de prueba: hola mundo"). Si Claude responde, la configuración es correcta. Luego conecta el texto real del PDF.' },
+    ],
+    tip: 'La prueba más rápida: en Make, ejecuta el módulo HTTP manualmente con "Run this module only". Si ves la respuesta de Claude en el output, el módulo está bien configurado.'
+  },
+  'n5': {
+    steps: [
+      { n: 1, title: 'Añade el error handler después de cada módulo crítico', detail: 'Clic derecho en el módulo → Add error handler → Break. En el handler: Gmail → Send an email con asunto "⚠ Error en agente [nombre]" y cuerpo "Falló el módulo {{module_name}} con error: {{error_message}}".' },
+      { n: 2, title: 'Configura los reintentos automáticos', detail: 'En el módulo HTTP de Claude: clic en el icono de reloj → Retry → 3 attempts → 60 seconds between attempts. Esto resuelve automáticamente los errores 429 (rate limit) sin intervención manual.' },
+      { n: 3, title: 'Crea el log de ejecuciones en Sheets', detail: 'Añade un módulo final: Google Sheets → Add a row. Columnas: Fecha / Participada / Éxito (sí/no) / Tiempo de procesamiento / Error si lo hay. Este log te dice si el agente funciona bien sin tener que revisarlo manualmente.' },
+      { n: 4, title: 'Prueba el flujo de error deliberadamente', detail: 'Manda un PDF corrupto o vacío para verificar que el error handler funciona. Si recibes el email de aviso, el sistema de alerta está funcionando. No descubras que falla cuando falla de verdad.' },
+    ],
+    tip: 'Un agente sin error handler falla silenciosamente. Tres semanas después te das cuenta de que no ha procesado ningún comité. El error handler convierte los fallos silenciosos en fallos visibles.'
+  },
+  'n6': {
+    steps: [
+      { n: 1, title: 'Webhook vs polling: cuándo usar cada uno', detail: 'Polling (revisar cada X min): útil para empezar, simple de configurar, suficiente para la mayoría de casos. Webhook (notificación instantánea): necesario cuando la velocidad de respuesta importa — alertas de KPIs críticos, comités con runway < 2 meses.' },
+      { n: 2, title: 'Configura el webhook en Make', detail: 'Make → Webhooks → Create a webhook → copia la URL generada. Esa URL es el endpoint que recibirá las notificaciones. En la aplicación fuente (Gmail, Drive, etc.) configura que envíe notificaciones a esa URL.' },
+      { n: 3, title: 'Configura el schedule para tareas mensuales', detail: 'Para el agente de KPIs: Make → Schedule → Monthly → día 5 → 8:00 AM. El schedule ejecuta el escenario automáticamente sin ningún trigger externo.' },
+      { n: 4, title: 'Verifica que el webhook funciona', detail: 'Después de configurar el webhook: haz la acción que debería dispararlo (envía un email, sube un archivo). En Make → History verifica que aparece una ejecución. Si no aparece en 2 minutos, el webhook no está configurado correctamente.' },
+    ],
+    tip: 'Para el agente de comités: empieza con polling cada 15 min. Cuando lleves 2 semanas sin problemas, migra a webhook para tener el análisis en menos de 30 segundos desde que llega el email.'
+  },
+
+  // ── FASE 7: SEGURIDAD ──
+  'sec1': {
+    steps: [
+      { n: 1, title: 'Clasifica tus documentos en 3 niveles', detail: 'NIVEL 1 (Claude.ai OK): datos públicos, análisis sectoriales, drafts sin datos reales. NIVEL 2 (API con configuración del fondo): comités de participadas, P&Ls históricos. NIVEL 3 (nunca en IA externa): datos de LPs, MNPI pre-anuncio, información de deals no cerrados.' },
+      { n: 2, title: 'Define la regla del fondo en una frase', detail: 'Ejemplo: "Todo documento con datos financieros no públicos de participadas o LPs va por la API del fondo, nunca por Claude.ai directo." Una regla clara es mejor que una política larga que nadie lee.' },
+      { n: 3, title: 'Crea el checklist de 3 preguntas', detail: 'Antes de usar IA con cualquier documento: (1) ¿Contiene MNPI? (2) ¿Hay datos de LPs identificables? (3) ¿El deal está anunciado públicamente? Si alguna respuesta es sí → canal API, no Claude.ai.' },
+      { n: 4, title: 'Documenta y firma', detail: 'La política existe cuando todos en el equipo la han leído y firmado. Sin firma, si hay un incidente, no hay evidencia de que existía una política. 1 página, lenguaje claro, firma digital.' },
+    ],
+    tip: 'Clasifica los últimos 5 documentos que usaste con Claude en los 3 niveles. ¿Alguno estaba en el nivel incorrecto? Si sí, ese es el caso de uso que necesitas cubrir en la política.'
+  },
+  'sec2': {
+    steps: [
+      { n: 1, title: 'Credenciales en el gestor, nunca en texto plano', detail: 'En Make: todas las API keys en Connections, no en los campos de los módulos. En el código: variables de entorno, no strings hardcodeados. Regla: si la API key aparece visible en el escenario de Make, está mal configurada.' },
+      { n: 2, title: 'Configura la retención de datos en Make', detail: 'Make → Organization settings → Data retention. Configura para que los logs de ejecución no guarden el contenido de los documentos, solo la metadata (fecha, módulo, éxito/fallo). Los datos del documento no deben persistir en los servidores de Make.' },
+      { n: 3, title: 'Define el proceso de offboarding', detail: 'Cuando alguien sale del equipo: revocar acceso a Make, rotar las API keys de Anthropic, revocar acceso a Supabase. Este proceso debe estar documentado y ejecutarse el mismo día de la salida.' },
+      { n: 4, title: 'Crea el log de auditoría externo', detail: 'Añade a cada agente un módulo final: Google Sheets → Add a row con fecha, tipo de documento procesado (sin contenido), usuario que lo activó. Este log es la evidencia ante una auditoría de que los datos se procesaron correctamente.' },
+    ],
+    tip: 'Audita el agente de comités que ya tienes: ¿aparece el texto del PDF en los logs de Make? ¿La API key está en el gestor de credenciales o en texto plano en el módulo HTTP?'
+  },
+  'sec3': {
+    steps: [
+      { n: 1, title: 'Estructura la política en 5 secciones', detail: 'Alcance (qué herramientas cubre) → Clasificación de datos (3 niveles) → Usos permitidos y prohibidos (tabla) → Protocolo de incidentes (qué hacer si algo va mal) → Gobierno (quién la actualiza, cada cuánto).' },
+      { n: 2, title: 'La tabla de usos es el corazón', detail: 'Formato: Caso de uso / Herramienta permitida / Condiciones. Ej: "Análisis de comité mensual / Claude.ai Pro o API / Solo si el deal está cerrado y en portfolio." La tabla convierte la política en decisiones binarias.' },
+      { n: 3, title: 'Define el protocolo de incidentes', detail: 'Qué es un incidente (datos de nivel 3 procesados en canal incorrecto) → A quién notificar (socio responsable, DPO si hay datos de personas físicas) → En qué plazo (GDPR: 72 horas si hay datos personales).' },
+      { n: 4, title: 'Revísala con el abogado del fondo', detail: 'Antes de distribuir: 30 minutos con el abogado para verificar las implicaciones de MNPI y GDPR. El coste de esos 30 minutos es insignificante comparado con el coste de un incidente no cubierto por la política.' },
+    ],
+    tip: 'Usa Claude para generar el borrador de la política (ironía intencionada). Luego revísalo: ¿hay algo que te incomode? Ese es el punto que necesita revisión legal.'
+  },
+
+  // ── FASE 8: AGENTES CORE ──
+  'a1': {
+    steps: [
+      { n: 1, title: 'Simula el flujo manualmente una vez antes', detail: 'Antes de abrir Make: coge un comité real, extrae el texto del PDF, pégalo en Claude con tu prompt, copia el output a Notion manualmente. Cronométrate. Eso es lo que el agente automatiza — si manualmente tarda 45 min, el agente te ahorra 45 min por comité.' },
+      { n: 2, title: 'Añade el JSON estructurado al final del prompt', detail: 'En el system prompt del agente: "Al final de tu análisis, en la última línea, incluye SOLO este JSON: {\"rec\":\"FOLLOW-ON|CONTINGENCY|HOLD\",\"flags_criticos\":N,\"runway_meses\":N}." Make extrae este JSON para rellenar las propiedades de Notion automáticamente.' },
+      { n: 3, title: 'Configura el router de urgencia', detail: 'Después del HTTP de Claude: Router → condición {{data.content[0].text}} contains "CRÍTICO" → Ruta 1: Notion + email al socio. Ruta 2: solo Notion. El router convierte el agente de una herramienta de productividad en un sistema de alertas.' },
+      { n: 4, title: 'Prueba con el comité de __EMPRESA__', detail: 'Manda el comité de __EMPRESA__ como email con PDF adjunto. Activa el escenario en Make → Run once. Verifica que en menos de 90 segundos aparece la entrada en Notion con todos los campos correctos.' },
+    ],
+    tip: 'El primer agente siempre tarda más de lo esperado en configurar. El segundo tarda la mitad. El tercero es automático. La curva de aprendizaje de Make es pronunciada al principio y luego casi plana.'
+  },
+  'a2': {
+    steps: [
+      { n: 1, title: 'Reutiliza el 80% del agente de comités', detail: 'Duplica el escenario del agente a1 en Make. Cambia: módulo 1 (Gmail → Google Drive), prompt (análisis de portfolio → CIM-to-screen), estructura de Notion (comités → pipeline de deals). Todo lo demás es idéntico.' },
+      { n: 2, title: 'Añade el campo de fit con la tesis', detail: 'En el prompt: "Al final, SOLO este JSON: {\"fit\":\"ALTO|MEDIO|BAJO|NO_ENCAJA\",\"rec\":\"AVANZAR|PASS|MAS_INFO\",\"flags_criticos\":N}." En Notion: crea una propiedad "Fit con tesis" tipo Select con esos valores. Así puedes filtrar automáticamente los deals de fit ALTO.' },
+      { n: 3, title: 'Configura el router por fit', detail: 'Router: si fit = ALTO → email al socio con resumen ejecutivo + enlace a Notion. Si fit = NO_ENCAJA → solo Notion, sin notificación. El socio recibe automáticamente solo lo que encaja con la tesis.' },
+    ],
+    tip: 'Después de 2 semanas de uso: ¿el agente está clasificando correctamente el fit? Si hay deals de fit MEDIO que deberían ser ALTO (o viceversa), ajusta la descripción de la tesis en el system prompt.'
+  },
+  'a3': {
+    steps: [
+      { n: 1, title: 'Diseña el template de Sheets primero', detail: 'Una hoja por participada. Columnas: KPI / Valor actual / Budget / Mes anterior / Δ vs budget (fórmula) / Δ vs anterior (fórmula) / Umbral alerta (tú lo defines por participada). Sin este template, el agente no tiene datos para analizar.' },
+      { n: 2, title: 'Define los umbrales por participada', detail: 'Los umbrales no son iguales para todas. Para una startup early stage: runway < 3 meses = CRÍTICO. Para una empresa madura: caída de margen > 5pp = ALTO. Los umbrales son la tesis de riesgo de cada inversión, no valores genéricos.' },
+      { n: 3, title: 'Configura el schedule el día 5', detail: 'Make → Schedule → Monthly → Day 5 → 8:00 AM. El día 5 te da tiempo para que el equipo directivo cierre el mes el día 1-2 y actualice el Sheets antes de que el agente lo lea.' },
+      { n: 4, title: 'Itera sobre todas las participadas', detail: 'Make → Google Sheets → Get rows → Iterator. El iterator procesa una participada a la vez. Por cada una: Claude analiza sus KPIs → si hay alertas → email al socio. Sin alertas → solo log.' },
+    ],
+    tip: 'El primer mes el agente de KPIs parece overkill. A los 3 meses, cuando detecta automáticamente el runway de una participada cayendo a 2 meses antes de que nadie lo haya mencionado en el comité, entiendes el valor.'
+  },
+  'a4': {
+    steps: [
+      { n: 1, title: 'Define la tesis como filtro en el prompt', detail: 'En el system prompt del agente: describe tu tesis en 3-5 líneas. "Sector: software B2B en sectores regulados. Tamaño: 2-20M€ ARR. Geografía: España e Italia. Estadio: growth equity. Señales relevantes: expansión geográfica, cambio de management, ronda reciente." Claude filtra con ese criterio.' },
+      { n: 2, title: 'Configura las fuentes RSS', detail: 'Make → RSS → Watch RSS feed. Añade uno por cada fuente: Expansión PE, El Confidencial economía, TechCrunch ES, LinkedIn (via RSS), Google Alerts de tu sector. Empieza con 3-4 fuentes, añade más si el volumen es insuficiente.' },
+      { n: 3, title: 'Añade el scoring en el prompt', detail: 'Instrucción: "Para cada noticia, da una puntuación de relevancia del 1 al 10 según nuestra tesis. Incluye solo noticias con puntuación >= 7. Para las incluidas: título, por qué encaja, link, acción sugerida." El threshold de 7 reduce el ruido sin perder oportunidades relevantes.' },
+      { n: 4, title: 'Configura el anti-spam', detail: 'Make → Filter antes del email: solo continúa si el output de Claude contiene al menos una noticia con score >= 7. Si no hay noticias relevantes ese día, no envíes email. Un inbox limpio es más valioso que un inbox completo.' },
+    ],
+    tip: 'Después de 2 semanas: ¿cuántas de las noticias que llegan son realmente accionables? Si el ratio es < 30%, el threshold del score es demasiado bajo o la descripción de la tesis es demasiado genérica.'
+  },
+  'a5': {
+    steps: [
+      { n: 1, title: 'Genera el LP update de una participada manualmente primero', detail: 'Antes de automatizar: usa el prompt de LP narrative con los datos de __EMPRESA__. Evalúa el output con criterio real: ¿lo enviarías a un LP institucional sin editar? Si no, ajusta el prompt hasta que sí. Nunca automatices un prompt que no funciona manualmente.' },
+      { n: 2, title: 'Diseña el Sheets de input con los campos exactos', detail: 'Columnas mínimas: participada / período / revenue actual / revenue budget / revenue YoY / EBITDA actual / EBITDA budget / hito positivo 1 / hito positivo 2 / riesgo principal / plan de acción / outlook. Sin estos campos, el narrativo será genérico.' },
+      { n: 3, title: 'Itera por participada y agrega', detail: 'Make itera por cada fila del Sheets → Claude genera el bloque de esa participada → Make guarda en array → al final: segunda llamada a Claude para generar el resumen del portfolio → Google Docs con todo.' },
+      { n: 4, title: 'Añade el flujo de aprobación', detail: 'El borrador nunca va directamente a LPs. Flujo: Google Docs (borrador) → email al socio con link → socio revisa y aprueba → tú editas si es necesario → envío final. La IA hace el 80% del trabajo, el criterio humano hace el 20% restante que importa.' },
+    ],
+    tip: 'El agente de LP updates es el de mayor impacto en relación inversores pero el de mayor riesgo si falla. La revisión humana antes del envío no es opcional — es parte del diseño del agente, no un parche.'
+  },
+
+  // ── FASE 9: PRINCIPAL / DIRECTOR ──
+  's19': {
+    steps: [
+      { n: 1, title: 'Elige los ángulos de ataque correctos', detail: 'El red team más efectivo cubre: concentración de clientes/revenue, dependencia de personas clave, durabilidad del moat, ciclicidad sectorial, capacidad de servicio de la deuda, y riesgo de cambio tecnológico. Pide a Claude que cubra los 6.' },
+      { n: 2, title: 'Formula de forma adversarial', detail: '"Destruye esta tesis" produce mejores resultados que "¿qué riesgos tiene?". "¿Votarías no solo por esto?" produce mejores resultados que "¿es esto un problema?" La formulación adversarial supera la tendencia de Claude a ser constructivo.' },
+      { n: 3, title: 'Prepara las respuestas antes del IC', detail: 'Por cada deal killer: una línea de refutación con evidencia. Si no puedes refutarla en una línea, necesitas más diligencia en ese punto. El IC no acepta "es un riesgo que gestionaremos".' },
+    ],
+    tip: 'Aplica el red team a tu deal más reciente. El objetivo no es que no tenga problemas sino que los conozcas tú antes que el IC.'
+  },
+  's20': {
+    steps: [
+      { n: 1, title: 'Estructura el árbol en 3 niveles', detail: 'Nivel 1: la pregunta de contexto (¿cómo define la empresa el churn?). Nivel 2: la pregunta de diagnóstico (¿cuáles son las causas?). Nivel 3: la pregunta de implicación (¿qué significa para la valoración?). Sin los 3 niveles, el árbol no cubre el problema completamente.' },
+      { n: 2, title: 'Define respuestas satisfactorias y preocupantes', detail: 'Para cada nodo: "respuesta satisfactoria = [lo que cerraría este punto]; respuesta preocupante = [lo que requeriría profundizar]". Los umbrales concretos (churn < 1% mensual = aceptable, > 3% = deal concern) son más útiles que los cualitativos.' },
+      { n: 3, title: 'Incluye los umbrales de referencia sectoriales', detail: 'Para SaaS: churn mensual < 1% aceptable, 1-3% preocupante, > 3% deal-breaker. Para marketplace: GMV take rate, retention de compradores y vendedores. Sin benchmarks, el IC no tiene contexto para evaluar las respuestas del management.' },
+    ],
+    tip: 'Construye el Q&A tree de churn para __EMPRESA__. ¿Hay preguntas del árbol que no puedes responder con la información disponible? Esos son los gaps que tienes que cubrir antes del IC.'
+  },
+  's21': {
+    steps: [
+      { n: 1, title: 'Identifica los 3-5 drivers reales del EBITDA', detail: 'No todos los KPIs son drivers. Un driver es una variable que, si cambia en X%, el EBITDA cambia en Y€ de forma predecible. Para __EMPRESA__: ¿cuáles son las 3 variables que más explican la varianza histórica del EBITDA?' },
+      { n: 2, title: 'Usa los mismos indicadores para los 3 escenarios', detail: 'El error más común: medir el upside con una métrica y el downside con otra. Todos los escenarios deben monitorizarse con el mismo KPI mensual — solo cambian los umbrales. Así puedes decir en cualquier momento en qué escenario está la compañía.' },
+      { n: 3, title: 'Define los triggers de acción del fondo', detail: 'Los triggers no son "si va mal, hablar con el management". Son específicos: "si runway < 2 meses → reunión de emergencia con el socio en 48h". "Si churn mensual > 3% dos meses consecutivos → activar plan de contingencia de costes". Los triggers concretos permiten actuar antes de que sea tarde.' },
+    ],
+    tip: 'Con el scenario stack de __EMPRESA__: ¿en qué escenario está la compañía ahora mismo? ¿Qué leading indicator lo indica? Si no puedes responder, el stack necesita más trabajo.'
+  },
+  's22': {
+    steps: [
+      { n: 1, title: 'Estructura el historial de deals en formato reutilizable', detail: 'Para cada deal: sector / tipo (platform, add-on, growth) / outcome (múltiplo, IRR) / 3 factores de éxito / 3 factores de fallo / lección principal en una línea. Este formato permite a Claude hacer comparaciones sistemáticas.' },
+      { n: 2, title: 'Pide similitudes y diferencias explícitamente', detail: 'Prompt: "¿Qué tienen en común este deal con los deals históricos similares? ¿Qué factores de éxito de los deals positivos están presentes? ¿Qué factores de fallo de los deals negativos están presentes?" Las comparaciones explícitas son más útiles que las implícitas.' },
+      { n: 3, title: 'Extrae la pregunta que el historial sugiere', detail: 'Siempre al final: "¿Qué pregunta crítica sugiere el historial que debemos responder antes de avanzar?" Esta pregunta suele ser la que el analista no había considerado y el historial hace visible.' },
+    ],
+    tip: 'Si el fondo no tiene el historial digitalizado, empieza ahora. 5 deals bien documentados ya producen insights útiles. 20 deals documentados son una ventaja competitiva real.'
+  },
+  's23': {
+    steps: [
+      { n: 1, title: 'Recibe los outputs de cada workstream en el mismo formato', detail: 'Antes de la síntesis, pide a cada advisor/equipo que entregue su output en el mismo schema: hallazgos principales / red flags / impacto en valoración / preguntas sin respuesta. La síntesis de outputs inconsistentes produce análisis inconsistentes.' },
+      { n: 2, title: 'Identifica las contradicciones entre workstreams', detail: 'Instrucción: "¿Hay contradicciones entre el análisis commercial y el QofE? ¿Entre el legal y el commercial?" Las contradicciones entre workstreams suelen ser las más reveladoras — indican que algo no cuadra en la historia del management.' },
+      { n: 3, title: 'Genera el "what matters" en 3 puntos', detail: 'Instrucción: "De todo el análisis de diligencia, ¿cuáles son los 3 hechos que más determinan la decisión de inversión? No los más interesantes, los más determinantes para el precio y las condiciones." Esos 3 son los que presentas primero en el IC.' },
+    ],
+    tip: 'La one-view synthesis es el documento más difícil de escribir en un proceso de PE. Si Claude genera una síntesis en 5 minutos que necesita solo ajustes menores, has dominado esta habilidad.'
+  },
+
+  // ── FASE 10: PARTNER / FIRMA ──
+  's27': {
+    steps: [
+      { n: 1, title: 'Conecta la señal con la tesis antes del primer contacto', detail: 'La señal (noticia, ronda, cambio de management) debe conectar con tu tesis de forma específica. No "vi que levantasteis una ronda" sino "vi que levantasteis una ronda Serie B para expandir a Italia — es exactamente el movimiento que hemos visto funcionar en [comparable]."' },
+      { n: 2, title: 'Máximo 5 líneas de cuerpo', detail: 'Línea 1: la señal específica (demuestras que has hecho los deberes). Línea 2: por qué encaja con tu tesis (no con "el mercado" — con TU tesis específica). Líneas 3-4: qué aportarías además del capital. Línea 5: CTA específico (llamada de 20 min, no "stay in touch").' },
+      { n: 3, title: 'Genera 2 variaciones y elige', detail: 'Pide a Claude dos versiones: una directa y una más sutil. La directa funciona mejor con fundadores operativos. La sutil funciona mejor con founders de segunda empresa o en procesos de M&A.' },
+    ],
+    tip: 'Prueba el outreach en frío con un deal que ya conoces: genera el email con __EMPRESA__ como ejemplo. ¿Sonaría genuino o genérico si lo recibieras tú?'
+  },
+  's28': {
+    steps: [
+      { n: 1, title: 'Define el firm voice en 3 adjetivos', detail: '"Directo, cuantitativo, honesto" es un firm voice. "Profesional, sofisticado, riguroso" no lo es — es demasiado genérico. Los 3 adjetivos deben distinguir tu fondo de otros fondos de PE.' },
+      { n: 2, title: 'Crea ejemplos de SÍ y NO', detail: 'Para cada principio del firm voice: un ejemplo de frase que SÍ encaja y uno que NO. "Sí: El revenue cayó un 12% vs budget por el retraso en 2 contratos Enterprise. No: El Q3 presentó ciertos desafíos en la línea de ingresos." Los ejemplos son más efectivos que las descripciones.' },
+      { n: 3, title: 'Aplícalo a las 3 audiencias', detail: 'El firm voice es el mismo pero el registro cambia: con management (directo y de apoyo), con LPs (institucional y transparente), con consejo (estratégico y conciso). Tres versiones del instruction set, una sola voz.' },
+    ],
+    tip: 'Coge 3 emails reales del fondo a LPs, management y consejo. ¿Suenan igual o cada uno tiene un tono diferente? La inconsistencia de voz es más frecuente de lo que parece en fondos pequeños.'
+  },
+  's31': {
+    steps: [
+      { n: 1, title: 'Busca los datos del LP antes de la reunión', detail: 'Fuentes: informes anuales si es institución pública, PitchBook o Preqin para allocations, LinkedIn para la persona de contacto, comunicados de prensa para compromisos recientes. Pide a Claude que sintetice, pero verifica los números en fuentes primarias.' },
+      { n: 2, title: 'Construye el mapa de objeciones', detail: 'Instrucción: "Basándote en el perfil de este LP, ¿cuáles son las 5 objeciones más probables a nuestro fondo? Para cada una: por qué la haría y cuál sería la respuesta más sólida." Preparar las objeciones es más valioso que preparar el pitch.' },
+      { n: 3, title: 'Define qué NO mencionar', detail: 'Por cada LP: ¿qué parte del track record o de la estrategia podría generar ruido innecesario para este perfil específico? No lo ocultes si te lo preguntan, pero no lo pongas en primer plano.' },
+    ],
+    tip: 'Genera el brief para el próximo LP meeting. ¿Cuántas de las preguntas que hizo el LP en la reunión estaban en el mapa de objeciones? Esa tasa es el indicador de calidad del brief.'
+  },
+  's34': {
+    steps: [
+      { n: 1, title: 'Estructura las notas de reunión en el mismo formato siempre', detail: 'LP / Fecha / Asistentes / Señales de interés / Objeciones explícitas / Objeciones implícitas / Compromisos del LP / Next steps nuestros. Formato consistente = pipeline predecible.' },
+      { n: 2, title: 'Distingue objeciones explícitas de implícitas', detail: 'Explícita: "Vuestro track record tiene solo 2 exits." Implícita: el LP hizo muchas preguntas sobre el proceso de exit pero nunca lo articuló como objeción. Las implícitas son más reveladoras — indican preocupaciones que el LP no quiere verbalizar aún.' },
+      { n: 3, title: 'Define el next step con fecha y owner', detail: 'No "enviar más información". Sí: "Enviar los 3 case studies de deals en salud digital antes del viernes. Owner: [nombre]." Sin fecha y owner, el next step no existe.' },
+      { n: 4, title: 'Genera el email de follow-up en 24 horas', detail: 'Instrucción a Claude: "Genera el email de follow-up para esta reunión LP en el firm voice del fondo. Referencia puntos específicos de la conversación. Confirma next steps. Máximo 5 líneas." Enviarlo en 24h es la diferencia entre un LP que avanza y uno que se enfría.' },
+    ],
+    tip: 'El fundraising CRM con IA funciona cuando el equipo lo alimenta consistentemente. Si las notas de reunión son irregulares, el sistema produce insights irregulares. La disciplina de proceso es anterior a la tecnología.'
+  },
+};
+
+
+// ═══════════════════════════════════════════════
 // STATE
 // ═══════════════════════════════════════════════
 var sbClient = null;
@@ -5199,14 +5609,25 @@ function getDocLabel(pid) {
 function personalizeText(text, pid) {
   if(!text) return text;
   var label = getDocLabel(pid);
-  var name = getDocName(pid) || '[EMPRESA]';
+  var name = getDocName(pid) || 'tu empresa';
+  var doc = getPhaseDoc(pid);
+  var docType = doc ? doc.type : 'documento';
   return text
     .replace(/__DOC__/g, label)
     .replace(/__EMPRESA__/g, name)
+    .replace(/el comité de Luda de mayo 2026/g, label)
     .replace(/el comité de Luda adjunto/g, label)
+    .replace(/comité de Luda/g, label)
     .replace(/el documento adjunto/g, label)
     .replace(/Luda Partners/g, name)
-    .replace(/\[EMPRESA\]/g, name);
+    .replace(/\bLuda\b/g, name)
+    .replace(/\[EMPRESA\]/g, name)
+    .replace(/\[PARTICIPADA\]/g, name)
+    .replace(/runway de 1\.5 meses/g, 'runway de tu participada')
+    .replace(/EBITDA -321k/g, 'EBITDA de tu documento')
+    .replace(/GMV YoY negativo/g, 'KPI principal negativo')
+    .replace(/mayo 2026/g, 'el período del documento')
+    .replace(/participada tuya/g, 'tu ' + docType);
 }
 
 function renderDocPicker(pid, hint) {
@@ -5330,6 +5751,28 @@ function getTimeEst(skillId) {
   return `<span class="skill-time-est"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="5" stroke="currentColor" stroke-width="1"/><path d="M6 3.5V6L7.5 7.5" stroke="currentColor" stroke-width="1" stroke-linecap="round"/></svg>${t} min</span>`;
 }
 
+function renderHowTo(skillId, pid) {
+  var data = HOW_TO[skillId];
+  if (!data) return '';
+  var stepsHtml = data.steps.map(function(s) {
+    return '<div class="howto-step">'
+      + '<div class="howto-num">' + s.n + '</div>'
+      + '<div class="howto-body">'
+      + '<div class="howto-title">' + s.title + '</div>'
+      + '<div class="howto-detail">' + personalizeText(s.detail, pid) + '</div>'
+      + '</div></div>';
+  }).join('');
+  var tipHtml = data.tip
+    ? '<div class="howto-tip"><div class="howto-tip-label">↳ Pruébalo ahora</div>' + personalizeText(data.tip, pid) + '</div>'
+    : '';
+  return '<div class="howto-section">'
+    + '<div class="howto-label">🔧 Cómo se hace</div>'
+    + '<div class="howto-steps">' + stepsHtml + '</div>'
+    + tipHtml
+    + '</div>';
+}
+
+
 function renderPhase(idx) {
   currentPhaseIdx = idx;
   currentView = 'course';
@@ -5355,7 +5798,7 @@ function renderSkill(s, p) {
   var pid = p.id;
 
   var conceptText = s.concept || s.desc || '';
-  var conceptHtml = conceptText.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+  var conceptHtml = personalizeText(conceptText, pid).replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
 
   var diagramHtml = s.diagram ? '<div class="diagram-wrap">'+s.diagram+'</div>' : (typeof getArchDiagram==='function' ? getArchDiagram(s.id) : '');
 
@@ -5366,9 +5809,9 @@ function renderSkill(s, p) {
   if(typeof renderFindTheError === 'function') dynamicsHtml += (renderFindTheError(s.id)||'');
 
   // Handle both structures: new (tryPrompt/refPrompt/gap) vs old (exercise)
-  var tryPrompt = s.tryPrompt || (s.exercise ? s.exercise.text : 'Practica esta habilidad con tu documento seleccionado.');
+  var tryPrompt = personalizeText(s.tryPrompt || (s.exercise ? s.exercise.text : 'Practica esta habilidad con tu documento seleccionado.'), pid);
   var refPrompt = s.refPrompt || (s.exercise ? s.exercise.prompt : '');
-  var gapText = s.gap || '';
+  var gapText = personalizeText(s.gap || '', pid);
 
   var tryHtml = '<div class="try-box">'
     + '<div class="try-label">✏ Tu turno primero</div>'
@@ -5398,6 +5841,7 @@ function renderSkill(s, p) {
     + '</div>'
     + '<div class="skill-body">'
     + '<div class="skill-section"><div class="skill-section-label">Concepto</div><div class="concept-text">'+conceptHtml+'</div>'+diagramHtml+'</div>'
+    + (HOW_TO[s.id] ? '<div class="skill-section"><div class="skill-section-label">Cómo se hace</div>' + renderHowTo(s.id, pid) + '</div>' : '')
     + (dynamicsHtml ? '<div class="skill-section"><div class="skill-section-label">Aprende viendo</div>'+dynamicsHtml+'</div>' : '')
     + '<div class="skill-section"><div class="skill-section-label">Practica</div>'+tryHtml+refHtml+'</div>'
     + '<div class="skill-section"><button class="mark-done-btn" onclick="toggleDone(\''+s.id+'\',\''+pid+'\')">'+(isDone?'✓ Completada — clic para reabrir':'✓ Marcar como completada')+'</button></div>'
